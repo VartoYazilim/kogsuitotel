@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Reservations;
 
+use App\Enums\ReservationStatus;
 use App\Filament\Resources\Reservations\Pages\CreateReservation;
 use App\Filament\Resources\Reservations\Pages\EditReservation;
 use App\Filament\Resources\Reservations\Pages\ListReservations;
@@ -49,7 +50,7 @@ class ReservationResource extends Resource
     /** Sol menüde bekleyen rezervasyon sayısı badge olarak görünür. */
     public static function getNavigationBadge(): ?string
     {
-        $count = static::getModel()::where('status', \App\Enums\ReservationStatus::Pending)->count();
+        $count = static::getModel()::where('status', ReservationStatus::Pending)->count();
 
         return $count > 0 ? (string) $count : null;
     }

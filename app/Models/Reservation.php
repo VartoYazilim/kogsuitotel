@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Enums\ReservationStatus;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Validation\ValidationException;
 
 class Reservation extends Model
 {
@@ -104,7 +106,7 @@ class Reservation extends Model
         $totalGuests = (int) ($reservation->adults ?? 0) + (int) ($reservation->children ?? 0);
 
         if ($totalGuests > $room->capacity) {
-            throw \Illuminate\Validation\ValidationException::withMessages([
+            throw ValidationException::withMessages([
                 'adults' => "Bu oda en fazla {$room->capacity} kişiliktir. Toplam misafir: {$totalGuests}.",
             ]);
         }
@@ -143,7 +145,7 @@ class Reservation extends Model
             ->exists();
 
         if ($overlap) {
-            throw \Illuminate\Validation\ValidationException::withMessages([
+            throw ValidationException::withMessages([
                 'check_in' => 'Seçilen tarihlerde bu oda başka bir aktif rezervasyonla çakışıyor.',
             ]);
         }
@@ -207,8 +209,8 @@ class Reservation extends Model
     public function scopeOverlapping(
         Builder $query,
         int $roomId,
-        \Carbon\Carbon|string $checkIn,
-        \Carbon\Carbon|string $checkOut,
+        Carbon|string $checkIn,
+        Carbon|string $checkOut,
         ?int $excludeId = null,
     ): Builder {
         $query

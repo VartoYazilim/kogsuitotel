@@ -1,0 +1,15 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app/
+
+    # Level 0 (en gevşek) – 10 (en strict). 5 Laravel için pragmatik başlangıç.
+    level: 5
+
+    # Filament 4'ün dinamik schema/form API'leri PHPDoc generic'leri eksik;
+    # bu uyarıları kapatmak gürültüyü azaltır, gerçek tip hatalarını gösterir.
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    treatPhpDocTypesAsCertain: false

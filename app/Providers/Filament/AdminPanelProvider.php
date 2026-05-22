@@ -3,15 +3,15 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Widgets\LatestReservations;
-use App\Filament\Widgets\ReservationStatsOverview;
 use App\Filament\Widgets\ReservationsChart;
+use App\Filament\Widgets\ReservationStatsOverview;
 use App\Filament\Widgets\TodayActivity;
 use App\Filament\Widgets\WelcomeWidget;
 use Filament\Http\Middleware\Authenticate;
-use Filament\Navigation\MenuItem;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Navigation\NavigationGroup;
 use Filament\Pages\Dashboard;
 use Filament\Panel;

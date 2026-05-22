@@ -9,6 +9,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
@@ -97,11 +98,11 @@ class ReservationsTable
                 Filter::make('check_in_range')
                     ->label('Giriş Tarihi Aralığı')
                     ->schema([
-                        \Filament\Forms\Components\DatePicker::make('from')
+                        DatePicker::make('from')
                             ->label('Başlangıç')
                             ->native(false)
                             ->displayFormat('d.m.Y'),
-                        \Filament\Forms\Components\DatePicker::make('until')
+                        DatePicker::make('until')
                             ->label('Bitiş')
                             ->native(false)
                             ->displayFormat('d.m.Y'),

@@ -6,7 +6,11 @@ use App\Enums\ReservationStatus;
 use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\Setting;
+use App\Models\User;
+use App\Notifications\ReservationCreated;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
 class ReservationFlowTest extends TestCase
@@ -240,10 +244,10 @@ class ReservationFlowTest extends TestCase
 
     public function test_yeni_rezervasyon_admine_notification_gonderir(): void
     {
-        \Illuminate\Support\Facades\Notification::fake();
+        Notification::fake();
 
-        $admin = \App\Models\User::factory()->create(['is_admin' => true]);
-        $nonAdmin = \App\Models\User::factory()->create(['is_admin' => false]);
+        $admin = User::factory()->create(['is_admin' => true]);
+        $nonAdmin = User::factory()->create(['is_admin' => false]);
         $room = Room::factory()->create(['is_active' => true]);
 
         $this->post('/rezervasyon', [
@@ -258,15 +262,15 @@ class ReservationFlowTest extends TestCase
         ]);
 
         // Admin'e gönderildi
-        \Illuminate\Support\Facades\Notification::assertSentTo(
+        Notification::assertSentTo(
             $admin,
-            \App\Notifications\ReservationCreated::class
+            ReservationCreated::class
         );
 
         // Non-admin'e GÖNDERİLMEDİ
-        \Illuminate\Support\Facades\Notification::assertNotSentTo(
+        Notification::assertNotSentTo(
             $nonAdmin,
-            \App\Notifications\ReservationCreated::class
+            ReservationCreated::class
         );
     }
 
@@ -279,9 +283,9 @@ class ReservationFlowTest extends TestCase
             'guest_first_name' => 'Ali',
             'guest_last_name' => 'Veli',
         ]);
-        $admin = \App\Models\User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->create(['is_admin' => true]);
 
-        $notification = new \App\Notifications\ReservationCreated($reservation);
+        $notification = new ReservationCreated($reservation);
 
         // toDatabase çalışmazsa exception fırlar — testi düşürür
         $payload = $notification->toDatabase($admin);
@@ -297,7 +301,7 @@ class ReservationFlowTest extends TestCase
     {
         $room = Room::factory()->create(['is_active' => true, 'capacity' => 2]);
 
-        $this->expectException(\Illuminate\Validation\ValidationException::class);
+        $this->expectException(ValidationException::class);
 
         Reservation::factory()->create([
             'room_id' => $room->id,
@@ -339,7 +343,7 @@ class ReservationFlowTest extends TestCase
         ]);
 
         // Admin Suit oda'yı Standart oda'ya çevirmek istiyor — engellenmeli
-        $this->expectException(\Illuminate\Validation\ValidationException::class);
+        $this->expectException(ValidationException::class);
 
         $rezervasyon->update(['room_id' => $standartOda->id]);
     }
@@ -365,9 +369,9 @@ class ReservationFlowTest extends TestCase
         $this->assertNotNull($pendingRez->id);
 
         // Ama pending'i paid'e çevirmek engellenmeli
-        $this->expectException(\Illuminate\Validation\ValidationException::class);
+        $this->expectException(ValidationException::class);
 
-        $pendingRez->update(['status' => \App\Enums\ReservationStatus::Paid]);
+        $pendingRez->update(['status' => ReservationStatus::Paid]);
     }
 
     public function test_anasayfa_arama_formunda_tarih_rezervasyon_sayfasina_tasinir(): void

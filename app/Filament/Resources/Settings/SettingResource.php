@@ -6,13 +6,15 @@ use App\Filament\Resources\Settings\Pages\ManageSettings;
 use App\Models\Setting;
 use BackedEnum;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
 class SettingResource extends Resource
@@ -56,7 +58,7 @@ class SettingResource extends Resource
      * Custom sıralama: kategori önce, sonra key.
      * Filament'in defaultSort virtual attribute desteklemediği için SQL CASE ile.
      */
-    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->orderByRaw("
             CASE
@@ -151,7 +153,7 @@ class SettingResource extends Resource
                     ->toggleable(),
             ])
             ->groups([
-                \Filament\Tables\Grouping\Group::make('category')
+                Group::make('category')
                     ->label('Kategori')
                     ->getTitleFromRecordUsing(fn ($record) => self::categoryForKey($record->key))
                     ->collapsible(),

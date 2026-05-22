@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Reservation;
+use App\Models\Room;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -86,7 +88,7 @@ class AdminPanelAccessTest extends TestCase
     public function test_admin_rezervasyon_goruntule_sayfasi_yuklenir(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
-        $reservation = \App\Models\Reservation::factory()->create();
+        $reservation = Reservation::factory()->create();
 
         $response = $this->actingAs($admin)
             ->get("/kog-yonetim/reservations/{$reservation->id}");
@@ -97,7 +99,7 @@ class AdminPanelAccessTest extends TestCase
     public function test_admin_rezervasyon_duzenle_sayfasi_yuklenir(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
-        $reservation = \App\Models\Reservation::factory()->create();
+        $reservation = Reservation::factory()->create();
 
         $response = $this->actingAs($admin)
             ->get("/kog-yonetim/reservations/{$reservation->id}/edit");
@@ -108,7 +110,7 @@ class AdminPanelAccessTest extends TestCase
     public function test_admin_oda_duzenle_sayfasi_yuklenir(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
-        $room = \App\Models\Room::factory()->create();
+        $room = Room::factory()->create();
 
         $response = $this->actingAs($admin)
             ->get("/kog-yonetim/rooms/{$room->id}/edit");

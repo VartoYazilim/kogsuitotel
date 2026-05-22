@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Models\Reservation;
-use App\Models\Room;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

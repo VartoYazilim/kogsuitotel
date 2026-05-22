@@ -1,5 +1,7 @@
 # Koğ Suit Otel
 
+[![CI](https://github.com/VartoYazilim/kogsuitotel/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/VartoYazilim/kogsuitotel/actions/workflows/ci.yml)
+
 Muş Varto'da açılacak yeni butik otelin resmi web sitesi ve rezervasyon sistemi.
 
 **Domain**: [kogsuitotel.com](https://kogsuitotel.com) (Cloudflare DNS aktif, VPS satın alındığında canlıya alınır)
@@ -68,12 +70,20 @@ php artisan serve   # http://localhost:8000
 # https://kogsuitotel.test  (Laragon Auto Virtual Hosts ile otomatik)
 ```
 
-### Test
+### Test ve Kalite Kontrolü
 
 ```bash
-php artisan test                  # 22 test, 46 assertion
-php artisan test --coverage       # coverage raporu
+composer pint                  # Kod stili kontrolü (sadece check)
+composer pint:fix              # Kod stilini otomatik düzelt
+vendor/bin/phpstan analyse     # Larastan statik analiz (level 5)
+composer test                  # PHPUnit (38 test, 68 assertion)
+
+php artisan test --coverage    # Coverage raporu (Xdebug gerekli)
 ```
+
+> Her push + PR `.github/workflows/ci.yml` ile aynı 4 adımı (Pint, Larastan, PHPUnit, composer audit) GitHub Actions'ta tekrar koşar.
+>
+> **Not (Windows + Laragon)**: `composer analyse` script'i koymadık çünkü Windows'ta composer subprocess + PHPStan TTY tespiti sessiz exit 1 dönüyor. Linux CI'da sorunsuz; lokal Windows'ta `vendor/bin/phpstan analyse` direkt komutu kullan.
 
 ### Asset development (hot reload)
 
@@ -130,7 +140,7 @@ npm run dev    # Vite dev server, HMR aktif
 │       ├── gallery/index.blade.php
 │       ├── reservations/        # create, success
 │       └── partials/schema-breadcrumb.blade.php
-└── tests/                       # 22 PHPUnit test
+└── tests/                       # 38 PHPUnit test (Feature + Unit)
 ```
 
 ---
