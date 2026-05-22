@@ -1,0 +1,41 @@
+# Koğ Suit Otel — robots.txt
+# https://kogsuitotel.com
+
+User-agent: *
+Allow: /
+Disallow: /kog-yonetim
+Disallow: /kog-yonetim/*
+Disallow: /storage/framework/
+Disallow: /vendor/
+Disallow: /build/
+Disallow: /rezervasyon/basarili/
+Crawl-delay: 1
+
+# AI / LLM crawler'lar — varsayılan olarak izin verir (otelin görünür olması faydalı).
+# Kapatmak istenirse aşağıdaki "Allow: /" satırlarını "Disallow: /" yapın.
+User-agent: GPTBot
+Allow: /
+Disallow: /kog-yonetim
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /kog-yonetim
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /kog-yonetim
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /kog-yonetim
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /kog-yonetim
+
+User-agent: CCBot
+Allow: /
+Disallow: /kog-yonetim
+
+# Sitemap
+Sitemap: https://kogsuitotel.com/sitemap.xml

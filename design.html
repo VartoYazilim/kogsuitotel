@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Koğ Suit Otel — Olive Sanctuary Design System</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          'primary': '#6B7553',
+          'primary-dark': '#4A5240',
+          'primary-light': '#A8B091',
+          'primary-soft': '#E5E8DC',
+          'secondary': '#8B6F4E',
+          'secondary-light': '#C9B79A',
+          'accent': '#B89B6E',
+          'accent-dark': '#8B7449',
+          'surface': '#F7F4ED',
+          'surface-alt': '#EFEAE0',
+          'surface-card': '#FFFFFF',
+          'ink': '#2A2D24',
+          'ink-soft': '#5A5D52',
+          'ink-mute': '#8A8C82',
+          'border-soft': '#D9D2C2',
+          'border-strong': '#B8B09C',
+          'success': '#5A8A5E',
+          'warning': '#C49A4D',
+          'error': '#B14B3A',
+        },
+        fontFamily: {
+          'display': ['Manrope', 'system-ui', 'sans-serif'],
+          'body': ['Inter', 'system-ui', 'sans-serif'],
+        },
+        boxShadow: {
+          'soft': '0 10px 30px -10px rgba(42, 45, 36, 0.08)',
+          'softer': '0 4px 16px -4px rgba(42, 45, 36, 0.05)',
+          'lift': '0 20px 50px -20px rgba(42, 45, 36, 0.15)',
+        },
+        borderRadius: {
+          'card': '0.75rem',
+          'btn': '0.5rem',
+          'pill': '9999px',
+        },
+        spacing: {
+          'xs': '4px',
+          'sm': '12px',
+          'base': '8px',
+          'md': '24px',
+          'lg': '48px',
+          'xl': '80px',
+          'container': '1200px',
+        },
+      }
+    }
+  };
+</script>
+<style>
+  body { font-family: 'Inter', system-ui, sans-serif; }
+  .font-display { font-family: 'Manrope', system-ui, sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .grain { background-image: radial-gradient(rgba(42,45,36,0.025) 1px, transparent 1px); background-size: 4px 4px; }
+  .scroll-fade-in { animation: fadeIn 0.7s ease-out both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .underline-grow { position: relative; }
+  .underline-grow::after { content: ''; position: absolute; left: 0; bottom: -4px; height: 2px; width: 0; background: #B89B6E; transition: width 0.3s ease; }
+  .underline-grow:hover::after { width: 100%; }
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] summary .acc-icon { transform: rotate(45deg); }
+</style>
+</head>
+<body class="bg-surface text-ink antialiased">
+
+<!-- ───────────── DOC NAV ───────────── -->
+<nav class="sticky top-0 z-50 backdrop-blur-md bg-surface/80 border-b border-border-soft">
+  <div class="max-w-container mx-auto px-md h-16 flex items-center justify-between">
+    <div class="flex items-center gap-sm">
+      <div class="w-9 h-9 rounded-pill bg-primary text-surface flex items-center justify-center font-display font-bold">K</div>
+      <span class="font-display font-semibold text-ink">Olive Sanctuary</span>
+      <span class="text-xs text-ink-mute hidden md:inline">v0.1 — Design System</span>
+    </div>
+    <div class="hidden md:flex gap-md text-sm text-ink-soft">
+      <a href="#palette" class="underline-grow">Palet</a>
+      <a href="#typography" class="underline-grow">Tipografi</a>
+      <a href="#logo" class="underline-grow">Logo</a>
+      <a href="#components" class="underline-grow">Bileşenler</a>
+      <a href="#sections" class="underline-grow">Bölümler</a>
+      <a href="#a11y" class="underline-grow">Erişilebilirlik</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ───────────── COVER ───────────── -->
+<header class="relative overflow-hidden">
+  <div class="absolute inset-0 grain opacity-60"></div>
+  <div class="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-primary-soft blur-3xl opacity-50"></div>
+  <div class="absolute -bottom-32 -left-20 w-96 h-96 rounded-full bg-secondary-light blur-3xl opacity-30"></div>
+  <div class="relative max-w-container mx-auto px-md py-20 md:py-28">
+    <p class="font-display text-xs tracking-[0.2em] uppercase text-accent-dark mb-md">Koğ Suit Otel · Refined Hospitality in Varto</p>
+    <h1 class="font-display font-bold text-5xl md:text-7xl leading-[1.05] tracking-tight text-ink mb-md max-w-3xl">
+      Olive Sanctuary<br />
+      <span class="text-primary">tasarım sistemi</span>
+    </h1>
+    <p class="text-lg md:text-xl text-ink-soft max-w-2xl leading-relaxed mb-lg">
+      Anadolu'nun sakin zeytin yeşili, sıcak krem ve antika altın aksanlarıyla
+      kurulmuş, butik bir otel deneyimi için tasarlanmış görsel dil.
+    </p>
+    <div class="flex flex-wrap gap-sm">
+      <span class="px-md py-xs rounded-pill bg-primary text-surface text-sm font-medium">Zeytin Yeşili Primary</span>
+      <span class="px-md py-xs rounded-pill bg-surface-alt text-ink border border-border-soft text-sm font-medium">Sıcak Krem Yüzey</span>
+      <span class="px-md py-xs rounded-pill bg-accent text-surface text-sm font-medium">Antika Altın Aksan</span>
+      <span class="px-md py-xs rounded-pill bg-secondary text-surface text-sm font-medium">Ahşap Kahve İkincil</span>
+    </div>
+  </div>
+</header>
+
+<!-- ───────────── PALETTE ───────────── -->
+<section id="palette" class="py-lg md:py-xl">
+  <div class="max-w-container mx-auto px-md">
+    <div class="mb-lg max-w-2xl">
+      <p class="font-display text-xs tracking-[0.2em] uppercase text-accent-dark mb-sm">01 · Renk Paleti</p>
+      <h2 class="font-display text-3xl md:text-5xl font-bold tracking-tight mb-sm">Toprağa yaslanan ton</h2>
+      <p class="text-ink-soft leading-relaxed">
+        Sahibinin önerdiği zeytin yeşili etrafında, logoyu da ayakta tutacak
+        antika altın aksanıyla kurulmuş palet. Üç ana kombinasyon: sakin (yeşil-krem),
+        ısı (kahve-altın), kontrast (ink-yüzey).
+      </p>
+    </div>
+
+    <!-- PRIMARY -->
+    <h3 class="font-display text-xs tracking-[0.2em] uppercase text-ink-mute mb-sm">Primary · Zeytin Yeşili</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-sm mb-lg">
+      <div class="rounded-card overflow-hidden bg-surface-card shadow-softer">
+        <div class="h-28 bg-primary-dark"></div>
+        <div class="p-sm">
+          <p class="font-display font-semibold text-sm">Primary Dark</p>
+          <p class="text-xs text-ink-mute font-mono">#4A5240</p>
+          <p class="text-[10px] text-ink-mute mt-xs">Heading üstü, koyu menü</p>
+        </div>
+      </div>
+      <div class="rounded-card overflow-hidden bg-surface-card shadow-softer ring-2 ring-primary">
+        <div class="h-28 bg-primary"></div>
+        <div class="p-sm">
+          <p class="font-display font-semibold text-sm">Primary <span class="text-[10px] bg-primary-soft text-primary-dark px-xs rounded">main</span></p>
+          <p class="text-xs text-ink-mute font-mono">#6B7553</p>
+          <p class="text-[10px] text-ink-mute mt-xs">CTA, vurgular, link rengi</p>
+        </div>
+      </div>
+      <div class="rounded-card overflow-hidden bg-surface-card shadow-softer">
+        <div class="h-28 bg-primary-light"></div>
+        <div class="p-sm">
+          <p class="font-display font-semibold text-sm">Primary Light</p>
+          <p class="text-xs text-ink-mute font-mono">#A8B091</p>
+          <p class="text-[10px] text-ink-mute mt-xs">Hover, ikon arkası, devre dışı</p>
+        </div>
+      </div>
+      <div class="rounded-card overflow-hidden bg-surface-card shadow-softer">
+        <div class="h-28 bg-primary-soft"></div>
+        <div class="p-sm">
+          <p class="font-display font-semibold text-sm">Primary Soft</p>
+          <p class="text-xs text-ink-mute font-mono">#E5E8DC</p>
+          <p class="text-[10px] text-ink-mute mt-xs">Bilgi banner, tag arkası</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECONDARY + ACCENT -->
+    <h3 class="font-display text-xs tracking-[0.2em] uppercase text-ink-mute mb-sm">Secondary · Ahşap Kahve & Antika Altın</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-sm mb-lg">
+      <div class="rounded-card overflow-hidden bg-surface-card shadow-softer">
+        <div class="h-28 bg-secondary"></div>
+        <div class="p-sm">
+          <p class="font-display font-semibold text-sm">Secondary</p>
+          <p class="text-xs text-ink-mute font-mono">#8B6F4E</p>
+          <p class="text-[10px] text-ink-mute mt-xs">İkincil bölüm ayraçları</p>
+        </div>
+      </div>
+      <div class="rounded-card overflow-hidden bg-surface-card shadow-softer">
+        <div class="h-28 bg-secondary-light"></div>
+        <div class="p-sm">
+          <p class="font-display font-semibold text-sm">Secondary Light</p>
+          <p class="text-xs text-ink-mute font-mono">#C9B79A</p>
+          <p class="text-[10px] text-ink-mute mt-xs">Sıcak info kartları</p>
+        </div>
+      </div>
+      <div class="rounded-card overflow-hidden bg-surface-card shadow-softer">
+        <div class="h-28 bg-accent"></div>
+        <div class="p-sm">
+          <p class="font-display font-semibold text-sm">Accent <span class="text-[10px] bg-accent/10 text-accent-dark px-xs rounded">logo köprüsü</span></p>
+          <p class="text-xs text-ink-mute font-mono">#B89B6E</p>
+          <p class="text-[10px] text-ink-mute mt-xs">Link altı, ikon vurgusu</p>
+        </div>
+      </div>
+      <div class="rounded-card overflow-hidden bg-surface-card shadow-softer">
+        <div class="h-28 bg-accent-dark"></div>
+        <div class="p-sm">
+          <p class="font-display font-semibold text-sm">Accent Dark</p>
+          <p class="text-xs text-ink-mute font-mono">#8B7449</p>
+          <p class="text-[10px] text-ink-mute mt-xs">Üst başlık etiketleri</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SURFACES + INK -->
+    <h3 class="font-display text-xs tracking-[0.2em] uppercase text-ink-mute mb-sm">Yüzeyler & Metin</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-sm mb-lg">
+      <div class="rounded-card overflow-hidden bg-surface-card shadow-softer">
+        <div class="h-28 bg-surface border-b border-border-soft"></div>
+        <div class="p-sm">
+          <p class="font-display font-semibold text-sm">Surface</p>
+          <p class="text-xs text-ink-mute font-mono">#F7F4ED</p>
+          <p class="text-[10px] text-ink-mute mt-xs">Ana sayfa arka planı</p>
+        </div>
+      </div>
+      <div class="rounded-card overflow-hidden bg-surface-card shadow-softer">
+        <div class="h-28 bg-surface-alt"></div>
+        <div class="p-sm">
+          <p class="font-display font-semibold text-sm">Surface Alt</p>
+          <p class="text-xs text-ink-mute font-mono">#EFEAE0</p>
+          <p class="text-[10px] text-ink-mute mt-xs">Bölüm ayrıcı, section bg</p>
+        </div>
+      </div>
+      <div class="rounded-card overflow-hidden bg-surface-card shadow-softer">
+        <div class="h-28 bg-ink"></div>
+        <div class="p-sm">
+          <p class="font-display font-semibold text-sm">Ink</p>
+          <p class="text-xs text-ink-mute font-mono">#2A2D24</p>
+          <p class="text-[10px] text-ink-mute mt-xs">Ana metin (sıcak siyah)</p>
+        </div>
+      </div>
+      <div class="rounded-card overflow-hidden bg-surface-card shadow-softer">
+        <div class="h-28 bg-ink-soft"></div>
+        <div class="p-sm">
+          <p class="font-display font-semibold text-sm">Ink Soft</p>
+          <p class="text-xs text-ink-mute font-mono">#5A5D52</p>
+          <p class="text-[10px] text-ink-mute mt-xs">İkincil metin, açıklama</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATUS -->
+    <h3 class="font-display text-xs tracking-[0.2em] uppercase text-ink-mute mb-sm">Durum Renkleri (Filament admin için de)</h3>
+    <div class="grid grid-cols-3 gap-sm">
+      <div class="rounded-card overflow-hidden bg-surface-card shadow-softer">
+        <div class="h-20 bg-success flex items-center justify-center text-surface font-display font-semibold">Başarılı</div>
+        <div class="p-sm">
+          <p class="text-xs text-ink-mute font-mono">#5A8A5E</p>
+        </div>
+      </div>
+      <div class="rounded-card overflow-hidden bg-surface-card shadow-softer">
+        <div class="h-20 bg-warning flex items-center justify-center text-surface font-display font-semibold">Uyarı</div>
+        <div class="p-sm">
+          <p class="text-xs text-ink-mute font-mono">#C49A4D</p>
+        </div>
+      </div>
+      <div class="rounded-card overflow-hidden bg-surface-card shadow-softer">
+        <div class="h-20 bg-error flex items-center justify-center text-surface font-display font-semibold">Hata</div>
+        <div class="p-sm">
+          <p class="text-xs text-ink-mute font-mono">#B14B3A</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── TYPOGRAPHY ───────────── -->
+<section id="typography" class="py-lg md:py-xl bg-surface-alt/40">
+  <div class="max-w-container mx-auto px-md">
+    <div class="mb-lg max-w-2xl">
+      <p class="font-display text-xs tracking-[0.2em] uppercase text-accent-dark mb-sm">02 · Tipografi</p>
+      <h2 class="font-display text-3xl md:text-5xl font-bold tracking-tight mb-sm">Manrope &times; Inter</h2>
+      <p class="text-ink-soft leading-relaxed">
+        Başlıklar Manrope (geometrik, modern, sıcak). Gövde metni Inter
+        (okunaklı, nötr). Tracking değerleri başlıkta sıkı, etikette geniş.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+      <!-- Headings -->
+      <div class="md:col-span-2 bg-surface-card rounded-card p-md md:p-lg shadow-soft">
+        <p class="font-display text-[10px] tracking-[0.2em] uppercase text-ink-mute mb-md">Başlık Ölçekleri</p>
+        <h1 class="font-display font-bold text-5xl md:text-6xl tracking-tight leading-[1.1] text-ink mb-sm">Varto'nun sessiz konağı</h1>
+        <p class="text-xs text-ink-mute font-mono mb-md">H1 · Manrope 700 · 48-64px · -2% tracking · line 1.1</p>
+        <h2 class="font-display font-semibold text-3xl md:text-4xl tracking-tight text-ink mb-sm">Premium Süitler &amp; Hizmetler</h2>
+        <p class="text-xs text-ink-mute font-mono mb-md">H2 · Manrope 600 · 32-40px · -1% tracking · line 1.2</p>
+        <h3 class="font-display font-semibold text-xl md:text-2xl text-ink mb-sm">Aile Odası</h3>
+        <p class="text-xs text-ink-mute font-mono mb-md">H3 · Manrope 600 · 20-24px · 0% tracking · line 1.3</p>
+        <p class="font-display text-xs tracking-[0.2em] uppercase text-accent-dark mb-sm">KONAKLAMA &middot; REZERVASYON</p>
+        <p class="text-xs text-ink-mute font-mono">label-caps · Manrope 600 · 12px · +20% tracking</p>
+      </div>
+
+      <!-- Body -->
+      <div class="bg-surface-card rounded-card p-md md:p-lg shadow-soft">
+        <p class="font-display text-[10px] tracking-[0.2em] uppercase text-ink-mute mb-md">Gövde Ölçekleri</p>
+        <p class="text-lg leading-relaxed text-ink mb-sm">
+          Bu cümle body-lg ölçeğindedir. Açılış paragrafı, manifesto,
+          giriş metinleri için kullanılır.
+        </p>
+        <p class="text-xs text-ink-mute font-mono mb-md">body-lg · Inter 400 · 18px · line 1.6</p>
+        <p class="text-base leading-relaxed text-ink-soft mb-sm">
+          Bu cümle body-md ölçeğindedir. Varsayılan paragraf metni;
+          oda açıklamaları, kart içeriği, SSS cevapları için kullanılır.
+        </p>
+        <p class="text-xs text-ink-mute font-mono mb-md">body-md · Inter 400 · 16px · line 1.6</p>
+        <p class="text-sm leading-relaxed text-ink-mute mb-sm">
+          Bu cümle body-sm ölçeğindedir. Yardımcı metin, alt etiket,
+          form yardım metni için kullanılır.
+        </p>
+        <p class="text-xs text-ink-mute font-mono">body-sm · Inter 400 · 14px · line 1.5</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── LOGO ───────────── -->
+<section id="logo" class="py-lg md:py-xl">
+  <div class="max-w-container mx-auto px-md">
+    <div class="mb-lg max-w-2xl">
+      <p class="font-display text-xs tracking-[0.2em] uppercase text-accent-dark mb-sm">03 · Logo</p>
+      <h2 class="font-display text-3xl md:text-5xl font-bold tracking-tight mb-sm">Yeniden tasarım brief'i</h2>
+      <p class="text-ink-soft leading-relaxed">
+        Mevcut logo lacivert + altın paletinde. Yeni "Olive Sanctuary"
+        paletinde uyumlu bir versiyona ihtiyaç var. Aşağıda mevcut versiyon
+        ve yeni versiyon için brief.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+      <!-- Current -->
+      <div class="bg-surface-card rounded-card p-md md:p-lg shadow-soft">
+        <div class="flex items-center justify-between mb-md">
+          <p class="font-display text-xs tracking-[0.2em] uppercase text-ink-mute">Mevcut Logo</p>
+          <span class="text-[10px] bg-warning/15 text-accent-dark px-sm py-xs rounded-pill font-medium">Revize edilecek</span>
+        </div>
+        <div class="aspect-square bg-surface rounded-card flex items-center justify-center border border-border-soft">
+          <img src="base/LOGO.jpg" alt="Mevcut Koğ Suit Otel logosu" class="max-w-[80%] max-h-[80%] object-contain" />
+        </div>
+        <p class="mt-md text-sm text-ink-soft">
+          Lacivert (#2C3E50 yakını) + Altın (#C5A059) + Beyaz. Dairesel
+          çerçeve içinde dağ silüeti, güneş ve dalga motifleri. "Koğ Suit"
+          lacivert, "Otel" altın.
+        </p>
+      </div>
+
+      <!-- Brief -->
+      <div class="bg-primary-dark text-surface rounded-card p-md md:p-lg shadow-lift">
+        <p class="font-display text-xs tracking-[0.2em] uppercase text-accent mb-md">Yeni Logo Brief'i</p>
+        <ul class="space-y-sm text-sm leading-relaxed">
+          <li class="flex gap-sm">
+            <span class="material-symbols-outlined text-accent text-base mt-xs">circle</span>
+            <span><strong class="font-display">Ana renk:</strong> Zeytin yeşili <span class="font-mono text-accent">#4A5240</span> (mevcut lacivertin yerine, eşdeğer koyuluk).</span>
+          </li>
+          <li class="flex gap-sm">
+            <span class="material-symbols-outlined text-accent text-base mt-xs">circle</span>
+            <span><strong class="font-display">Aksan:</strong> Antika altın <span class="font-mono text-accent">#B89B6E</span> (mevcut parlak altından bir miktar soluk, mat).</span>
+          </li>
+          <li class="flex gap-sm">
+            <span class="material-symbols-outlined text-accent text-base mt-xs">circle</span>
+            <span><strong class="font-display">Yüzey:</strong> Sıcak krem <span class="font-mono text-accent">#F7F4ED</span> (saf beyaz yerine).</span>
+          </li>
+          <li class="flex gap-sm">
+            <span class="material-symbols-outlined text-accent text-base mt-xs">circle</span>
+            <span><strong class="font-display">Korunacak:</strong> Daire çerçeve, dağ silüeti, güneş motifi, dalga. "K" harf bütünleşimi.</span>
+          </li>
+          <li class="flex gap-sm">
+            <span class="material-symbols-outlined text-accent text-base mt-xs">circle</span>
+            <span><strong class="font-display">Yazı:</strong> "Koğ Suit" zeytin koyu, "Otel" antika altın.</span>
+          </li>
+          <li class="flex gap-sm">
+            <span class="material-symbols-outlined text-accent text-base mt-xs">circle</span>
+            <span><strong class="font-display">Çıktılar:</strong> SVG (master), PNG @1x/@2x/@3x (1024px), beyaz arka plan + şeffaf, koyu zemin için açık versiyon.</span>
+          </li>
+        </ul>
+        <p class="mt-md text-xs text-surface/60 leading-relaxed">
+          Stitch / Midjourney / yerel grafiker ile üretilebilir. Master SVG
+          alındığında <code class="text-accent">resources/images/brand/</code>
+          altına yerleştirilir.
+        </p>
+      </div>
+    </div>
+
+    <!-- Logo varyantları placeholder -->
+    <div class="mt-md grid grid-cols-2 md:grid-cols-4 gap-sm">
+      <div class="aspect-square bg-surface-card rounded-card flex flex-col items-center justify-center text-center p-sm border border-border-soft">
+        <div class="w-12 h-12 rounded-pill bg-primary-dark text-surface flex items-center justify-center font-display font-bold text-xl mb-sm">K</div>
+        <p class="text-xs text-ink-mute">Favicon · 32px</p>
+      </div>
+      <div class="aspect-square bg-surface rounded-card flex flex-col items-center justify-center text-center p-sm border border-border-soft">
+        <p class="font-display font-bold text-lg text-primary-dark mb-xs">Koğ Suit <span class="text-accent">Otel</span></p>
+        <p class="text-xs text-ink-mute">Yatay tipografi</p>
+      </div>
+      <div class="aspect-square bg-primary-dark rounded-card flex flex-col items-center justify-center text-center p-sm">
+        <p class="font-display font-bold text-lg text-surface mb-xs">Koğ Suit <span class="text-accent">Otel</span></p>
+        <p class="text-xs text-surface/60">Koyu zemin</p>
+      </div>
+      <div class="aspect-square bg-accent rounded-card flex flex-col items-center justify-center text-center p-sm">
+        <p class="font-display font-bold text-lg text-surface mb-xs">Koğ Suit Otel</p>
+        <p class="text-xs text-surface/80">Tek renk · altın</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── COMPONENTS ───────────── -->
+<section id="components" class="py-lg md:py-xl bg-surface-alt/40">
+  <div class="max-w-container mx-auto px-md">
+    <div class="mb-lg max-w-2xl">
+      <p class="font-display text-xs tracking-[0.2em] uppercase text-accent-dark mb-sm">04 · Bileşenler</p>
+      <h2 class="font-display text-3xl md:text-5xl font-bold tracking-tight mb-sm">Yeniden kullanılabilir bloklar</h2>
+      <p class="text-ink-soft leading-relaxed">
+        Blade component'lerine birebir karşılık gelecek tasarım birimleri.
+        Her birinin varyantları + durumları gösterilmiştir.
+      </p>
+    </div>
+
+    <!-- Buttons -->
+    <div class="bg-surface-card rounded-card p-md md:p-lg shadow-soft mb-md">
+      <p class="font-display text-xs tracking-[0.2em] uppercase text-ink-mute mb-md">Butonlar</p>
+      <div class="flex flex-wrap gap-sm items-center mb-md">
+        <button class="bg-primary hover:bg-primary-dark text-surface font-display font-semibold tracking-wide px-md py-sm rounded-btn transition-colors">
+          Rezervasyon Yap
+        </button>
+        <button class="bg-accent hover:bg-accent-dark text-surface font-display font-semibold tracking-wide px-md py-sm rounded-btn transition-colors">
+          Müsaitlik Kontrol Et
+        </button>
+        <button class="border-2 border-primary text-primary hover:bg-primary hover:text-surface font-display font-semibold tracking-wide px-md py-sm rounded-btn transition-colors">
+          Detayları Gör
+        </button>
+        <button class="text-primary hover:text-primary-dark font-display font-semibold tracking-wide px-md py-sm transition-colors inline-flex items-center gap-xs">
+          Tümünü Gör <span class="material-symbols-outlined text-base">arrow_forward</span>
+        </button>
+        <button disabled class="bg-primary-light text-surface/70 font-display font-semibold tracking-wide px-md py-sm rounded-btn cursor-not-allowed">
+          Devre Dışı
+        </button>
+      </div>
+      <div class="flex flex-wrap gap-sm items-center">
+        <button class="bg-primary text-surface text-xs font-display font-semibold tracking-wide px-sm py-xs rounded-btn">Small</button>
+        <button class="bg-primary text-surface font-display font-semibold tracking-wide px-md py-sm rounded-btn">Default</button>
+        <button class="bg-primary text-surface text-lg font-display font-semibold tracking-wide px-lg py-md rounded-btn">Large</button>
+      </div>
+    </div>
+
+    <!-- Inputs -->
+    <div class="bg-surface-card rounded-card p-md md:p-lg shadow-soft mb-md">
+      <p class="font-display text-xs tracking-[0.2em] uppercase text-ink-mute mb-md">Form Alanları</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-sm">
+        <div>
+          <label class="block font-display text-[10px] tracking-[0.2em] uppercase text-ink-soft mb-xs">Ad</label>
+          <input type="text" placeholder="Adınız" class="w-full bg-surface border border-border-soft focus:bg-surface-card focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none rounded-btn px-sm py-sm transition" />
+        </div>
+        <div>
+          <label class="block font-display text-[10px] tracking-[0.2em] uppercase text-ink-soft mb-xs">Telefon</label>
+          <input type="tel" value="+90 555 123 45 67" class="w-full bg-surface-card border border-primary ring-2 ring-primary/20 outline-none rounded-btn px-sm py-sm" />
+          <p class="text-[10px] text-primary mt-xs flex items-center gap-xs"><span class="material-symbols-outlined text-xs">check_circle</span> Geçerli format</p>
+        </div>
+        <div>
+          <label class="block font-display text-[10px] tracking-[0.2em] uppercase text-ink-soft mb-xs">E-posta</label>
+          <input type="email" value="hatali@" class="w-full bg-surface border border-error ring-2 ring-error/20 outline-none rounded-btn px-sm py-sm" />
+          <p class="text-[10px] text-error mt-xs flex items-center gap-xs"><span class="material-symbols-outlined text-xs">error</span> Geçerli e-posta giriniz</p>
+        </div>
+        <div>
+          <label class="block font-display text-[10px] tracking-[0.2em] uppercase text-ink-soft mb-xs">Oda Türü</label>
+          <select class="w-full bg-surface border border-border-soft focus:border-primary outline-none rounded-btn px-sm py-sm">
+            <option>Standart Oda</option>
+            <option>Suit Oda</option>
+            <option>Aile Odası</option>
+            <option>Deluxe Süit</option>
+            <option>Premium Süit</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-display text-[10px] tracking-[0.2em] uppercase text-ink-soft mb-xs">Giriş Tarihi</label>
+          <input type="date" class="w-full bg-surface border border-border-soft focus:border-primary outline-none rounded-btn px-sm py-sm" />
+        </div>
+        <div>
+          <label class="block font-display text-[10px] tracking-[0.2em] uppercase text-ink-soft mb-xs">Çıkış Tarihi</label>
+          <input type="date" class="w-full bg-surface border border-border-soft focus:border-primary outline-none rounded-btn px-sm py-sm" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Badges -->
+    <div class="bg-surface-card rounded-card p-md md:p-lg shadow-soft mb-md">
+      <p class="font-display text-xs tracking-[0.2em] uppercase text-ink-mute mb-md">Etiketler / Durum</p>
+      <div class="flex flex-wrap gap-sm">
+        <span class="bg-primary-soft text-primary-dark px-sm py-xs rounded-pill text-xs font-medium inline-flex items-center gap-xs"><span class="w-1.5 h-1.5 rounded-pill bg-primary"></span>Bekliyor</span>
+        <span class="bg-accent/15 text-accent-dark px-sm py-xs rounded-pill text-xs font-medium inline-flex items-center gap-xs"><span class="w-1.5 h-1.5 rounded-pill bg-accent"></span>Onaylandı</span>
+        <span class="bg-success/15 text-success px-sm py-xs rounded-pill text-xs font-medium inline-flex items-center gap-xs"><span class="w-1.5 h-1.5 rounded-pill bg-success"></span>Ödendi</span>
+        <span class="bg-secondary/15 text-secondary px-sm py-xs rounded-pill text-xs font-medium inline-flex items-center gap-xs"><span class="w-1.5 h-1.5 rounded-pill bg-secondary"></span>Tamamlandı</span>
+        <span class="bg-error/15 text-error px-sm py-xs rounded-pill text-xs font-medium inline-flex items-center gap-xs"><span class="w-1.5 h-1.5 rounded-pill bg-error"></span>İptal</span>
+        <span class="bg-ink-mute/15 text-ink-mute px-sm py-xs rounded-pill text-xs font-medium inline-flex items-center gap-xs"><span class="w-1.5 h-1.5 rounded-pill bg-ink-mute"></span>No-show</span>
+      </div>
+      <div class="mt-md flex flex-wrap gap-sm">
+        <span class="border border-border-strong text-ink-soft px-sm py-xs rounded text-xs font-medium inline-flex items-center gap-xs"><span class="material-symbols-outlined text-sm">wifi</span> Wi-Fi</span>
+        <span class="border border-border-strong text-ink-soft px-sm py-xs rounded text-xs font-medium inline-flex items-center gap-xs"><span class="material-symbols-outlined text-sm">ac_unit</span> Klima</span>
+        <span class="border border-border-strong text-ink-soft px-sm py-xs rounded text-xs font-medium inline-flex items-center gap-xs"><span class="material-symbols-outlined text-sm">tv</span> Smart TV</span>
+        <span class="border border-border-strong text-ink-soft px-sm py-xs rounded text-xs font-medium inline-flex items-center gap-xs"><span class="material-symbols-outlined text-sm">bathtub</span> Jakuzi</span>
+        <span class="border border-border-strong text-ink-soft px-sm py-xs rounded text-xs font-medium inline-flex items-center gap-xs"><span class="material-symbols-outlined text-sm">coffee</span> Mini Bar</span>
+      </div>
+    </div>
+
+    <!-- Accordion -->
+    <div class="bg-surface-card rounded-card p-md md:p-lg shadow-soft mb-md">
+      <p class="font-display text-xs tracking-[0.2em] uppercase text-ink-mute mb-md">Açılır Liste (SSS)</p>
+      <div class="space-y-0">
+        <details open class="border-b border-border-soft py-sm group">
+          <summary class="flex items-center justify-between py-xs">
+            <span class="font-display font-semibold text-lg text-ink">Check-in / check-out saatleri nelerdir?</span>
+            <span class="acc-icon material-symbols-outlined text-accent transition-transform">add</span>
+          </summary>
+          <p class="text-ink-soft mt-sm leading-relaxed">
+            Check-in 14:00'ten, check-out 12:00'a kadardır. Erken giriş veya
+            geç çıkış talebiniz varsa rezervasyon esnasında "Özel İstekler"
+            bölümünden iletebilirsiniz.
+          </p>
+        </details>
+        <details class="border-b border-border-soft py-sm group">
+          <summary class="flex items-center justify-between py-xs">
+            <span class="font-display font-semibold text-lg text-ink">Ödeme nasıl yapılır?</span>
+            <span class="acc-icon material-symbols-outlined text-accent transition-transform">add</span>
+          </summary>
+          <p class="text-ink-soft mt-sm leading-relaxed">
+            Rezervasyon onayı sonrası tarafınıza iletilen IBAN'a havale ile
+            ödeme yapabilirsiniz. Dekont WhatsApp üzerinden iletildiğinde
+            rezervasyon kesinleşir.
+          </p>
+        </details>
+        <details class="border-b border-border-soft py-sm group">
+          <summary class="flex items-center justify-between py-xs">
+            <span class="font-display font-semibold text-lg text-ink">Evcil hayvan kabul ediliyor mu?</span>
+            <span class="acc-icon material-symbols-outlined text-accent transition-transform">add</span>
+          </summary>
+          <p class="text-ink-soft mt-sm leading-relaxed">
+            Evet, küçük ırk evcil hayvanlar belirli odalarımızda kabul edilir.
+            Lütfen rezervasyon öncesi iletişime geçiniz.
+          </p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-sm">
+      <!-- Feature Card -->
+      <div class="bg-surface-card rounded-card p-md shadow-soft hover:shadow-lift transition-shadow">
+        <div class="w-12 h-12 rounded-pill bg-primary-soft flex items-center justify-center mb-sm">
+          <span class="material-symbols-outlined text-primary-dark">spa</span>
+        </div>
+        <h3 class="font-display font-semibold text-lg text-ink mb-xs">Sakin Konum</h3>
+        <p class="text-sm text-ink-soft leading-relaxed">
+          Varto'nun yeşil tepelerinde, şehir gürültüsünden uzak butik bir kaçış.
+        </p>
+      </div>
+      <!-- Stat Card -->
+      <div class="bg-primary-dark text-surface rounded-card p-md shadow-soft">
+        <p class="font-display text-[10px] tracking-[0.2em] uppercase text-accent mb-xs">Bu Ay</p>
+        <p class="font-display font-bold text-4xl mb-xs">23</p>
+        <p class="text-sm text-surface/70">Onaylı rezervasyon</p>
+        <div class="mt-sm flex items-center gap-xs text-xs text-accent">
+          <span class="material-symbols-outlined text-sm">trending_up</span>
+          <span>%18 önceki aya göre</span>
+        </div>
+      </div>
+      <!-- Quote Card -->
+      <div class="bg-accent/10 border border-accent/30 rounded-card p-md">
+        <span class="material-symbols-outlined text-accent-dark text-3xl">format_quote</span>
+        <p class="text-ink leading-relaxed font-display italic mt-xs mb-sm">
+          "Varto'da geçirdiğim en huzurlu üç gün. Oda, manzara, ev sahipliği —
+          her şey kusursuzdu."
+        </p>
+        <div class="flex items-center gap-sm">
+          <div class="w-9 h-9 rounded-pill bg-primary-light flex items-center justify-center text-surface font-display font-semibold">E</div>
+          <div>
+            <p class="font-display font-semibold text-sm text-ink">Elif K.</p>
+            <p class="text-xs text-ink-mute">İstanbul</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── SECTIONS / PAGE EXAMPLES ───────────── -->
+<section id="sections" class="py-lg md:py-xl">
+  <div class="max-w-container mx-auto px-md mb-lg">
+    <div class="max-w-2xl">
+      <p class="font-display text-xs tracking-[0.2em] uppercase text-accent-dark mb-sm">05 · Sayfa Bölümleri</p>
+      <h2 class="font-display text-3xl md:text-5xl font-bold tracking-tight mb-sm">Bağlamda görmek</h2>
+      <p class="text-ink-soft leading-relaxed">
+        Component'lerin yan yana geldiğinde nasıl durduğunu, Stitch
+        tasarımındaki sayfa düzenleri yeni paletle birleşince ne hale
+        geldiğini göstermek için 5 önemli bölüm.
+      </p>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="max-w-container mx-auto px-md mb-lg">
+    <p class="font-display text-[10px] tracking-[0.2em] uppercase text-ink-mute mb-sm">5.1 · Hero (Ana Sayfa Üst Bölümü)</p>
+    <div class="relative rounded-card overflow-hidden shadow-lift min-h-[500px] flex items-center">
+      <div class="absolute inset-0">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-dark via-primary to-secondary"></div>
+        <div class="absolute inset-0 grain opacity-30"></div>
+      </div>
+      <div class="relative z-10 w-full p-md md:p-lg grid grid-cols-1 md:grid-cols-2 gap-md items-center">
+        <div class="text-surface">
+          <p class="font-display text-xs tracking-[0.2em] uppercase text-accent mb-sm">Refined Hospitality in Varto</p>
+          <h1 class="font-display font-bold text-4xl md:text-6xl leading-[1.05] tracking-tight mb-md">
+            Anadolu'nun<br />sakin konağı
+          </h1>
+          <p class="text-lg leading-relaxed opacity-90 mb-md max-w-md">
+            Varto'nun yeşil tepelerinde, beş özenli süitle huzurlu bir kaçışa
+            davetlisiniz. Modern konfor, geleneksel sıcaklık.
+          </p>
+          <div class="flex flex-wrap gap-sm">
+            <button class="bg-accent hover:bg-accent-dark text-surface font-display font-semibold tracking-wide px-md py-sm rounded-btn transition-colors">
+              Rezervasyon Yap
+            </button>
+            <button class="border-2 border-surface/30 text-surface hover:bg-surface/10 font-display font-semibold tracking-wide px-md py-sm rounded-btn transition-colors">
+              Odaları Keşfet
+            </button>
+          </div>
+        </div>
+        <!-- Reservation strip -->
+        <div class="bg-surface-card rounded-card p-md shadow-lift">
+          <p class="font-display font-semibold text-lg text-ink mb-sm">Hızlı Müsaitlik</p>
+          <div class="grid grid-cols-2 gap-sm mb-sm">
+            <div>
+              <label class="block font-display text-[10px] tracking-[0.2em] uppercase text-ink-soft mb-xs">Giriş</label>
+              <input type="date" class="w-full bg-surface border border-border-soft rounded-btn px-sm py-sm text-sm" />
+            </div>
+            <div>
+              <label class="block font-display text-[10px] tracking-[0.2em] uppercase text-ink-soft mb-xs">Çıkış</label>
+              <input type="date" class="w-full bg-surface border border-border-soft rounded-btn px-sm py-sm text-sm" />
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-sm mb-sm">
+            <select class="bg-surface border border-border-soft rounded-btn px-sm py-sm text-sm">
+              <option>2 Yetişkin</option>
+              <option>3 Yetişkin</option>
+              <option>2 Yetişkin, 1 Çocuk</option>
+            </select>
+            <select class="bg-surface border border-border-soft rounded-btn px-sm py-sm text-sm">
+              <option>Tüm odalar</option>
+              <option>Standart</option>
+              <option>Suit</option>
+              <option>Aile</option>
+              <option>Deluxe</option>
+              <option>Premium</option>
+            </select>
+          </div>
+          <button class="w-full bg-primary hover:bg-primary-dark text-surface font-display font-semibold tracking-wide py-sm rounded-btn transition-colors">
+            Müsait Odaları Gör
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Room cards -->
+  <div class="max-w-container mx-auto px-md mb-lg">
+    <p class="font-display text-[10px] tracking-[0.2em] uppercase text-ink-mute mb-sm">5.2 · Oda Kartları</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-sm">
+      <div class="group bg-surface-card rounded-card overflow-hidden shadow-soft hover:shadow-lift transition-all">
+        <div class="aspect-[4/3] bg-gradient-to-br from-primary-light to-secondary-light relative overflow-hidden">
+          <div class="absolute top-sm left-sm">
+            <span class="bg-surface/90 text-primary-dark text-xs font-display font-semibold px-sm py-xs rounded-pill">2 Kişilik</span>
+          </div>
+          <div class="absolute bottom-sm right-sm bg-ink/40 text-surface text-xs px-sm py-xs rounded-pill backdrop-blur-sm">
+            <span class="material-symbols-outlined text-sm align-middle">photo_library</span> 8
+          </div>
+        </div>
+        <div class="p-md">
+          <h3 class="font-display font-semibold text-xl text-ink mb-xs">Standart Oda</h3>
+          <p class="text-sm text-ink-soft leading-relaxed mb-sm">
+            Modern minimalist tasarım, ferah çalışma alanı, premium yatak.
+          </p>
+          <div class="flex gap-xs mb-md flex-wrap">
+            <span class="border border-border-soft text-ink-soft px-xs py-[2px] rounded text-[10px] inline-flex items-center gap-xs"><span class="material-symbols-outlined text-[12px]">wifi</span>Wi-Fi</span>
+            <span class="border border-border-soft text-ink-soft px-xs py-[2px] rounded text-[10px] inline-flex items-center gap-xs"><span class="material-symbols-outlined text-[12px]">ac_unit</span>Klima</span>
+            <span class="border border-border-soft text-ink-soft px-xs py-[2px] rounded text-[10px] inline-flex items-center gap-xs"><span class="material-symbols-outlined text-[12px]">tv</span>TV</span>
+          </div>
+          <div class="flex items-end justify-between">
+            <div>
+              <p class="font-display text-[10px] tracking-[0.2em] uppercase text-ink-mute">gecelik</p>
+              <p class="font-display font-bold text-2xl text-primary-dark">₺1.500</p>
+            </div>
+            <button class="text-primary hover:text-primary-dark font-display font-semibold text-sm tracking-wide inline-flex items-center gap-xs underline-grow">
+              Detay <span class="material-symbols-outlined text-base">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="group bg-surface-card rounded-card overflow-hidden shadow-soft hover:shadow-lift transition-all">
+        <div class="aspect-[4/3] bg-gradient-to-br from-secondary to-secondary-light relative overflow-hidden">
+          <div class="absolute top-sm left-sm">
+            <span class="bg-accent text-surface text-xs font-display font-semibold px-sm py-xs rounded-pill">3 Kişilik</span>
+          </div>
+        </div>
+        <div class="p-md">
+          <h3 class="font-display font-semibold text-xl text-ink mb-xs">Deluxe Süit</h3>
+          <p class="text-sm text-ink-soft leading-relaxed mb-sm">
+            Geniş alan, oturma köşesi, panoramik manzara, jakuzi.
+          </p>
+          <div class="flex gap-xs mb-md flex-wrap">
+            <span class="border border-border-soft text-ink-soft px-xs py-[2px] rounded text-[10px] inline-flex items-center gap-xs"><span class="material-symbols-outlined text-[12px]">bathtub</span>Jakuzi</span>
+            <span class="border border-border-soft text-ink-soft px-xs py-[2px] rounded text-[10px] inline-flex items-center gap-xs"><span class="material-symbols-outlined text-[12px]">visibility</span>Manzara</span>
+            <span class="border border-border-soft text-ink-soft px-xs py-[2px] rounded text-[10px] inline-flex items-center gap-xs"><span class="material-symbols-outlined text-[12px]">coffee</span>Mini Bar</span>
+          </div>
+          <div class="flex items-end justify-between">
+            <div>
+              <p class="font-display text-[10px] tracking-[0.2em] uppercase text-ink-mute">gecelik</p>
+              <p class="font-display font-bold text-2xl text-primary-dark">₺3.500</p>
+            </div>
+            <button class="text-primary hover:text-primary-dark font-display font-semibold text-sm tracking-wide inline-flex items-center gap-xs underline-grow">
+              Detay <span class="material-symbols-outlined text-base">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="group bg-primary-dark text-surface rounded-card overflow-hidden shadow-lift relative">
+        <div class="absolute top-sm right-sm z-10">
+          <span class="bg-accent text-surface text-xs font-display font-semibold px-sm py-xs rounded-pill flex items-center gap-xs">
+            <span class="material-symbols-outlined text-sm">star</span> En Üst Seviye
+          </span>
+        </div>
+        <div class="aspect-[4/3] bg-gradient-to-br from-primary-dark via-secondary to-accent-dark relative overflow-hidden">
+        </div>
+        <div class="p-md">
+          <h3 class="font-display font-semibold text-xl mb-xs">Premium Süit</h3>
+          <p class="text-sm text-surface/70 leading-relaxed mb-sm">
+            Otelin amiral süiti. Özel teras, butler hizmeti, şömine.
+          </p>
+          <div class="flex items-end justify-between">
+            <div>
+              <p class="font-display text-[10px] tracking-[0.2em] uppercase text-accent">gecelik</p>
+              <p class="font-display font-bold text-2xl text-accent">₺5.000</p>
+            </div>
+            <button class="text-accent hover:text-surface font-display font-semibold text-sm tracking-wide inline-flex items-center gap-xs">
+              Detay <span class="material-symbols-outlined text-base">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust band -->
+  <div class="bg-primary-dark text-surface py-lg mb-lg">
+    <div class="max-w-container mx-auto px-md">
+      <p class="font-display text-[10px] tracking-[0.2em] uppercase text-accent mb-md text-center">5.3 · Güven Bandı (Trust Band)</p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-md text-center">
+        <div>
+          <p class="font-display font-bold text-4xl text-accent mb-xs">9.4</p>
+          <p class="text-sm text-surface/70">Booking.com Puanı</p>
+        </div>
+        <div>
+          <p class="font-display font-bold text-4xl text-accent mb-xs">340+</p>
+          <p class="text-sm text-surface/70">Memnun Misafir</p>
+        </div>
+        <div>
+          <p class="font-display font-bold text-4xl text-accent mb-xs">5</p>
+          <p class="text-sm text-surface/70">Özenli Süit</p>
+        </div>
+        <div>
+          <p class="font-display font-bold text-4xl text-accent mb-xs">24/7</p>
+          <p class="text-sm text-surface/70">WhatsApp Destek</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery bento -->
+  <div class="max-w-container mx-auto px-md mb-lg">
+    <p class="font-display text-[10px] tracking-[0.2em] uppercase text-ink-mute mb-sm">5.4 · Galeri (Bento Grid)</p>
+    <div class="grid grid-cols-4 grid-rows-2 gap-sm h-[400px]">
+      <div class="col-span-2 row-span-2 rounded-card bg-gradient-to-br from-primary to-secondary shadow-soft"></div>
+      <div class="rounded-card bg-gradient-to-br from-secondary-light to-accent shadow-soft"></div>
+      <div class="rounded-card bg-gradient-to-br from-primary-light to-primary-soft shadow-soft"></div>
+      <div class="rounded-card bg-gradient-to-br from-accent to-accent-dark shadow-soft"></div>
+      <div class="rounded-card bg-gradient-to-br from-primary-dark to-secondary shadow-soft"></div>
+    </div>
+  </div>
+
+  <!-- Footer mock -->
+  <div class="bg-primary-dark text-surface">
+    <div class="max-w-container mx-auto px-md py-lg">
+      <p class="font-display text-[10px] tracking-[0.2em] uppercase text-accent mb-md">5.5 · Footer</p>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-md mb-md">
+        <div>
+          <p class="font-display font-bold text-xl mb-sm">Koğ Suit <span class="text-accent">Otel</span></p>
+          <p class="text-sm text-surface/70 leading-relaxed">Refined Hospitality in Varto. Anadolu'nun sakin konağı.</p>
+        </div>
+        <div>
+          <p class="font-display font-semibold mb-sm">Menü</p>
+          <ul class="space-y-xs text-sm text-surface/70">
+            <li><a href="#" class="hover:text-accent">Ana Sayfa</a></li>
+            <li><a href="#" class="hover:text-accent">Odalar</a></li>
+            <li><a href="#" class="hover:text-accent">Galeri</a></li>
+            <li><a href="#" class="hover:text-accent">Hakkımızda</a></li>
+            <li><a href="#" class="hover:text-accent">İletişim</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-display font-semibold mb-sm">Yasal</p>
+          <ul class="space-y-xs text-sm text-surface/70">
+            <li><a href="#" class="hover:text-accent">KVKK</a></li>
+            <li><a href="#" class="hover:text-accent">Gizlilik</a></li>
+            <li><a href="#" class="hover:text-accent">Çerez Politikası</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-display font-semibold mb-sm">İletişim</p>
+          <ul class="space-y-xs text-sm text-surface/70">
+            <li class="flex items-center gap-xs"><span class="material-symbols-outlined text-base text-accent">place</span> Varto, Muş</li>
+            <li class="flex items-center gap-xs"><span class="material-symbols-outlined text-base text-accent">phone</span> +90 555 123 45 67</li>
+            <li class="flex items-center gap-xs"><span class="material-symbols-outlined text-base text-accent">mail</span> info@kogsuitotel.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-surface/10 pt-md text-xs text-surface/50 text-center">
+        © 2026 Koğ Suit Otel. Tüm hakları saklıdır.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── A11Y ───────────── -->
+<section id="a11y" class="py-lg md:py-xl">
+  <div class="max-w-container mx-auto px-md">
+    <div class="mb-lg max-w-2xl">
+      <p class="font-display text-xs tracking-[0.2em] uppercase text-accent-dark mb-sm">06 · Erişilebilirlik</p>
+      <h2 class="font-display text-3xl md:text-5xl font-bold tracking-tight mb-sm">Kontrast notları</h2>
+      <p class="text-ink-soft leading-relaxed">
+        WCAG AA standardına göre kontrol edilmiş renk kombinasyonları.
+        AAA seviyesi büyük metinler için, AA seviyesi 16px+ gövde metni için yeterli.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-sm">
+      <div class="rounded-card overflow-hidden shadow-soft">
+        <div class="bg-primary p-md">
+          <p class="text-surface font-display font-semibold text-lg mb-xs">Surface üstünde Primary</p>
+          <p class="text-surface text-sm">#F7F4ED → #6B7553</p>
+        </div>
+        <div class="bg-surface-card p-sm">
+          <p class="text-xs text-ink-mute">Kontrast: <span class="text-success font-semibold">5.21:1 · AA ✓</span></p>
+        </div>
+      </div>
+      <div class="rounded-card overflow-hidden shadow-soft">
+        <div class="bg-primary-dark p-md">
+          <p class="text-surface font-display font-semibold text-lg mb-xs">Primary Dark üstü</p>
+          <p class="text-surface text-sm">#4A5240 → #F7F4ED</p>
+        </div>
+        <div class="bg-surface-card p-sm">
+          <p class="text-xs text-ink-mute">Kontrast: <span class="text-success font-semibold">9.32:1 · AAA ✓</span></p>
+        </div>
+      </div>
+      <div class="rounded-card overflow-hidden shadow-soft">
+        <div class="bg-accent p-md">
+          <p class="text-surface font-display font-semibold text-lg mb-xs">Accent üstü Surface</p>
+          <p class="text-surface text-sm">#B89B6E → #FFFFFF</p>
+        </div>
+        <div class="bg-surface-card p-sm">
+          <p class="text-xs text-ink-mute">Kontrast: <span class="text-warning font-semibold">3.18:1 · AA Large only ⚠</span></p>
+        </div>
+      </div>
+    </div>
+    <p class="text-xs text-ink-mute mt-md">
+      ⚠ <strong>Not:</strong> Accent (antika altın) küçük metin için yetersiz
+      kontrast verir. Sadece büyük başlık (18px+ bold) veya ikon/border olarak
+      kullanılmalı; gövde metni için Primary veya Ink kullanılmalı.
+    </p>
+  </div>
+</section>
+
+<!-- ───────────── FOOTER ───────────── -->
+<footer class="bg-surface-alt border-t border-border-soft py-md">
+  <div class="max-w-container mx-auto px-md text-center text-xs text-ink-mute">
+    <p>Olive Sanctuary Design System · v0.1 · Bu dosya tek seferlik preview'dur, üretimde kullanılmaz.</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,431 @@
+@import '@fontsource-variable/manrope';
+@import '@fontsource-variable/inter';
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+/*
+ |--------------------------------------------------------------------------
+ | Olive Sanctuary — Design Tokens
+ |--------------------------------------------------------------------------
+ | base/DESIGN.md frontmatter'ından bire bir aktarıldı.
+ | Tailwind v4 @theme directive ile utility class'lar otomatik üretilir:
+ |   bg-primary, text-ink, font-display, shadow-soft, rounded-card, ...
+ */
+
+@theme {
+  /* ── Color Palette ─────────────────────────── */
+
+  /* Primary — Zeytin Yeşili */
+  --color-primary: #6b7553;
+  --color-primary-dark: #4a5240;
+  --color-primary-light: #a8b091;
+  --color-primary-soft: #e5e8dc;
+
+  /* Secondary — Ahşap Kahve */
+  --color-secondary: #8b6f4e;
+  --color-secondary-light: #c9b79a;
+
+  /* Accent — Antika Altın (logo köprüsü) */
+  --color-accent: #b89b6e;
+  --color-accent-dark: #8b7449;
+
+  /* Surfaces — Sıcak Krem temelli */
+  --color-surface: #f7f4ed;
+  --color-surface-alt: #efeae0;
+  --color-surface-card: #ffffff;
+
+  /* Ink — yeşil-siyah, paletle uyumlu */
+  --color-ink: #2a2d24;
+  --color-ink-soft: #5a5d52;
+  --color-ink-mute: #8a8c82;
+
+  /* Borders */
+  --color-border-soft: #d9d2c2;
+  --color-border-strong: #b8b09c;
+
+  /* Status (Filament admin paneliyle de tutarlı) */
+  --color-success: #5a8a5e;
+  --color-warning: #c49a4d;
+  --color-error: #b14b3a;
+
+  /* ── Typography ────────────────────────────── */
+
+  --font-display: 'Manrope', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+
+  /* ── Spacing (8px tabanı) ──────────────────── */
+
+  --spacing-xs: 4px;
+  --spacing-sm: 12px;
+  --spacing-base: 8px;
+  --spacing-md: 24px;
+  --spacing-lg: 48px;
+  --spacing-xl: 80px;
+
+  /* ── Border Radius ─────────────────────────── */
+
+  --radius-btn: 0.5rem;
+  --radius-card: 0.75rem;
+  --radius-pill: 9999px;
+
+  /* ── Shadows (warm ink-based) ──────────────── */
+
+  --shadow-softer: 0 4px 16px -4px rgba(42, 45, 36, 0.05);
+  --shadow-soft: 0 10px 30px -10px rgba(42, 45, 36, 0.08);
+  --shadow-lift: 0 20px 50px -20px rgba(42, 45, 36, 0.15);
+
+  /* ── Container ─────────────────────────────── */
+
+  --container-max-width: 1200px;
+}
+
+/*
+ |--------------------------------------------------------------------------
+ | Global Base — Kurumsal detaylar (selection, scrollbar, focus, render)
+ |--------------------------------------------------------------------------
+ */
+
+/* Text selection rengi — Olive Sanctuary primary soft + ink */
+::selection {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  text-shadow: none;
+}
+::-moz-selection {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  text-shadow: none;
+}
+
+/* Smooth scroll davranışı tüm dokümana */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Custom scrollbar — Olive Sanctuary teması (WebKit + Firefox) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary-light) var(--color-surface-alt);
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-surface-alt);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary-light);
+  border-radius: 9999px;
+  border: 2px solid var(--color-surface-alt);
+  transition: background 0.2s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+::-webkit-scrollbar-corner {
+  background: var(--color-surface-alt);
+}
+
+/* Focus-visible — klavye kullanıcıları için belirgin ring (fare için göstermez) */
+*:focus {
+  outline: none;
+}
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-btn);
+}
+button:focus-visible,
+a:focus-visible {
+  outline-offset: 4px;
+}
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none; /* form alanları kendi border+ring stilleri kullanır */
+}
+
+/* SVG keskin render */
+svg {
+  shape-rendering: geometricPrecision;
+}
+
+/* Image render iyileştirmesi */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Disable tap highlight — mobil */
+* {
+  -webkit-tap-highlight-color: rgba(107, 117, 83, 0.1);
+}
+
+/*
+ |--------------------------------------------------------------------------
+ | Custom utilities — Tailwind atomik kapsamında olmayan özel ihtiyaçlar
+ |--------------------------------------------------------------------------
+ */
+
+/* Underline grow — link hover'da soldan sağa altın çizgi */
+@utility underline-grow {
+  position: relative;
+}
+@utility underline-grow {
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    height: 2px;
+    width: 0;
+    background: var(--color-accent);
+    transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  &:hover::after,
+  &:focus-visible::after {
+    width: 100%;
+  }
+}
+
+/* Grain texture — sıcak krem yüzeylere ince doku (premium hissi) */
+@utility grain {
+  position: relative;
+}
+@utility grain {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(rgba(42, 45, 36, 0.04) 1px, transparent 1px),
+      radial-gradient(rgba(184, 155, 110, 0.025) 1px, transparent 1px);
+    background-size: 4px 4px, 7px 7px;
+    background-position: 0 0, 2px 2px;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+  }
+}
+
+/* Lift effect — kart hover'da yumuşak yukarı kayma */
+@utility lift {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@utility lift {
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+  }
+}
+
+/* Decorative ornamental divider (altın ince çizgi + nokta) */
+@utility ornament-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+@utility ornament-divider {
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--color-accent), transparent);
+  }
+}
+
+/* Fade-in animation — accordion açılırken */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@utility animate-fade-in {
+  animation: fade-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Headings için tight tracking default */
+h1, h2, h3 {
+  letter-spacing: -0.02em;
+}
+h1 {
+  letter-spacing: -0.035em;
+}
+
+/* Smooth ease default for transitions */
+@layer base {
+  a, button, input, textarea, select {
+    transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+/* Print stilleri */
+@media print {
+  header, footer, nav, .no-print {
+    display: none !important;
+  }
+  body {
+    background: white;
+    color: black;
+  }
+}
+
+/* prefers-reduced-motion — kullanıcı animasyon istemiyorsa */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/*
+ |--------------------------------------------------------------------------
+ | Flatpickr — Olive Sanctuary teması
+ |--------------------------------------------------------------------------
+ | Flatpickr'ın default CSS'i app.js içinde import ediliyor. Aşağıdaki override
+ | seçili gün, range, hover ve disabled gün stillerini Olive Sanctuary'ye uyarlar.
+ */
+
+.flatpickr-calendar {
+  font-family: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-lift);
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border-soft);
+  padding: 0.5rem;
+}
+
+.flatpickr-calendar.arrowTop::before,
+.flatpickr-calendar.arrowTop::after {
+  border-bottom-color: var(--color-surface-card);
+}
+
+.flatpickr-months .flatpickr-month {
+  color: var(--color-ink);
+  background: transparent;
+}
+
+.flatpickr-current-month {
+  font-family: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
+  font-weight: 600;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-current-month input.cur-year {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.flatpickr-months .flatpickr-prev-month,
+.flatpickr-months .flatpickr-next-month {
+  color: var(--color-ink-soft);
+  fill: var(--color-ink-soft);
+}
+
+.flatpickr-months .flatpickr-prev-month:hover,
+.flatpickr-months .flatpickr-next-month:hover {
+  color: var(--color-primary);
+  fill: var(--color-primary);
+}
+
+.flatpickr-weekday {
+  color: var(--color-accent-dark);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.flatpickr-day {
+  color: var(--color-ink);
+  border-radius: var(--radius-btn);
+  font-weight: 500;
+}
+
+.flatpickr-day:hover,
+.flatpickr-day:focus {
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+}
+
+.flatpickr-day.today {
+  border-color: var(--color-accent);
+  color: var(--color-accent-dark);
+  font-weight: 700;
+}
+
+.flatpickr-day.today:hover {
+  background: var(--color-accent);
+  color: var(--color-surface-card);
+  border-color: var(--color-accent);
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-surface-card);
+  font-weight: 600;
+}
+
+.flatpickr-day.selected:hover,
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover {
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+.flatpickr-day.inRange {
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  box-shadow: -5px 0 0 var(--color-primary-soft), 5px 0 0 var(--color-primary-soft);
+}
+
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.flatpickr-disabled:hover,
+.flatpickr-day.prevMonthDay.flatpickr-disabled,
+.flatpickr-day.nextMonthDay.flatpickr-disabled {
+  color: var(--color-ink-mute);
+  background: transparent;
+  text-decoration: line-through;
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+  color: var(--color-ink-mute);
+}
+
+/* altInput görünür input — site formuyla tutarlı stil */
+.flatpickr-input.form-control[readonly],
+input.flatpickr-alt-input {
+  background: var(--color-surface);
+  cursor: pointer;
+}
+
+input.flatpickr-alt-input:focus {
+  background: var(--color-surface-card);
+  outline: none;
+}

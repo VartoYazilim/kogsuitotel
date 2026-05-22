@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sık Sorulan Sorular - Koğ Suit Otel</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#c5a059",
+                        "secondary-container": "#cfe2f9",
+                        "background": "#f9f9f9",
+                        "surface-dim": "#dadada",
+                        "outline": "#7f7667",
+                        "inverse-on-surface": "#f0f1f1",
+                        "on-secondary-container": "#526478",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#e2e2e2",
+                        "surface-container": "#eeeeee",
+                        "tertiary": "#75584d",
+                        "tertiary-fixed": "#ffdbce",
+                        "primary": "#775a19",
+                        "secondary-fixed": "#d1e4fb",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f3f3f3",
+                        "surface-container-high": "#e8e8e8",
+                        "primary-fixed-dim": "#e9c176",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#5d4201",
+                        "on-tertiary-container": "#4e352c",
+                        "tertiary-container": "#c19e92",
+                        "tertiary-fixed-dim": "#e4beb2",
+                        "primary-fixed": "#ffdea5",
+                        "surface": "#f9f9f9",
+                        "on-tertiary-fixed-variant": "#5b4137",
+                        "on-background": "#1a1c1c",
+                        "on-primary-fixed": "#261900",
+                        "outline-variant": "#d1c5b4",
+                        "surface-bright": "#f9f9f9",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2f3131",
+                        "on-surface": "#1a1c1c",
+                        "on-tertiary-fixed": "#2b160f",
+                        "surface-variant": "#e2e2e2",
+                        "on-surface-variant": "#4e4639",
+                        "surface-tint": "#775a19",
+                        "secondary": "#4e6073",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#b5c8df",
+                        "on-primary-container": "#4e3700",
+                        "on-secondary-fixed-variant": "#36485b",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#e9c176",
+                        "on-secondary-fixed": "#091d2e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "md": "24px",
+                        "sm": "12px",
+                        "lg": "48px",
+                        "xs": "4px",
+                        "container-max": "1200px",
+                        "gutter": "24px",
+                        "xl": "80px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "h2": ["Manrope"],
+                        "h3": ["Manrope"],
+                        "h1": ["Manrope"],
+                        "label-caps": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "h3": ["24px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                        "h1": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom Accordion Hide Default Marker */
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased selection:bg-primary-container selection:text-on-primary">
+<!-- TopNavBar -->
+<header class="sticky top-0 w-full z-50 bg-white/90 backdrop-blur-md dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-800 shadow-sm">
+<div class="flex justify-between items-center max-w-[1200px] mx-auto px-6 h-20">
+<div class="text-xl font-bold text-slate-800 dark:text-white font-h2 tracking-tight">
+                Koğ Suit Otel
+            </div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-label-caps text-label-caps uppercase tracking-widest font-medium text-slate-700 dark:text-gray-300 hover:text-amber-600 transition-colors duration-300 scale-95 active:scale-100 transition-transform" href="#">Ana Sayfa</a>
+<a class="font-label-caps text-label-caps uppercase tracking-widest font-medium text-slate-700 dark:text-gray-300 hover:text-amber-600 transition-colors duration-300 scale-95 active:scale-100 transition-transform" href="#">Odalar</a>
+<a class="font-label-caps text-label-caps uppercase tracking-widest font-medium text-slate-700 dark:text-gray-300 hover:text-amber-600 transition-colors duration-300 scale-95 active:scale-100 transition-transform" href="#">Galeri</a>
+<a class="font-label-caps text-label-caps uppercase tracking-widest font-medium text-slate-700 dark:text-gray-300 hover:text-amber-600 transition-colors duration-300 scale-95 active:scale-100 transition-transform" href="#">Hakkımızda</a>
+<a class="font-label-caps text-label-caps uppercase tracking-widest font-medium text-slate-700 dark:text-gray-300 hover:text-amber-600 transition-colors duration-300 scale-95 active:scale-100 transition-transform" href="#">İletişim</a>
+</nav>
+<button class="bg-primary-container text-on-primary font-label-caps text-label-caps px-[32px] py-[16px] rounded-lg uppercase tracking-widest hover:opacity-90 transition-opacity">
+                Rezervasyon Yap
+            </button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="min-h-screen pb-xl">
+<!-- Hero Minimal Section -->
+<section class="pt-xl pb-lg px-gutter max-w-container-max mx-auto text-center">
+<h1 class="font-h1 text-h1 text-on-surface mb-md">Sık Sorulan Sorular</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                Konaklamanız, rezervasyon süreciniz ve hizmetlerimiz hakkında bilmeniz gereken detayları burada bulabilirsiniz.
+            </p>
+</section>
+<!-- FAQ Accordion List -->
+<section class="px-gutter max-w-3xl mx-auto mt-lg">
+<div class="space-y-sm">
+<!-- FAQ Item 1 -->
+<details class="group border-b border-surface-variant pb-md pt-sm [&amp;_summary::-webkit-details-marker]:hidden" open="">
+<summary class="flex items-center justify-between cursor-pointer font-h3 text-h3 text-on-surface select-none">
+<span>Rezervasyonumu nasıl iptal edebilirim?</span>
+<span class="relative h-6 w-6 shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container absolute group-open:opacity-0 transition-opacity duration-300" data-icon="add">add</span>
+<span class="material-symbols-outlined text-primary-container absolute opacity-0 group-open:opacity-100 transition-opacity duration-300" data-icon="remove">remove</span>
+</span>
+</summary>
+<div class="mt-sm pr-12 font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                        İptal koşulları seçtiğiniz rezervasyon tipine göre değişiklik göstermektedir. Esnek rezervasyonlarda giriş tarihinden 48 saat öncesine kadar ücretsiz iptal hakkınız bulunmaktadır. Detaylı bilgi için rezervasyon onay e-postanızı kontrol edebilirsiniz.
+                    </div>
+</details>
+<!-- FAQ Item 2 -->
+<details class="group border-b border-surface-variant pb-md pt-sm [&amp;_summary::-webkit-details-marker]:hidden">
+<summary class="flex items-center justify-between cursor-pointer font-h3 text-h3 text-on-surface select-none">
+<span>Otele giriş ve çıkış saatleri nedir?</span>
+<span class="relative h-6 w-6 shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container absolute group-open:opacity-0 transition-opacity duration-300" data-icon="add">add</span>
+<span class="material-symbols-outlined text-primary-container absolute opacity-0 group-open:opacity-100 transition-opacity duration-300" data-icon="remove">remove</span>
+</span>
+</summary>
+<div class="mt-sm pr-12 font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                        Standart check-in (giriş) saatimiz 14:00, check-out (çıkış) saatimiz ise 12:00'dir. Müsaitlik durumuna göre erken giriş veya geç çıkış talepleriniz resepsiyon tarafından değerlendirilebilir.
+                    </div>
+</details>
+<!-- FAQ Item 3 -->
+<details class="group border-b border-surface-variant pb-md pt-sm [&amp;_summary::-webkit-details-marker]:hidden">
+<summary class="flex items-center justify-between cursor-pointer font-h3 text-h3 text-on-surface select-none">
+<span>Ödeme seçenekleri nelerdir?</span>
+<span class="relative h-6 w-6 shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container absolute group-open:opacity-0 transition-opacity duration-300" data-icon="add">add</span>
+<span class="material-symbols-outlined text-primary-container absolute opacity-0 group-open:opacity-100 transition-opacity duration-300" data-icon="remove">remove</span>
+</span>
+</summary>
+<div class="mt-sm pr-12 font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                        Kredi kartı, banka havalesi ve girişte nakit ödeme seçeneklerimiz mevcuttur. Online rezervasyonlarda güvenli 3D ödeme altyapısı kullanılmaktadır. Kurumsal fatura taleplerinizi giriş sırasında bildirebilirsiniz.
+                    </div>
+</details>
+<!-- FAQ Item 4 -->
+<details class="group border-b border-surface-variant pb-md pt-sm [&amp;_summary::-webkit-details-marker]:hidden">
+<summary class="flex items-center justify-between cursor-pointer font-h3 text-h3 text-on-surface select-none">
+<span>Evcil hayvan kabul ediliyor mu?</span>
+<span class="relative h-6 w-6 shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container absolute group-open:opacity-0 transition-opacity duration-300" data-icon="add">add</span>
+<span class="material-symbols-outlined text-primary-container absolute opacity-0 group-open:opacity-100 transition-opacity duration-300" data-icon="remove">remove</span>
+</span>
+</summary>
+<div class="mt-sm pr-12 font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                        Misafirlerimizin konforu ve hijyen standartlarımız gereği, tesisimize maalesef evcil hayvan kabul edemiyoruz. Anlayışınız için teşekkür ederiz.
+                    </div>
+</details>
+<!-- FAQ Item 5 -->
+<details class="group border-b border-surface-variant pb-md pt-sm [&amp;_summary::-webkit-details-marker]:hidden">
+<summary class="flex items-center justify-between cursor-pointer font-h3 text-h3 text-on-surface select-none">
+<span>Odalarda Wi-Fi hizmeti var mı?</span>
+<span class="relative h-6 w-6 shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container absolute group-open:opacity-0 transition-opacity duration-300" data-icon="add">add</span>
+<span class="material-symbols-outlined text-primary-container absolute opacity-0 group-open:opacity-100 transition-opacity duration-300" data-icon="remove">remove</span>
+</span>
+</summary>
+<div class="mt-sm pr-12 font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                        Evet, tüm odalarımızda ve ortak alanlarda misafirlerimize ücretsiz ve yüksek hızlı kablosuz internet (Wi-Fi) hizmeti sunulmaktadır. Ağ şifresi odanızdaki karşılama kartında yer almaktadır.
+                    </div>
+</details>
+</div>
+<!-- Contact CTA -->
+<div class="mt-xl p-lg bg-surface-container-lowest rounded-xl shadow-[0px_10px_30px_rgba(0,0,0,0.04)] text-center">
+<h4 class="font-h3 text-h3 text-on-surface mb-sm">Başka bir sorunuz mu var?</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Müşteri hizmetleri ekibimiz size yardımcı olmaktan memnuniyet duyacaktır.</p>
+<a class="inline-flex items-center justify-center border-[1.5px] border-[#2C3E50] text-[#2C3E50] font-label-caps text-label-caps px-[32px] py-[16px] rounded-lg uppercase tracking-widest hover:bg-surface-variant transition-colors" href="#">
+                    İletişime Geçin
+                </a>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full pt-16 pb-8 bg-slate-900 dark:bg-black border-t border-slate-800">
+<div class="max-w-[1200px] mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="col-span-1 md:col-span-2">
+<span class="text-lg font-bold text-white mb-4 block font-h2 tracking-tight">Koğ Suit Otel</span>
+<p class="font-manrope text-sm text-gray-400 font-body-md max-w-sm">
+                    © 2024 Koğ Suit Otel. Refined Hospitality in Varto.
+                </p>
+</div>
+<div class="col-span-1">
+<h5 class="text-white font-label-caps text-label-caps uppercase tracking-widest mb-md">Menü</h5>
+<ul class="space-y-sm">
+<li><a class="font-manrope text-sm text-gray-400 hover:text-amber-500 transition-colors opacity-80 hover:opacity-100" href="#">Ana Sayfa</a></li>
+<li><a class="font-manrope text-sm text-gray-400 hover:text-amber-500 transition-colors opacity-80 hover:opacity-100" href="#">Odalar</a></li>
+<li><a class="font-manrope text-sm text-gray-400 hover:text-amber-500 transition-colors opacity-80 hover:opacity-100" href="#">Galeri</a></li>
+<li><a class="font-manrope text-sm text-gray-400 hover:text-amber-500 transition-colors opacity-80 hover:opacity-100" href="#">Hakkımızda</a></li>
+<li><a class="font-manrope text-sm text-gray-400 hover:text-amber-500 transition-colors opacity-80 hover:opacity-100" href="#">İletişim</a></li>
+</ul>
+</div>
+<div class="col-span-1">
+<h5 class="text-white font-label-caps text-label-caps uppercase tracking-widest mb-md">Yasal</h5>
+<ul class="space-y-sm">
+<li><a class="font-manrope text-sm text-gray-400 hover:text-amber-500 transition-colors opacity-80 hover:opacity-100" href="#">KVKK</a></li>
+<li><a class="font-manrope text-sm text-gray-400 hover:text-amber-500 transition-colors opacity-80 hover:opacity-100" href="#">Gizlilik Sözleşmesi</a></li>
+</ul>
+</div>
+</div>
+</footer>
+</body></html>

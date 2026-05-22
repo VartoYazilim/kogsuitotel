@@ -1,0 +1,103 @@
+# ─────────────────────────────────────────────────────────────────────
+# Koğ Suit Otel — Nginx Vhost (Production)
+# /etc/nginx/sites-available/kogsuitotel.com
+# sudo ln -s /etc/nginx/sites-available/kogsuitotel.com /etc/nginx/sites-enabled/
+# sudo nginx -t && sudo systemctl reload nginx
+# ─────────────────────────────────────────────────────────────────────
+
+# Cloudflare proxy'sinin gerçek IP'yi forward etmesi için
+# /etc/nginx/conf.d/cloudflare-real-ip.conf'a Cloudflare IP listesi eklenmeli:
+# https://www.cloudflare.com/ips/
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name kogsuitotel.com www.kogsuitotel.com;
+
+    # HTTPS'e redirect (Cloudflare zaten yapar ama yine de)
+    return 301 https://kogsuitotel.com$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name kogsuitotel.com;
+
+    root /var/www/kogsuitotel/public;
+    index index.php index.html;
+
+    # ── Cloudflare Origin Certificate (15 yıllık, sadece CF ↔ Origin için) ──
+    ssl_certificate     /etc/ssl/certs/kogsuitotel-origin.pem;
+    ssl_certificate_key /etc/ssl/private/kogsuitotel-origin.key;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_ciphers         HIGH:!aNULL:!MD5;
+
+    # ── Security headers ──
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Permissions-Policy "geolocation=(), microphone=(), camera=()" always;
+
+    # ── Gzip / Brotli sıkıştırma ──
+    gzip on;
+    gzip_vary on;
+    gzip_types text/plain text/css text/xml text/javascript application/javascript application/json application/xml image/svg+xml;
+    gzip_min_length 1000;
+
+    charset utf-8;
+
+    # ── www subdomain redirect (canonical: kogsuitotel.com) ──
+    if ($host = "www.kogsuitotel.com") {
+        return 301 https://kogsuitotel.com$request_uri;
+    }
+
+    # ── Statik asset cache (1 yıl) ──
+    location ~* \.(css|js|jpg|jpeg|png|gif|ico|svg|webp|woff2?|ttf|otf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        access_log off;
+        try_files $uri =404;
+    }
+
+    # ── Sitemap + robots cache ──
+    location ~* \.(xml|txt|webmanifest)$ {
+        expires 1d;
+        add_header Cache-Control "public";
+    }
+
+    # ── Hassas dosyalara erişimi engelle ──
+    location ~ /\.(env|git|ht) {
+        deny all;
+        return 404;
+    }
+    location ~ /(storage|bootstrap/cache|vendor|node_modules) {
+        deny all;
+        return 404;
+    }
+
+    # ── Laravel ana akış ──
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # ── PHP-FPM ──
+    location ~ \.php$ {
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 4 256k;
+        fastcgi_busy_buffers_size 256k;
+        fastcgi_read_timeout 60s;
+    }
+
+    # ── 404 / 500 hata sayfaları Laravel'e yönlendir ──
+    error_page 404 /index.php;
+    error_page 500 502 503 504 /index.php;
+
+    access_log /var/log/nginx/kogsuitotel.access.log;
+    error_log  /var/log/nginx/kogsuitotel.error.log;
+}

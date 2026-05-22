@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="light" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Koğ Suit Otel - Ana Sayfa</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#c5a059",
+                        "secondary-container": "#cfe2f9",
+                        "background": "#f9f9f9",
+                        "surface-dim": "#dadada",
+                        "outline": "#7f7667",
+                        "inverse-on-surface": "#f0f1f1",
+                        "on-secondary-container": "#526478",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#e2e2e2",
+                        "surface-container": "#eeeeee",
+                        "tertiary": "#75584d",
+                        "tertiary-fixed": "#ffdbce",
+                        "primary": "#775a19",
+                        "secondary-fixed": "#d1e4fb",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f3f3f3",
+                        "surface-container-high": "#e8e8e8",
+                        "primary-fixed-dim": "#e9c176",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#5d4201",
+                        "on-tertiary-container": "#4e352c",
+                        "tertiary-container": "#c19e92",
+                        "tertiary-fixed-dim": "#e4beb2",
+                        "primary-fixed": "#ffdea5",
+                        "surface": "#f9f9f9",
+                        "on-tertiary-fixed-variant": "#5b4137",
+                        "on-background": "#1a1c1c",
+                        "on-primary-fixed": "#261900",
+                        "outline-variant": "#d1c5b4",
+                        "surface-bright": "#f9f9f9",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2f3131",
+                        "on-surface": "#1a1c1c",
+                        "on-tertiary-fixed": "#2b160f",
+                        "surface-variant": "#e2e2e2",
+                        "on-surface-variant": "#4e4639",
+                        "surface-tint": "#775a19",
+                        "secondary": "#4e6073",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#b5c8df",
+                        "on-primary-container": "#4e3700",
+                        "on-secondary-fixed-variant": "#36485b",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#e9c176",
+                        "on-secondary-fixed": "#091d2e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "md": "24px",
+                        "sm": "12px",
+                        "lg": "48px",
+                        "xs": "4px",
+                        "container-max": "1200px",
+                        "gutter": "24px",
+                        "xl": "80px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "h2": ["Manrope"],
+                        "h3": ["Manrope"],
+                        "h1": ["Manrope"],
+                        "label-caps": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "h3": ["24px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                        "h1": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .shadow-soft { box-shadow: 0px 10px 30px rgba(0,0,0,0.04); }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased font-body-md text-body-md">
+<!-- TopNavBar -->
+<nav class="bg-white/90 backdrop-blur-md dark:bg-gray-950/90 sticky top-0 w-full z-50 border-b border-gray-100 dark:border-gray-800 shadow-sm">
+<div class="flex justify-between items-center max-w-[1200px] mx-auto px-6 h-20">
+<div class="text-xl font-bold text-slate-800 dark:text-white">
+                Koğ Suit Otel
+            </div>
+<div class="hidden md:flex space-x-8">
+<a class="font-manrope text-sm uppercase tracking-widest font-medium text-amber-600 dark:text-amber-500 border-b-2 border-amber-600 pb-1 scale-95 active:scale-100 transition-transform hover:text-amber-600 transition-colors duration-300" href="#">Ana Sayfa</a>
+<a class="font-manrope text-sm uppercase tracking-widest font-medium text-slate-700 dark:text-gray-300 hover:text-amber-600 scale-95 active:scale-100 transition-transform hover:text-amber-600 transition-colors duration-300" href="#">Odalar</a>
+<a class="font-manrope text-sm uppercase tracking-widest font-medium text-slate-700 dark:text-gray-300 hover:text-amber-600 scale-95 active:scale-100 transition-transform hover:text-amber-600 transition-colors duration-300" href="#">Galeri</a>
+<a class="font-manrope text-sm uppercase tracking-widest font-medium text-slate-700 dark:text-gray-300 hover:text-amber-600 scale-95 active:scale-100 transition-transform hover:text-amber-600 transition-colors duration-300" href="#">Hakkımızda</a>
+<a class="font-manrope text-sm uppercase tracking-widest font-medium text-slate-700 dark:text-gray-300 hover:text-amber-600 scale-95 active:scale-100 transition-transform hover:text-amber-600 transition-colors duration-300" href="#">İletişim</a>
+</div>
+<button class="bg-primary-container text-white font-label-caps text-label-caps py-[16px] px-[32px] rounded-lg hover:opacity-90 transition-opacity">
+                Rezervasyon Yap
+            </button>
+</div>
+</nav>
+<main>
+<!-- Hero Section -->
+<section class="relative min-h-[819px] flex items-center justify-center">
+<div class="absolute inset-0 z-0">
+<img alt="Koğ Suit Otel Hero Image" class="w-full h-full object-cover" data-alt="A sweeping, wide-angle architectural photograph of a luxurious hotel suite interior bathed in soft, natural morning light. The room features a minimalist, modern design with a king-sized bed clad in pristine white linens, a comfortable seating area, and floor-to-ceiling windows offering a serene view of a lush landscape. The color palette emphasizes warm neutrals, rich wood tones, and crisp whites, aligning with an understated premium aesthetic. The overall mood is tranquil, inviting, and impeccably clean." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM19pkjwyvZ3w3UcNbooOoHQyk5QYs3r_aIOwzWHDFjCAq520U8mfZKqVRxe1UuOgmKSpowKxyf1zJEylo4_eojDcZMGJ_wwgdEEoahDRO_bQdDWP_bttynTtf5g1DGk6f5xGrTZAZmBuuJ02fyMwN7_EhxrwwvfxORNY24BsZL-XiqBCQmNOhXR3lnf2bFybPohK9S5ohibEwV55rAuG9y_DbQHELtRIUmXsHOe_NRsd5TfGE6629OtZ0wes37Dm4AlBFGilLKogA"/>
+<div class="absolute inset-0 bg-black/30"></div>
+</div>
+<div class="relative z-10 w-full max-w-container-max mx-auto px-gutter flex flex-col md:flex-row items-center justify-between gap-xl">
+<div class="w-full md:w-1/2 text-white">
+<h1 class="font-h1 text-h1 mb-md">Koğ Suit Otel’de Konforlu Bir Konaklama</h1>
+<p class="font-body-lg text-body-lg mb-lg max-w-lg opacity-90">
+                        Varto'nun kalbinde, modern minimalizm ve profesyonel hizmet anlayışıyla tasarlanmış premium süitlerimizde huzuru deneyimleyin. Şehrin gürültüsünden uzak, konforlu bir mola.
+                    </p>
+</div>
+<!-- Reservation Form -->
+<div class="w-full md:w-[400px] bg-white rounded-xl p-md shadow-soft">
+<h3 class="font-h3 text-h3 text-on-surface mb-md">Hızlı Rezervasyon</h3>
+<form class="space-y-sm">
+<div class="grid grid-cols-2 gap-sm">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Giriş Tarihi</label>
+<input class="w-full bg-[#F0F0F0] border-none rounded focus:ring-1 focus:ring-primary-container focus:bg-white text-on-surface font-body-md text-body-md py-sm px-sm transition-colors" type="date"/>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Çıkış Tarihi</label>
+<input class="w-full bg-[#F0F0F0] border-none rounded focus:ring-1 focus:ring-primary-container focus:bg-white text-on-surface font-body-md text-body-md py-sm px-sm transition-colors" type="date"/>
+</div>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Kişi Sayısı</label>
+<select class="w-full bg-[#F0F0F0] border-none rounded focus:ring-1 focus:ring-primary-container focus:bg-white text-on-surface font-body-md text-body-md py-sm px-sm transition-colors">
+<option>1 Yetişkin</option>
+<option>2 Yetişkin</option>
+<option>2 Yetişkin, 1 Çocuk</option>
+<option>3 Yetişkin</option>
+</select>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Oda Türü</label>
+<select class="w-full bg-[#F0F0F0] border-none rounded focus:ring-1 focus:ring-primary-container focus:bg-white text-on-surface font-body-md text-body-md py-sm px-sm transition-colors">
+<option>Standart Oda</option>
+<option>Deluxe Süit</option>
+<option>Aile Odası</option>
+<option>Premium Süit</option>
+</select>
+</div>
+<button class="w-full bg-primary-container text-white font-label-caps text-label-caps py-[16px] px-[32px] rounded-lg mt-md hover:opacity-90 transition-opacity" type="submit">
+                            Müsaitlik Kontrol Et
+                        </button>
+</form>
+</div>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="py-xl bg-surface-container-low">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="text-center mb-lg">
+<h2 class="font-h2 text-h2 text-on-surface mb-sm">Ayrıcalıklarımız</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto">Sizin için düşündüğümüz detaylarla konaklamanızı unutulmaz kılıyoruz.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Feature 1: Merkezi Konum -->
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant/30 shadow-soft flex gap-md group hover:border-primary-container/50 transition-colors duration-300">
+<div class="flex-shrink-0">
+<div class="w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center group-hover:bg-primary-container transition-colors duration-300">
+<span class="material-symbols-outlined text-[28px] text-primary-container group-hover:text-white" style="font-variation-settings: 'wght' 300;">location_on</span>
+</div>
+</div>
+<div>
+<h3 class="font-h3 text-h3 text-on-surface mb-xs">Merkezi Konum</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">Varto'nun tam merkezinde, önemli noktalara yürüme mesafesinde ideal lokasyon.</p>
+</div>
+</div>
+<!-- Feature 2: WhatsApp İletişim -->
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant/30 shadow-soft flex gap-md group hover:border-primary-container/50 transition-colors duration-300">
+<div class="flex-shrink-0">
+<div class="w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center group-hover:bg-primary-container transition-colors duration-300">
+<span class="material-symbols-outlined text-[28px] text-primary-container group-hover:text-white" style="font-variation-settings: 'wght' 300;">forum</span>
+</div>
+</div>
+<div>
+<h3 class="font-h3 text-h3 text-on-surface mb-xs">WhatsApp İletişim</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">7/24 hızlı ve kolay iletişim imkanı ile yanınızdayız.</p>
+</div>
+</div>
+<!-- Feature 3: Yüksek Hızlı İnternet -->
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant/30 shadow-soft flex gap-md group hover:border-primary-container/50 transition-colors duration-300">
+<div class="flex-shrink-0">
+<div class="w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center group-hover:bg-primary-container transition-colors duration-300">
+<span class="material-symbols-outlined text-[28px] text-primary-container group-hover:text-white" style="font-variation-settings: 'wght' 300;">wifi</span>
+</div>
+</div>
+<div>
+<h3 class="font-h3 text-h3 text-on-surface mb-xs">Yüksek Hızlı İnternet</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">İş veya eğlence için kesintisiz bağlantı.</p>
+</div>
+</div>
+<!-- Feature 4: Güvenli Otopark -->
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant/30 shadow-soft flex gap-md group hover:border-primary-container/50 transition-colors duration-300">
+<div class="flex-shrink-0">
+<div class="w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center group-hover:bg-primary-container transition-colors duration-300">
+<span class="material-symbols-outlined text-[28px] text-primary-container group-hover:text-white" style="font-variation-settings: 'wght' 300;">local_parking</span>
+</div>
+</div>
+<div>
+<h3 class="font-h3 text-h3 text-on-surface mb-xs">Güvenli Otopark</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">Araçlarınız için 7/24 güvenlik kameralı özel park alanı.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Room Previews -->
+<section class="py-xl bg-background">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h2 class="font-h2 text-h2 text-on-surface mb-sm">Odalarımız</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">Her zevke ve ihtiyaca uygun, özenle dekore edilmiş oda seçenekleri.</p>
+</div>
+<a class="hidden md:flex items-center text-primary-container font-label-caps text-label-caps hover:opacity-80 transition-opacity" href="#">
+                        TÜM ODALARI GÖR <span class="material-symbols-outlined ml-xs text-[16px]">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md">
+<!-- Room 1 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-soft overflow-hidden group">
+<div class="relative h-[200px] overflow-hidden">
+<img alt="Standart Oda" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A clean, brightly lit standard hotel room featuring a comfortable queen-size bed with crisp white linens. The room has a minimalist aesthetic with neutral wall colors, a small wooden bedside table with a modern lamp, and a large window letting in daylight. The atmosphere is calm and inviting, typical of a professional, modern suite." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAISXhQZP8q8grkKN-q66CAPjVg4zFhNdRuYbAwIBsWMbXOhUCRUPDg2EVf0elPZhFNjKLkF8dgjjwCrZRm3Xdn2bjmmzz_YCgh8wMHa-EycHV-sYy6vwazx5LD-tSFpJOVrmyagEOtNo_Dj04ucIHTD_Az4hoAEq6VayNY4AyDkP3-Nqjb7wziLXyoGgKGRdRbATnpRutbeUGQCIt2Tp3JI2ShGEnjAQknsfGDNKsimoSYJaZumxjwgJN2BvG9gZbxhqxIv0FrsQb-"/>
+</div>
+<div class="p-md">
+<h3 class="font-h3 text-h3 text-on-surface mb-xs">Standart Oda</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Kompakt ve konforlu, iş seyahatleri için ideal.</p>
+<a class="inline-block border-[1.5px] border-[#2C3E50] text-[#2C3E50] font-label-caps text-label-caps py-sm px-md rounded-lg hover:bg-[#2C3E50] hover:text-white transition-colors w-full text-center" href="#">Detaylar</a>
+</div>
+</div>
+<!-- Room 2 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-soft overflow-hidden group">
+<div class="relative h-[200px] overflow-hidden">
+<img alt="Deluxe Süit" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A spacious deluxe hotel suite with an elegant, modern design. The room features a plush king-size bed, a stylish lounge area with a small sofa, and subtle ambient lighting that enhances the warm, premium feel. The color palette includes soft creams, deep navy accents, and rich wood textures, creating a refined and luxurious atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB08yuzbcdEk3yIOO7gXZCWcMt33Xwpz653BiDuFSWT2k4N4T7wsfA9wcdQk_3Xe8jzDkZvJjC-kQQaGRDOHDttmlQ2o5hpAbNbVIIC_LCqh3STegIo8AQCv4kfdl_4NBklT8HKFwt6MVRCX9OWfavpl8yen9NKY6gJoE-jMKEpKTT9cTPKWCTLPhU1XiAtaSXfTM8ATvmOCkHZXlKKyYWMguvEwZeZDKjIZ3dP7hL4Un7saZ2Wm-iWxSP62TC7ZE84UrkLCD0qMQGS"/>
+</div>
+<div class="p-md">
+<h3 class="font-h3 text-h3 text-on-surface mb-xs">Deluxe Süit</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Ekstra alan ve üst düzey konfor arayanlar için.</p>
+<a class="inline-block border-[1.5px] border-[#2C3E50] text-[#2C3E50] font-label-caps text-label-caps py-sm px-md rounded-lg hover:bg-[#2C3E50] hover:text-white transition-colors w-full text-center" href="#">Detaylar</a>
+</div>
+</div>
+<!-- Room 3 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-soft overflow-hidden group">
+<div class="relative h-[200px] overflow-hidden">
+<img alt="Aile Odası" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A family-friendly hotel room with a modern, airy design. The space includes a large main bed and an additional single bed subtly positioned in an alcove. The decor is bright and minimalist, utilizing light wood tones and off-white walls. Large windows provide ample natural light, making the room feel open, clean, and welcoming." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1-vX7bvNswIOeTctyodIw7LjGj8GJ9LXHtvbPmWCxwmqEN-yUFuYNui2nCrYRqN165XNKu3AIuPNQLpJDjCHLbg5QXpEDuG7mXJQEaWIzVHoWAQVTpHxp-a-BLIZrv8-g3r02tPgVZDC8AUL7_kf_UwdzmzMZJvaP3Z-7VA-mPhU3S_3Z1r7baNSq9TcvWG9uziUOybbP-3zhiKvqZc9aKycqv9vZlb49hYGqIDN27WAyyoyqZ2k89o3BOHgNtGGobiS8GjzOYwvU"/>
+</div>
+<div class="p-md">
+<h3 class="font-h3 text-h3 text-on-surface mb-xs">Aile Odası</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Geniş aileler için ferah ve birleşik yaşam alanı.</p>
+<a class="inline-block border-[1.5px] border-[#2C3E50] text-[#2C3E50] font-label-caps text-label-caps py-sm px-md rounded-lg hover:bg-[#2C3E50] hover:text-white transition-colors w-full text-center" href="#">Detaylar</a>
+</div>
+</div>
+<!-- Room 4 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-soft overflow-hidden group">
+<div class="relative h-[200px] overflow-hidden">
+<img alt="Premium Süit" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="The pinnacle of luxury in a premium hotel suite. The image showcases an expansive room with a sophisticated aesthetic, featuring high-end furniture, a dedicated workspace, and a breathtaking panoramic view through massive windows. The lighting is soft and ambient, highlighting premium materials like marble and dark wood, embodying a quietly premium, elegant vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCngHF-bhC3Yaa582MTsRgXc3q8QF26USngvsym0sdNfObtV0jrh-VLw4rkh6RH6lLrPmsbNhvPJLF1ny0Y81ImXW67uzj2Sbf6bPbSn2E_dQID9zD0HDDnwRCz-3vrlOYjgQ3eKktjnQ3BH9slr2SNv6KNK2wxFVbcQ_iq7YHJRQ5esoZOlouqssMugQJbi7RMwYk0BRZYzmNJErZnrPeAjptJ8Cvx_-OnUXTsHC9xQ1tXDQXoTi20nsaa8qypDP0D5Q0yFxyjbssh"/>
+</div>
+<div class="p-md">
+<h3 class="font-h3 text-h3 text-on-surface mb-xs">Premium Süit</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">En üst düzey lüks ve ayrıcalıklı hizmet deneyimi.</p>
+<a class="inline-block border-[1.5px] border-[#2C3E50] text-[#2C3E50] font-label-caps text-label-caps py-sm px-md rounded-lg hover:bg-[#2C3E50] hover:text-white transition-colors w-full text-center" href="#">Detaylar</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Gallery Preview -->
+<!-- Gallery Section -->
+<section class="py-xl bg-surface-container-low overflow-hidden">
+<div class="max-w-container-max mx-auto px-gutter mb-lg flex justify-between items-end">
+<div>
+<h2 class="font-h2 text-h2 text-on-surface mb-sm">Galeri</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">Otelimizden ve konforlu süitlerimizden kareler.</p>
+</div>
+<a class="hidden md:flex items-center text-primary-container font-label-caps text-label-caps hover:opacity-80 transition-opacity" href="#">
+            TÜM GALERİYİ GÖR <span class="material-symbols-outlined ml-xs text-[16px]">arrow_forward</span>
+</a>
+</div>
+<div class="relative">
+<div class="flex gap-md overflow-x-auto pb-lg px-gutter scrollbar-hide snap-x snap-mandatory group cursor-grab active:cursor-grabbing">
+<!-- Gallery Item 1 -->
+<div class="flex-shrink-0 w-[300px] md:w-[450px] aspect-[4/3] rounded-xl overflow-hidden shadow-soft snap-start">
+<img alt="Otel Detay 1" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM19pkjwyvZ3w3UcNbooOoHQyk5QYs3r_aIOwzWHDFjCAq520U8mfZKqVRxe1UuOgmKSpowKxyf1zJEylo4_eojDcZMGJ_wwgdEEoahDRO_bQdDWP_bttynTtf5g1DGk6f5xGrTZAZmBuuJ02fyMwN7_EhxrwwvfxORNY24BsZL-XiqBCQmNOhXR3lnf2bFybPohK9S5ohibEwV55rAuG9y_DbQHELtRIUmXsHOe_NRsd5TfGE6629OtZ0wes37Dm4AlBFGilLKogA"/>
+</div>
+<!-- Gallery Item 2 -->
+<div class="flex-shrink-0 w-[300px] md:w-[450px] aspect-[4/3] rounded-xl overflow-hidden shadow-soft snap-start">
+<img alt="Otel Detay 2" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB08yuzbcdEk3yIOO7gXZCWcMt33Xwpz653BiDuFSWT2k4N4T7wsfA9wcdQk_3Xe8jzDkZvJjC-kQQaGRDOHDttmlQ2o5hpAbNbVIIC_LCqh3STegIo8AQCv4kfdl_4NBklT8HKFwt6MVRCX9OWfavpl8yen9NKY6gJoE-jMKEpKTT9cTPKWCTLPhU1XiAtaSXfTM8ATvmOCkHZXlKKyYWMguvEwZeZDKjIZ3dP7hL4Un7saZ2Wm-iWxSP62TC7ZE84UrkLCD0qMQGS"/>
+</div>
+<!-- Gallery Item 3 -->
+<div class="flex-shrink-0 w-[300px] md:w-[450px] aspect-[4/3] rounded-xl overflow-hidden shadow-soft snap-start">
+<img alt="Otel Detay 3" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCngHF-bhC3Yaa582MTsRgXc3q8QF26USngvsym0sdNfObtV0jrh-VLw4rkh6RH6lLrPmsbNhvPJLF1ny0Y81ImXW67uzj2Sbf6bPbSn2E_dQID9zD0HDDnwRCz-3vrlOYjgQ3eKktjnQ3BH9slr2SNv6KNK2wxFVbcQ_iq7YHJRQ5esoZOlouqssMugQJbi7RMwYk0BRZYzmNJErZnrPeAjptJ8Cvx_-OnUXTsHC9xQ1tXDQXoTi20nsaa8qypDP0D5Q0yFxyjbssh"/>
+</div>
+<!-- Gallery Item 4 -->
+<div class="flex-shrink-0 w-[300px] md:w-[450px] aspect-[4/3] rounded-xl overflow-hidden shadow-soft snap-start">
+<img alt="Otel Detay 4" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1-vX7bvNswIOeTctyodIw7LjGj8GJ9LXHtvbPmWCxwmqEN-yUFuYNui2nCrYRqN165XNKu3AIuPNQLpJDjCHLbg5QXpEDuG7mXJQEaWIzVHoWAQVTpHxp-a-BLIZrv8-g3r02tPgVZDC8AUL7_kf_UwdzmzMZJvaP3Z-7VA-mPhU3S_3Z1r7baNSq9TcvWG9uziUOybbP-3zhiKvqZc9aKycqv9vZlb49hYGqIDN27WAyyoyqZ2k89o3BOHgNtGGobiS8GjzOYwvU"/>
+</div>
+</div>
+</div>
+<style>
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-900 dark:bg-black w-full pt-16 pb-8 border-t border-slate-800">
+<div class="max-w-[1200px] mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+<div>
+<span class="text-lg font-bold text-white mb-4 block">Koğ Suit Otel</span>
+<p class="font-manrope text-sm text-gray-400 mb-6">Refined Hospitality in Varto.</p>
+</div>
+<div>
+<h4 class="text-white font-h3 text-h3 mb-4">Hızlı Bağlantılar</h4>
+<ul class="space-y-2">
+<li><a class="font-manrope text-sm text-gray-400 hover:text-amber-500 transition-colors opacity-80 hover:opacity-100" href="#">Ana Sayfa</a></li>
+<li><a class="font-manrope text-sm text-gray-400 hover:text-amber-500 transition-colors opacity-80 hover:opacity-100" href="#">Odalar</a></li>
+<li><a class="font-manrope text-sm text-gray-400 hover:text-amber-500 transition-colors opacity-80 hover:opacity-100" href="#">Galeri</a></li>
+<li><a class="font-manrope text-sm text-gray-400 hover:text-amber-500 transition-colors opacity-80 hover:opacity-100" href="#">Hakkımızda</a></li>
+<li><a class="font-manrope text-sm text-gray-400 hover:text-amber-500 transition-colors opacity-80 hover:opacity-100" href="#">İletişim</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-h3 text-h3 mb-4">Yasal</h4>
+<ul class="space-y-2">
+<li><a class="font-manrope text-sm text-gray-400 hover:text-amber-500 transition-colors opacity-80 hover:opacity-100" href="#">KVKK</a></li>
+<li><a class="font-manrope text-sm text-gray-400 hover:text-amber-500 transition-colors opacity-80 hover:opacity-100" href="#">Gizlilik Sözleşmesi</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-h3 text-h3 mb-4">İletişim</h4>
+<p class="font-manrope text-sm text-gray-400 mb-2">Varto, Merkez</p>
+<p class="font-manrope text-sm text-gray-400 mb-2">+90 (555) 123 45 67</p>
+<p class="font-manrope text-sm text-gray-400">info@kogsuitotel.com</p>
+</div>
+</div>
+<div class="max-w-[1200px] mx-auto px-6 mt-12 pt-8 border-t border-slate-800">
+<p class="font-manrope text-sm text-gray-400 text-center">© 2024 Koğ Suit Otel. Refined Hospitality in Varto.</p>
+</div>
+</footer>
+</body></html>

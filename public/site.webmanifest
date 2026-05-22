@@ -1,0 +1,28 @@
+{
+  "name": "Koğ Suit Otel — Varto Muş Butik Otel",
+  "short_name": "Koğ Suit Otel",
+  "description": "Refined Hospitality in Varto. Muş Varto'da beş özenli süitle butik konaklama.",
+  "lang": "tr-TR",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f4ed",
+  "theme_color": "#6b7553",
+  "categories": ["travel", "hospitality", "lifestyle"],
+  "icons": [
+    {
+      "src": "/images/logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}
