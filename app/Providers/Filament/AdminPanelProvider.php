@@ -74,6 +74,11 @@ class AdminPanelProvider extends PanelProvider
                     ->collapsed(),
             ])
 
+            // ── Dark mode kapalı — Olive Sanctuary palette light mode için
+            //    tasarlandı; custom Blade'lerdeki inline style'lar dark mode'a
+            //    göre koordineli değil. Sistem dark tercihi panel'i ele geçirmesin.
+            ->darkMode(false)
+
             // ── Sidebar — masaüstünde daraltılabilir ──
             ->sidebarCollapsibleOnDesktop()
 
