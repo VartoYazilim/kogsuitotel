@@ -100,9 +100,24 @@
         <div class="md:col-span-2 bg-surface-card rounded-card p-md shadow-lift">
             <p class="font-display font-semibold text-lg text-ink mb-sm">Hızlı Müsaitlik</p>
             <form action="{{ route('reservations.create') }}" method="GET" class="space-y-sm">
+                {{-- 1) Oda seçimi (önce oda — sahibin tercihi ile, ardından
+                       tarihler odadaki dolu günlerle filtrelenebilir) --}}
+                <div>
+                    <label for="hero-room" class="block font-display text-[10px] tracking-[0.2em] uppercase text-ink-soft mb-xs">Oda</label>
+                    <select id="hero-room" name="oda"
+                            data-fp-hero-room
+                            class="w-full bg-surface border border-border-soft focus:bg-surface-card focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none rounded-btn px-sm py-sm text-sm transition">
+                        <option value="">Tüm odalar</option>
+                        @foreach (\App\Models\Room::active()->ordered()->get() as $r)
+                            <option value="{{ $r->slug }}">{{ $r->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                {{-- 2) Tarihler (giriş + çıkış) --}}
                 <div class="grid grid-cols-2 gap-sm">
                     <div>
-                        <label class="block font-display text-[10px] tracking-[0.2em] uppercase text-ink-soft mb-xs">Giriş</label>
+                        <label for="hero-checkin" class="block font-display text-[10px] tracking-[0.2em] uppercase text-ink-soft mb-xs">Giriş</label>
                         <input type="text" name="check_in" id="hero-checkin"
                                data-fp-simple data-fp-linked-to="#hero-checkout"
                                placeholder="Tarih Seçiniz"
@@ -110,7 +125,7 @@
                                class="w-full bg-surface border border-border-soft focus:bg-surface-card focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none rounded-btn px-sm py-sm text-sm transition cursor-pointer" />
                     </div>
                     <div>
-                        <label class="block font-display text-[10px] tracking-[0.2em] uppercase text-ink-soft mb-xs">Çıkış</label>
+                        <label for="hero-checkout" class="block font-display text-[10px] tracking-[0.2em] uppercase text-ink-soft mb-xs">Çıkış</label>
                         <input type="text" name="check_out" id="hero-checkout"
                                data-fp-simple
                                placeholder="Tarih Seçiniz"
@@ -118,15 +133,8 @@
                                class="w-full bg-surface border border-border-soft focus:bg-surface-card focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none rounded-btn px-sm py-sm text-sm transition cursor-pointer" />
                     </div>
                 </div>
-                <div>
-                    <label for="hero-room" class="block font-display text-[10px] tracking-[0.2em] uppercase text-ink-soft mb-xs">Oda</label>
-                    <select id="hero-room" name="oda" class="w-full bg-surface border border-border-soft focus:bg-surface-card focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none rounded-btn px-sm py-sm text-sm transition">
-                        <option value="">Tümünü Göster</option>
-                        @foreach (\App\Models\Room::active()->ordered()->get() as $r)
-                            <option value="{{ $r->slug }}">{{ $r->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
+
+                {{-- 3) Müsaitlik kontrol et --}}
                 <button type="submit"
                         class="w-full bg-primary hover:bg-primary-dark text-white font-display font-semibold tracking-wide py-sm rounded-btn transition-colors">
                     Müsaitlik Kontrol Et

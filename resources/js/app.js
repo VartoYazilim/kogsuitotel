@@ -44,7 +44,7 @@ function initReservationDatePickers() {
         dateFormat: 'Y-m-d',
         altInput: true,
         altFormat: 'd F Y, l',
-        disableMobile: false,
+        disableMobile: true, // Flatpickr UI mobile'da da kullansin; native fallback eski format gosteriyordu
         animate: true,
     };
 
@@ -106,7 +106,7 @@ function initSimpleDatePickers() {
             dateFormat: 'Y-m-d',
             altInput: true,
             altFormat: 'd F Y, l',
-            disableMobile: false,
+            disableMobile: true, // Flatpickr UI mobile'da da kullansin; native fallback eski format gosteriyordu
         };
 
         const picker = flatpickr(el, opts);
@@ -180,8 +180,33 @@ function initReservationSummary() {
     recalc();
 }
 
+/**
+ * Hero formundaki oda secimi degistiginde, secilen odanin dolu gunleri
+ * giris/cikis tarihi Flatpickr'larina disable olarak inject edilir.
+ * Boylece kullanici "once oda sec sonra tarih" akisinda dogru sinyalleri alir.
+ */
+function initHeroForm() {
+    const roomSelect = document.querySelector('[data-fp-hero-room]');
+    const checkInEl = document.querySelector('#hero-checkin');
+    const checkOutEl = document.querySelector('#hero-checkout');
+
+    if (!roomSelect || !checkInEl || !checkOutEl) return;
+
+    async function applyDates(slug) {
+        const dates = slug ? await fetchUnavailableDates(slug) : [];
+        checkInEl._flatpickr?.set('disable', dates);
+        checkOutEl._flatpickr?.set('disable', dates);
+    }
+
+    roomSelect.addEventListener('change', (e) => applyDates(e.target.value));
+
+    // URL'den prefill ile gelen oda varsa ilk yuklemede uygula
+    if (roomSelect.value) applyDates(roomSelect.value);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initReservationDatePickers();
     initSimpleDatePickers();
+    initHeroForm();
     initReservationSummary();
 });

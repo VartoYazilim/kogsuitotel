@@ -22,7 +22,7 @@ use UnitEnum;
  * InteractsWithForms trait `$form` property'sini magic `__get` ile expose eder.
  * Larastan static analiz bunu görmez — PHPDoc ile tip beyan ediyoruz.
  *
- * @property-read \Filament\Schemas\Schema $form
+ * @property-read Schema $form
  */
 class Availability extends Page implements HasForms
 {

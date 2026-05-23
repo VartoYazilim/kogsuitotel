@@ -175,12 +175,20 @@
                class="hidden sm:inline-flex bg-primary hover:bg-primary-dark text-white font-display font-semibold tracking-wide px-md py-sm rounded-btn transition-colors text-sm">
                 Rezervasyon Yap
             </a>
+            {{-- Mobil menü toggle — saf JS (public site'de Alpine yok).
+                 aria-expanded/aria-controls erişilebilirlik için. --}}
             <button type="button"
-                    x-data="{ open: false }"
-                    @click="open = !open; document.getElementById('mobile-menu').classList.toggle('hidden')"
-                    class="md:hidden p-sm rounded-btn hover:bg-surface-alt transition-colors"
-                    aria-label="Menüyü Aç">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    id="mobile-menu-toggle"
+                    aria-label="Menüyü Aç/Kapat"
+                    aria-controls="mobile-menu"
+                    aria-expanded="false"
+                    onclick="
+                        const m = document.getElementById('mobile-menu');
+                        const hidden = m.classList.toggle('hidden');
+                        this.setAttribute('aria-expanded', hidden ? 'false' : 'true');
+                    "
+                    class="md:hidden p-sm rounded-btn hover:bg-surface-alt transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
             </button>
