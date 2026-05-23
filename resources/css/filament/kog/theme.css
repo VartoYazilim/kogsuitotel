@@ -23,8 +23,8 @@
  | Filament'in `.fi-theme-dark` selector mantığını takip eder).
  */
 
-@source '../../../../app/Filament/**/*';
-@source '../../../../resources/views/filament/**/*';
+@source '../../../../app/Filament/**/*.php';
+@source '../../../../resources/views/filament/**/*.blade.php';
 
 @theme {
     /* Olive Sanctuary — surface (light arka plan) */
