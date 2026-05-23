@@ -9,7 +9,7 @@ class RoomSeeder extends Seeder
 {
     public function run(): void
     {
-        // Demo cover_image path'leri `public/images/demo/rooms/*.jpg` —
+        // Demo cover_image path'leri `public/images/demo/rooms/*.webp` —
         // Unsplash kaynaklı geçici görseller. Sahibin gerçek otel foto'ları
         // geldiğinde Filament admin'den FileUpload ile değiştirilir (yeni
         // path `storage/app/public/rooms/covers/*` formatında olur).
@@ -22,7 +22,7 @@ class RoomSeeder extends Seeder
                 'capacity' => 2,
                 'base_price' => 1500.00,
                 'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Sıcak Su', 'Çalışma Masası'],
-                'cover_image' => 'images/demo/rooms/standart.jpg',
+                'cover_image' => 'images/demo/rooms/standart.webp',
                 'sort_order' => 10,
             ],
             [
@@ -32,7 +32,7 @@ class RoomSeeder extends Seeder
                 'capacity' => 2,
                 'base_price' => 2000.00,
                 'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Mini Bar', 'Oturma Köşesi'],
-                'cover_image' => 'images/demo/rooms/suit.jpg',
+                'cover_image' => 'images/demo/rooms/suit.webp',
                 'sort_order' => 20,
             ],
             [
@@ -42,7 +42,7 @@ class RoomSeeder extends Seeder
                 'capacity' => 4,
                 'base_price' => 2400.00,
                 'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Mini Bar', 'Çocuk Yatağı', 'Geniş Banyo'],
-                'cover_image' => 'images/demo/rooms/aile.jpg',
+                'cover_image' => 'images/demo/rooms/aile.webp',
                 'sort_order' => 30,
             ],
             [
@@ -52,7 +52,7 @@ class RoomSeeder extends Seeder
                 'capacity' => 3,
                 'base_price' => 3500.00,
                 'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Mini Bar', 'Jakuzi', 'Panoramik Manzara', 'Yastık Menüsü'],
-                'cover_image' => 'images/demo/rooms/deluxe.jpg',
+                'cover_image' => 'images/demo/rooms/deluxe.webp',
                 'sort_order' => 40,
             ],
             [
@@ -62,7 +62,7 @@ class RoomSeeder extends Seeder
                 'capacity' => 4,
                 'base_price' => 5000.00,
                 'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Mini Bar', 'Jakuzi', 'Şömine', 'Özel Teras', 'Butler Hizmeti', 'Karşılama İkramı'],
-                'cover_image' => 'images/demo/rooms/premium.jpg',
+                'cover_image' => 'images/demo/rooms/premium.webp',
                 'sort_order' => 50,
             ],
         ];

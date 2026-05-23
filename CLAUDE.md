@@ -386,18 +386,18 @@ Bu noktalar henüz netleştirilmedi. İlgili faza gelindiğinde kullanıcıya so
 7. **Çoklu dil**: Şimdilik sadece Türkçe. İngilizce gerekirse Laravel'in
    localization sistemiyle eklenir (Faz 2+).
 
-8. **Audit log (`spatie/laravel-activitylog`)**: 2026-05-23 Block 3 güvenlik
-   denetiminde gap olarak tespit edildi. Admin "ödendi" yanlış işaretlerse
-   geri alma trail'i yok; KVKK m.12/3 denetim altyapısı zayıf. Soru: Faz 3
-   (prod deploy) ÖNCESI mi eklenecek, yoksa Faz 4'e mi bırakılacak?
-   Öneri: prod öncesi (1-2 saat iş).
-   Detay: `docs/guvenlik-denetimi-2026-05.md` Madde 10.
+8. ~~**Audit log**~~ → **UYGULANDI** (2026-05-23, commit `bff796b`).
+   `spatie/laravel-activitylog` v4.12 + Reservation/Room/Setting modellerine
+   `LogsActivity` trait + `getActivitylogOptions()`. Status, fiyat, IBAN
+   değişimleri `activity_log` tablosuna `properties.old/attributes` ile
+   yazılır. (Filament UI relation manager Faz 4'te eklenebilir.)
 
-9. **2FA (Filament 2FA plugin veya `pragmarx/google2fa-laravel`)**: Tek
-   admin tek faktör (email+password). Parola leak = tüm misafir verisi
-   açılır. CLAUDE.md Section 9 zaten "prod öncesi" diyor ama paket henüz
-   yüklü değil. Soru: hangisi tercih edilsin? Öneri: Filament resmi plugin
-   (admin UX bütün). Detay: `docs/guvenlik-denetimi-2026-05.md` Madde 9.
+9. ~~**2FA**~~ → **UYGULANDI** (2026-05-23, commit `bff796b`).
+   Filament 4 native MFA — `pragmarx/google2fa` + `bacon/bacon-qr-code`.
+   User modeli `HasAppAuthentication` + `HasAppAuthenticationRecovery`,
+   `AdminPanelProvider::multiFactorAuthentication([AppAuthentication::make()->recoverable()])`.
+   Admin ilk login'de QR setup, sonraki login'lerde 6 haneli kod + recovery
+   code fallback.
 
 10. **KVKK saklama süresi**: Şu an hiçbir rezervasyon otomatik silinmez —
     KVKK m.4/2-d ihlal. Yasal pratik 2 yıl (rezervasyon kaydı için), mali
@@ -464,6 +464,21 @@ talimatı). Hotfix'ler doğru çözümle değiştirildi:
 **Sonuç:** 51 test/128 assertion hâlâ yeşil, Pint temiz, Larastan 0 hata.
 Filament panel artık dark mode destekli, custom Blade'ler Tailwind-temiz,
 admin password disiplini prod-grade, CI Cloud-eşdeğer driver'la test ediyor.
+
+### Demo görseller + prod-grade güvenlik (2026-05-23 son blok)
+
+Cloud demo deploy stabil hale geldikten sonra eklenen iyileştirmeler:
+
+| Alan | Detay |
+|---|---|
+| **Demo görseller** | 14 Unsplash foto `public/images/demo/` (hero/rooms/gallery/og), Room + GalleryImage modellerine `cover_image_url` / `path_url` accessor (demo + Filament upload path polymorphic). RoomSeeder + GalleryImageSeeder demo path'leri set ediyor. |
+| **WebP convert** | 13 görsel PHP GD ile `.jpg` → `.webp` (q=82), **~41% tasarruf** (3.7 MB → 2.2 MB) — LCP iyileştirme. OG image `.jpg` kalır (sosyal medya uyumluluğu). |
+| **Hero arka plan** | Gradient backdrop → `varto-anatolia.webp` arka plan + Olive Sanctuary gradient overlay (90/75/55% opacity), LCP `eager` + `fetchpriority=high`. |
+| **2FA** | Filament 4 native MFA: `pragmarx/google2fa` + `bacon/bacon-qr-code`, User HasAppAuthentication interface, AdminPanelProvider `multiFactorAuthentication([AppAuthentication::make()->recoverable()])`. Migration: `users.app_authentication_secret` + `app_authentication_recovery_codes` (encrypted). |
+| **Audit log** | `spatie/laravel-activitylog` v4.12, Reservation/Room/Setting modellerine LogsActivity trait + getActivitylogOptions. `activity_log` tablosu, `properties.old/attributes` JSON. KVKK m.12/3 denetim altyapısı. |
+| **Test coverage** | 51 → **53 test, 133 assertion** (+2 audit log: reservation status + setting value değişimi). |
+| **Mobile fix** | Hamburger menü saf JS (Alpine yok), Flatpickr `disableMobile:true`, hero form sırası "oda → tarih" (sahibin tercihi). |
+| **Availability sayfası** | Native `<input type=date>` → Filament HasForms + DatePicker (TR locale + Olive Sanctuary + mobile responsive). |
 
 ### Faz 1 — Lokal Altyapı + Public Site (TAMAMLANDI ✓)
 

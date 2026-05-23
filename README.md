@@ -14,13 +14,15 @@ Muş Varto'da açılacak yeni butik otelin resmi web sitesi ve rezervasyon siste
 
 ## Stack
 
-- **Laravel 12.60** + **Filament 4.11** (admin paneli)
+- **Laravel 12.60** + **Filament 4.11** (admin paneli, custom panel theme)
 - **PHP 8.3.30** (Laragon — prod parity Ubuntu 24.04 default ile uyumlu)
 - **Tailwind v4** (CSS-first config, `@theme` directive)
-- **SQLite** lokal · **MariaDB 11** prod
-- **Flatpickr** (modern tarih seçici, TR locale)
+- **SQLite** lokal · **PostgreSQL/MariaDB** prod (CI 2 driver matrix)
+- **Flatpickr** (modern tarih seçici, TR locale, public site)
+- **Filament native MFA** (Google Authenticator, `pragmarx/google2fa` + `bacon/bacon-qr-code`)
+- **Spatie ActivityLog** (admin aksiyonları audit trail — KVKK m.12/3)
 - **Spatie Laravel Sitemap** (yerel SEO için)
-- **Olive Sanctuary** tasarım sistemi (zeytin yeşili + antika altın + sıcak krem)
+- **Olive Sanctuary** tasarım sistemi (zeytin yeşili + antika altın + sıcak krem, light + dark variant)
 
 ---
 
@@ -76,7 +78,7 @@ php artisan serve   # http://localhost:8000
 composer pint                  # Kod stili kontrolü (sadece check)
 composer pint:fix              # Kod stilini otomatik düzelt
 vendor/bin/phpstan analyse     # Larastan statik analiz (level 5)
-composer test                  # PHPUnit (38 test, 68 assertion)
+composer test                  # PHPUnit (53 test, 133 assertion)
 
 php artisan test --coverage    # Coverage raporu (Xdebug gerekli)
 ```
@@ -96,14 +98,22 @@ npm run dev    # Vite dev server, HMR aktif
 ## Admin Panel
 
 **URL**: `/kog-yonetim` (security through obscurity — `/admin` değil)
-**Default admin** (seeder'dan, prod öncesi değiştir):
-- Email: `admin@kogsuitotel.com`
-- Şifre: `changeme123` (`.env`'de `ADMIN_PASSWORD`)
+
+**Admin user** — seeder env-driven, hardcoded password YOK:
+- Email: `admin@kogsuitotel.com` (`.env`'de `ADMIN_EMAIL`)
+- Şifre: `.env`'de **`ADMIN_PASSWORD`** zorunlu (min 12 karakter, placeholder reddedilir)
+- Güçlü password üret: `php -r "echo base64_encode(random_bytes(24)) . PHP_EOL;"`
+
+**Multi-Factor Authentication (MFA)** — Filament 4 native:
+- Login sonrası Google Authenticator / Authy ile QR code tara
+- 6 haneli kod ile giriş; kaybedilirse recovery code'lar ile
 
 İçerikler:
-- **Operasyon** → Rezervasyonlar (kanban, filtre, WhatsApp aksiyonu, status workflow)
+- **Operasyon** → Rezervasyonlar (kanban, filtre, WhatsApp aksiyonu, status workflow), Müsaitlik sorgusu
 - **İçerik** → Odalar, Galeri Görselleri
 - **Sistem** → Ayarlar (IBAN, telefon, saatler, sosyal medya)
+
+**Audit trail** — admin status/oda/setting değişimleri `activity_log` tablosuna işlenir (Spatie ActivityLog, KVKK m.12/3 denetim).
 
 ---
 
@@ -122,11 +132,16 @@ npm run dev    # Vite dev server, HMR aktif
 │   └── Http/Controllers/        # Public + Admin controllers
 ├── config/seo.php               # SEO konfigürasyon (yerel — Varto/Muş)
 ├── database/
-│   ├── migrations/              # 5 tablo
-│   └── seeders/                 # Admin user, 5 oda, 13 setting
+│   ├── migrations/              # 5 + Notifications/JSONB + 2FA + ActivityLog
+│   └── seeders/                 # Admin user, 5 oda, 6 galeri, 13 setting
 ├── lang/tr/                     # Türkçe lokalizasyon (validation, auth)
 ├── public/
 │   ├── images/logo.svg          # Marka logosu (Olive Sanctuary)
+│   ├── images/demo/             # Geçici görseller (Unsplash, WebP, 14 foto)
+│   │   ├── hero/                # Ana sayfa arka plan + hikaye bölümü
+│   │   ├── rooms/               # 5 oda cover (sahibin gerçek foto'larıyla değişecek)
+│   │   ├── gallery/             # 6 galeri görseli (kategori bazlı)
+│   │   └── og/                  # Sosyal medya OG image (JPG — uyumluluk)
 │   ├── favicon.svg              # Sade favicon
 │   ├── robots.txt               # AI crawler izinli
 │   └── site.webmanifest         # PWA install
@@ -140,7 +155,7 @@ npm run dev    # Vite dev server, HMR aktif
 │       ├── gallery/index.blade.php
 │       ├── reservations/        # create, success
 │       └── partials/schema-breadcrumb.blade.php
-└── tests/                       # 38 PHPUnit test (Feature + Unit)
+└── tests/                       # 53 PHPUnit test (Feature + Unit), CI 2 driver matrix
 ```
 
 ---

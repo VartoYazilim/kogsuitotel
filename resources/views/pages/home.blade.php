@@ -67,7 +67,7 @@
 <section class="relative overflow-hidden min-h-[600px] md:min-h-[720px]">
     {{-- Arka plan görseli: Varto/Anadolu manzarası (DEMO — sahibin fotoğrafıyla değişecek).
          LCP optimizasyonu: eager + fetchpriority=high → ana içerik renderlanmadan yüklenmeye başlar. --}}
-    <img src="{{ asset('images/demo/hero/varto-anatolia.jpg') }}"
+    <img src="{{ asset('images/demo/hero/varto-anatolia.webp') }}"
          alt="Varto Anadolu manzarası"
          class="absolute inset-0 w-full h-full object-cover"
          loading="eager"
@@ -284,7 +284,7 @@
         </div>
         <div class="aspect-[4/3] rounded-card shadow-lift relative overflow-hidden">
             {{-- Hikaye gorseli — Varto bolgesi koy/dag manzarasi (DEMO). --}}
-            <img src="{{ asset('images/demo/hero/mountain-village.jpg') }}"
+            <img src="{{ asset('images/demo/hero/mountain-village.webp') }}"
                  alt="Varto bölgesi köy ve dağ manzarası"
                  class="absolute inset-0 w-full h-full object-cover"
                  loading="lazy" />
