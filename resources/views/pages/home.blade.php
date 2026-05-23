@@ -282,8 +282,14 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </a>
         </div>
-        <div class="aspect-[4/3] rounded-card bg-gradient-to-br from-primary via-secondary to-accent shadow-lift relative overflow-hidden">
-            <div class="absolute inset-0 grain opacity-20"></div>
+        <div class="aspect-[4/3] rounded-card shadow-lift relative overflow-hidden">
+            {{-- Hikaye gorseli — Varto bolgesi koy/dag manzarasi (DEMO). --}}
+            <img src="{{ asset('images/demo/hero/mountain-village.jpg') }}"
+                 alt="Varto bölgesi köy ve dağ manzarası"
+                 class="absolute inset-0 w-full h-full object-cover"
+                 loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-tr from-primary-dark/35 to-transparent"></div>
+            <div class="absolute inset-0 grain opacity-15"></div>
         </div>
     </div>
 </section>
@@ -316,15 +322,15 @@
         @endphp
         <div class="grid grid-cols-2 md:grid-cols-4 gap-sm h-[400px]">
             <div class="col-span-2 row-span-2 rounded-card {{ $gradientPalette[0] }} shadow-soft overflow-hidden">
-                @if ($galleryPreview->isNotEmpty() && $galleryPreview[0]->path)
-                    <img src="{{ asset('storage/'.$galleryPreview[0]->path) }}" alt="{{ $galleryPreview[0]->alt_text }}"
+                @if ($galleryPreview->isNotEmpty() && $galleryPreview[0]->path_url)
+                    <img src="{{ $galleryPreview[0]->path_url }}" alt="{{ $galleryPreview[0]->alt_text }}"
                          class="w-full h-full object-cover" loading="lazy" />
                 @endif
             </div>
             @for ($i = 1; $i <= 4; $i++)
                 <div class="rounded-card {{ $gradientPalette[$i] }} shadow-soft overflow-hidden">
-                    @if (isset($galleryPreview[$i]) && $galleryPreview[$i]->path)
-                        <img src="{{ asset('storage/'.$galleryPreview[$i]->path) }}" alt="{{ $galleryPreview[$i]->alt_text }}"
+                    @if (isset($galleryPreview[$i]) && $galleryPreview[$i]->path_url)
+                        <img src="{{ $galleryPreview[$i]->path_url }}" alt="{{ $galleryPreview[$i]->alt_text }}"
                              class="w-full h-full object-cover" loading="lazy" />
                     @endif
                 </div>
