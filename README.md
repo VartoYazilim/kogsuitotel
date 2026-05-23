@@ -19,7 +19,6 @@ Muş Varto'da açılacak yeni butik otelin resmi web sitesi ve rezervasyon siste
 - **Tailwind v4** (CSS-first config, `@theme` directive)
 - **SQLite** lokal · **PostgreSQL/MariaDB** prod (CI 2 driver matrix)
 - **Flatpickr** (modern tarih seçici, TR locale, public site)
-- **Filament native MFA** (Google Authenticator, `pragmarx/google2fa` + `bacon/bacon-qr-code`)
 - **Spatie ActivityLog** (admin aksiyonları audit trail — KVKK m.12/3)
 - **Spatie Laravel Sitemap** (yerel SEO için)
 - **Olive Sanctuary** tasarım sistemi (zeytin yeşili + antika altın + sıcak krem, light + dark variant)
@@ -103,10 +102,6 @@ npm run dev    # Vite dev server, HMR aktif
 - Email: `admin@kogsuitotel.com` (`.env`'de `ADMIN_EMAIL`)
 - Şifre: `.env`'de **`ADMIN_PASSWORD`** zorunlu (min 12 karakter, placeholder reddedilir)
 - Güçlü password üret: `php -r "echo base64_encode(random_bytes(24)) . PHP_EOL;"`
-
-**Multi-Factor Authentication (MFA)** — Filament 4 native:
-- Login sonrası Google Authenticator / Authy ile QR code tara
-- 6 haneli kod ile giriş; kaybedilirse recovery code'lar ile
 
 İçerikler:
 - **Operasyon** → Rezervasyonlar (kanban, filtre, WhatsApp aksiyonu, status workflow), Müsaitlik sorgusu

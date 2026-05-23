@@ -392,12 +392,14 @@ Bu noktalar henüz netleştirilmedi. İlgili faza gelindiğinde kullanıcıya so
    değişimleri `activity_log` tablosuna `properties.old/attributes` ile
    yazılır. (Filament UI relation manager Faz 4'te eklenebilir.)
 
-9. ~~**2FA**~~ → **UYGULANDI** (2026-05-23, commit `bff796b`).
-   Filament 4 native MFA — `pragmarx/google2fa` + `bacon/bacon-qr-code`.
-   User modeli `HasAppAuthentication` + `HasAppAuthenticationRecovery`,
-   `AdminPanelProvider::multiFactorAuthentication([AppAuthentication::make()->recoverable()])`.
-   Admin ilk login'de QR setup, sonraki login'lerde 6 haneli kod + recovery
-   code fallback.
+9. **2FA**: 2026-05-23'te entegre edildi (commit `bff796b`), sahibin kararıyla
+   aynı gün KALDIRILDI (sahip "2FA kaldır" talimatı verdi — demo basit kalsın
+   diye). Filament 4 native MFA + `pragmarx/google2fa` + recovery code'lar
+   hepsi geri çıkarıldı. Tek faktör güvenlik (email+password) riski kabul edildi
+   — admin password disiplini (env zorunlu, min 12 char) + güvenli network
+   (Cloudflare proxy + Origin IP whitelist) ile ek katman. Gelecek talep
+   gelirse: Filament 4 native `multiFactorAuthentication([AppAuthentication::make()])`
+   tek satırla geri eklenebilir (paket zaten Filament transitive dep).
 
 10. **KVKK saklama süresi**: Şu an hiçbir rezervasyon otomatik silinmez —
     KVKK m.4/2-d ihlal. Yasal pratik 2 yıl (rezervasyon kaydı için), mali
@@ -474,7 +476,7 @@ Cloud demo deploy stabil hale geldikten sonra eklenen iyileştirmeler:
 | **Demo görseller** | 14 Unsplash foto `public/images/demo/` (hero/rooms/gallery/og), Room + GalleryImage modellerine `cover_image_url` / `path_url` accessor (demo + Filament upload path polymorphic). RoomSeeder + GalleryImageSeeder demo path'leri set ediyor. |
 | **WebP convert** | 13 görsel PHP GD ile `.jpg` → `.webp` (q=82), **~41% tasarruf** (3.7 MB → 2.2 MB) — LCP iyileştirme. OG image `.jpg` kalır (sosyal medya uyumluluğu). |
 | **Hero arka plan** | Gradient backdrop → `varto-anatolia.webp` arka plan + Olive Sanctuary gradient overlay (90/75/55% opacity), LCP `eager` + `fetchpriority=high`. |
-| **2FA** | Filament 4 native MFA: `pragmarx/google2fa` + `bacon/bacon-qr-code`, User HasAppAuthentication interface, AdminPanelProvider `multiFactorAuthentication([AppAuthentication::make()->recoverable()])`. Migration: `users.app_authentication_secret` + `app_authentication_recovery_codes` (encrypted). |
+| **2FA** | ~~Filament 4 native MFA eklendi~~ → Sahibin kararıyla AYNI GÜN kaldırıldı (demo basit kalsın). Section 10 madde 9'da detay. |
 | **Audit log** | `spatie/laravel-activitylog` v4.12, Reservation/Room/Setting modellerine LogsActivity trait + getActivitylogOptions. `activity_log` tablosu, `properties.old/attributes` JSON. KVKK m.12/3 denetim altyapısı. |
 | **Test coverage** | 51 → **53 test, 133 assertion** (+2 audit log: reservation status + setting value değişimi). |
 | **Mobile fix** | Hamburger menü saf JS (Alpine yok), Flatpickr `disableMobile:true`, hero form sırası "oda → tarih" (sahibin tercihi). |

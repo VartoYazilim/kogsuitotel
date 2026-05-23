@@ -7,7 +7,6 @@ use App\Filament\Widgets\ReservationsChart;
 use App\Filament\Widgets\ReservationStatsOverview;
 use App\Filament\Widgets\TodayActivity;
 use App\Filament\Widgets\WelcomeWidget;
-use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -40,16 +39,6 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('2.5rem')
             ->favicon(asset('favicon.svg'))
             ->login()
-
-            // ── Multi-Factor Authentication — App (TOTP / Google Authenticator) ──
-            // Admin login sonrası MFA challenge → user secret yoksa setup'a yönlenir
-            // (QR code göster, Google Authenticator/Authy ile tara, kodu doğrula,
-            //  recovery code'ları sakla). Sonraki login'lerde kod ister.
-            // KVKK m.12 ek güvenlik tedbiri + CLAUDE.md "prod öncesi zorunlu".
-            ->multiFactorAuthentication([
-                AppAuthentication::make()
-                    ->recoverable(),
-            ])
             ->colors([
                 'primary' => [
                     50 => '#f5f6f1',
