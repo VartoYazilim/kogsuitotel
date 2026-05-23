@@ -123,7 +123,7 @@
                         </div>
                     </div>
                     <a href="{{ route('reservations.create', ['oda' => $room->slug]) }}"
-                       class="block w-full bg-primary hover:bg-primary-dark text-surface font-display font-semibold tracking-wide text-center py-sm rounded-btn transition-colors mb-xs">
+                       class="block w-full bg-primary hover:bg-primary-dark text-white font-display font-semibold tracking-wide text-center py-sm rounded-btn transition-colors mb-xs">
                         Bu Odayı Rezerve Et
                     </a>
                     @php
@@ -132,7 +132,7 @@
                     @endphp
                     @if ($waUrl)
                         <a href="{{ $waUrl }}" target="_blank" rel="noopener"
-                           class="block w-full border-2 border-primary text-primary hover:bg-primary hover:text-surface font-display font-semibold tracking-wide text-center py-sm rounded-btn transition-colors">
+                           class="block w-full border-2 border-primary text-primary hover:bg-primary hover:text-white font-display font-semibold tracking-wide text-center py-sm rounded-btn transition-colors">
                             WhatsApp ile Sor
                         </a>
                     @endif

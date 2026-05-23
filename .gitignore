@@ -20,6 +20,7 @@
 /public/storage
 /storage/*.key
 /storage/pail
+/tmp
 /vendor
 /database/database.sqlite
 /database/database.sqlite-journal

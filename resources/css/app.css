@@ -31,7 +31,9 @@
 
   /* Accent — Antika Altın (logo köprüsü) */
   --color-accent: #b89b6e;
-  --color-accent-dark: #8b7449;
+  /* accent-dark Lighthouse a11y için surface üzerinde 4.5+ kontrast hedefiyle
+     #8b7449 (4.07) → #735f3d (~5.5) — Olive Sanctuary tonunda kalır. */
+  --color-accent-dark: #735f3d;
 
   /* Surfaces — Sıcak Krem temelli */
   --color-surface: #f7f4ed;
@@ -41,7 +43,9 @@
   /* Ink — yeşil-siyah, paletle uyumlu */
   --color-ink: #2a2d24;
   --color-ink-soft: #5a5d52;
-  --color-ink-mute: #8a8c82;
+  /* ink-mute Lighthouse a11y için surface üzerinde 4.5+ kontrast hedefiyle
+     #8a8c82 (3.1) → #6d6f65 (~5.5) — yine yumuşak gri-yeşil. */
+  --color-ink-mute: #6d6f65;
 
   /* Borders */
   --color-border-soft: #d9d2c2;

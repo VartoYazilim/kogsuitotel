@@ -58,7 +58,7 @@
                 {{-- ─────── 1. Oda & Tarih ─────── --}}
                 <div class="bg-surface-card rounded-card p-md md:p-lg shadow-soft border border-border-soft/40 lift">
                     <div class="flex items-center gap-sm mb-md pb-sm border-b border-border-soft">
-                        <span class="w-8 h-8 rounded-pill bg-primary text-surface flex items-center justify-center font-display font-bold text-sm shadow-softer">1</span>
+                        <span class="w-8 h-8 rounded-pill bg-primary text-white flex items-center justify-center font-display font-bold text-sm shadow-softer">1</span>
                         <div>
                             <h2 class="font-display font-semibold text-xl text-ink leading-tight">Oda &amp; Tarih</h2>
                             <p class="font-display text-[10px] tracking-[0.2em] uppercase text-ink-mute mt-0.5">Önce odanızı seçin, ardından tarihleri belirleyin</p>
@@ -134,7 +134,7 @@
                 {{-- ─────── 2. Misafir Bilgileri ─────── --}}
                 <div class="bg-surface-card rounded-card p-md md:p-lg shadow-soft border border-border-soft/40 lift">
                     <div class="flex items-center gap-sm mb-md pb-sm border-b border-border-soft">
-                        <span class="w-8 h-8 rounded-pill bg-primary text-surface flex items-center justify-center font-display font-bold text-sm shadow-softer">2</span>
+                        <span class="w-8 h-8 rounded-pill bg-primary text-white flex items-center justify-center font-display font-bold text-sm shadow-softer">2</span>
                         <div>
                             <h2 class="font-display font-semibold text-xl text-ink leading-tight">Misafir Bilgileri</h2>
                             <p class="font-display text-[10px] tracking-[0.2em] uppercase text-ink-mute mt-0.5">Rezervasyonu yapan kişinin iletişim bilgileri</p>
@@ -245,7 +245,8 @@
                         <label class="flex items-start gap-xs mb-sm text-xs text-ink-soft leading-relaxed cursor-pointer">
                             <input type="checkbox" name="kvkk_consent" value="1" required
                                    {{ old('kvkk_consent') ? 'checked' : '' }}
-                                   class="mt-0.5 accent-primary focus:ring-2 focus:ring-primary/20 cursor-pointer shrink-0" />
+                                   {{-- WCAG 2.2 target-size: min 24x24px touch target (a11y) --}}
+                                   class="mt-0.5 w-6 h-6 accent-primary focus:ring-2 focus:ring-primary/20 cursor-pointer shrink-0" />
                             <span>
                                 <a href="{{ route('kvkk') }}" target="_blank" rel="noopener" class="text-primary underline-grow hover:text-primary-dark font-medium">KVKK Aydınlatma Metnini</a>
                                 okudum, kişisel verilerimin rezervasyon işlemleri için
@@ -254,7 +255,7 @@
                         </label>
 
                         <button type="submit"
-                                class="w-full bg-accent hover:bg-accent-dark text-surface font-display font-semibold tracking-wide py-sm rounded-btn transition-colors inline-flex items-center justify-center gap-xs shadow-soft hover:shadow-lift active:scale-[0.98]">
+                                class="w-full bg-accent-dark hover:bg-accent text-white font-display font-semibold tracking-wide py-sm rounded-btn transition-colors inline-flex items-center justify-center gap-xs shadow-soft hover:shadow-lift active:scale-[0.98]">
                             <span>Bilgileri Onayla</span>
                             <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </button>

@@ -83,7 +83,7 @@
             </p>
             <div class="flex flex-wrap gap-sm">
                 <a href="{{ route('reservations.create') }}"
-                   class="bg-accent hover:bg-accent-dark text-surface font-display font-semibold tracking-wide px-md py-sm rounded-btn transition-colors inline-flex items-center gap-xs">
+                   class="bg-accent-dark hover:bg-accent text-white font-display font-semibold tracking-wide px-md py-sm rounded-btn transition-colors inline-flex items-center gap-xs">
                     Rezervasyon Yap
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -119,8 +119,8 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block font-display text-[10px] tracking-[0.2em] uppercase text-ink-soft mb-xs">Oda</label>
-                    <select name="oda" class="w-full bg-surface border border-border-soft focus:bg-surface-card focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none rounded-btn px-sm py-sm text-sm transition">
+                    <label for="hero-room" class="block font-display text-[10px] tracking-[0.2em] uppercase text-ink-soft mb-xs">Oda</label>
+                    <select id="hero-room" name="oda" class="w-full bg-surface border border-border-soft focus:bg-surface-card focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none rounded-btn px-sm py-sm text-sm transition">
                         <option value="">Tümünü Göster</option>
                         @foreach (\App\Models\Room::active()->ordered()->get() as $r)
                             <option value="{{ $r->slug }}">{{ $r->name }}</option>
@@ -128,7 +128,7 @@
                     </select>
                 </div>
                 <button type="submit"
-                        class="w-full bg-primary hover:bg-primary-dark text-surface font-display font-semibold tracking-wide py-sm rounded-btn transition-colors">
+                        class="w-full bg-primary hover:bg-primary-dark text-white font-display font-semibold tracking-wide py-sm rounded-btn transition-colors">
                     Müsaitlik Kontrol Et
                 </button>
             </form>

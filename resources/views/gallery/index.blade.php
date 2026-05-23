@@ -23,7 +23,7 @@
             <a href="{{ route('gallery.index') }}"
                @class([
                    'px-md py-xs rounded-pill text-sm font-display font-medium transition-colors',
-                   'bg-primary text-surface' => ! $activeCategory,
+                   'bg-primary text-white' => ! $activeCategory,
                    'bg-surface-card text-ink-soft border border-border-soft hover:border-primary' => $activeCategory,
                ])>
                 Tümü
@@ -32,7 +32,7 @@
                 <a href="{{ route('gallery.index', ['kategori' => $slug]) }}"
                    @class([
                        'px-md py-xs rounded-pill text-sm font-display font-medium transition-colors',
-                       'bg-primary text-surface' => $activeCategory === $slug,
+                       'bg-primary text-white' => $activeCategory === $slug,
                        'bg-surface-card text-ink-soft border border-border-soft hover:border-primary' => $activeCategory !== $slug,
                    ])>
                     {{ $label }}

@@ -140,7 +140,7 @@
                  class="h-14 w-auto transition-transform duration-500 ease-out group-hover:scale-105 group-hover:rotate-[-3deg]" />
             <div class="flex flex-col">
                 <span class="font-display font-bold text-base leading-tight text-ink tracking-tight">
-                    Koğ Suit <span class="text-accent">Otel</span>
+                    Koğ Suit <span class="text-accent-dark">Otel</span>
                 </span>
                 <span class="font-display text-[10px] tracking-[0.25em] uppercase text-ink-mute leading-tight mt-0.5">
                     Varto · Muş
@@ -172,7 +172,7 @@
 
         <div class="flex items-center gap-sm">
             <a href="{{ route('reservations.create') }}"
-               class="hidden sm:inline-flex bg-primary hover:bg-primary-dark text-surface font-display font-semibold tracking-wide px-md py-sm rounded-btn transition-colors text-sm">
+               class="hidden sm:inline-flex bg-primary hover:bg-primary-dark text-white font-display font-semibold tracking-wide px-md py-sm rounded-btn transition-colors text-sm">
                 Rezervasyon Yap
             </a>
             <button type="button"
@@ -201,7 +201,7 @@
                 </a>
             @endforeach
             <a href="{{ route('reservations.create') }}"
-               class="block mt-sm bg-primary text-surface font-display font-semibold text-center px-md py-sm rounded-btn">
+               class="block mt-sm bg-primary text-white font-display font-semibold text-center px-md py-sm rounded-btn">
                 Rezervasyon Yap
             </a>
         </nav>

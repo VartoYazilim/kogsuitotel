@@ -81,7 +81,7 @@
                 dakikada rezervasyonunuzu oluşturun.
             </p>
             <a href="{{ route('reservations.create') }}"
-               class="inline-flex items-center gap-xs bg-primary hover:bg-primary-dark text-surface font-display font-semibold tracking-wide px-md py-sm rounded-btn transition-colors">
+               class="inline-flex items-center gap-xs bg-primary hover:bg-primary-dark text-white font-display font-semibold tracking-wide px-md py-sm rounded-btn transition-colors">
                 Rezervasyon Yap
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </a>

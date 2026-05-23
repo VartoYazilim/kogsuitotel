@@ -40,7 +40,8 @@
                         </div>
                     </div>
                     <div class="p-md">
-                        <h3 class="font-display font-semibold text-xl text-ink mb-xs">{{ $room->name }}</h3>
+                        {{-- Heading hierarchy: sayfa H1 ("Beş özenli süit") + card H2 (oda adları). --}}
+                        <h2 class="font-display font-semibold text-xl text-ink mb-xs">{{ $room->name }}</h2>
                         <p class="text-sm text-ink-soft leading-relaxed mb-sm line-clamp-3">
                             {{ $room->description }}
                         </p>
