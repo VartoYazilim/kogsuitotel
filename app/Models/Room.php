@@ -52,6 +52,41 @@ class Room extends Model
         return $query->orderBy('sort_order')->orderBy('id');
     }
 
+    /**
+     * Cover image için public URL döner — kaynağa göre prefix otomatik.
+     *
+     * Pattern'lar:
+     * - `images/demo/rooms/X.jpg` → demo (git'te public/images altında)
+     * - `rooms/covers/X.jpg`     → Filament admin upload (storage/app/public)
+     * - `/images/X.jpg`          → leading slash, absolute public
+     * - `http(s)://...`          → external (CDN, S3)
+     *
+     * Blade'lerde: `{{ $room->cover_image_url }}` — tüm pattern'leri handle eder.
+     */
+    public function getCoverImageUrlAttribute(): ?string
+    {
+        $path = $this->cover_image;
+
+        if (! $path) {
+            return null;
+        }
+
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        if (str_starts_with($path, '/')) {
+            return asset(ltrim($path, '/'));
+        }
+
+        if (str_starts_with($path, 'images/')) {
+            return asset($path);
+        }
+
+        // Default: Filament FileUpload (storage/app/public altına yazar)
+        return asset('storage/'.$path);
+    }
+
     /** Yeni oda eklenirken slug yoksa name'den üret. */
     protected static function booted(): void
     {

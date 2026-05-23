@@ -29,8 +29,8 @@
                 <a href="{{ route('rooms.show', $room) }}"
                    class="group bg-surface-card rounded-card overflow-hidden shadow-soft border border-border-soft/30 lift relative">
                     <div class="aspect-[4/3] bg-gradient-to-br from-primary-light to-secondary-light relative overflow-hidden">
-                        @if ($room->cover_image)
-                            <img src="{{ asset('storage/'.$room->cover_image) }}" alt="{{ $room->name }}"
+                        @if ($room->cover_image_url)
+                            <img src="{{ $room->cover_image_url }}" alt="{{ $room->name }}"
                                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
                         @endif
                         <div class="absolute top-sm left-sm">

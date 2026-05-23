@@ -48,7 +48,7 @@
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-sm">
                 @foreach ($images as $image)
                     <div class="aspect-square rounded-card overflow-hidden bg-surface-alt shadow-softer lift relative group cursor-zoom-in">
-                        <img src="{{ asset('storage/'.$image->path) }}" alt="{{ $image->alt_text }}"
+                        <img src="{{ $image->path_url }}" alt="{{ $image->alt_text }}"
                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                              loading="lazy" />
                         <div class="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>

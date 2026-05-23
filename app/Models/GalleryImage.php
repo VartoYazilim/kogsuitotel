@@ -33,4 +33,30 @@ class GalleryImage extends Model
     {
         return $query->where('category', $category);
     }
+
+    /**
+     * Path için public URL — Room::cover_image_url ile aynı pattern (demo + admin upload).
+     */
+    public function getPathUrlAttribute(): ?string
+    {
+        $path = $this->path;
+
+        if (! $path) {
+            return null;
+        }
+
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        if (str_starts_with($path, '/')) {
+            return asset(ltrim($path, '/'));
+        }
+
+        if (str_starts_with($path, 'images/')) {
+            return asset($path);
+        }
+
+        return asset('storage/'.$path);
+    }
 }

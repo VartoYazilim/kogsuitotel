@@ -64,9 +64,18 @@
 @section('content')
 
 {{-- ─────────── HERO ─────────── --}}
-<section class="relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-primary-dark via-primary to-secondary"></div>
-    <div class="absolute inset-0 grain opacity-30"></div>
+<section class="relative overflow-hidden min-h-[600px] md:min-h-[720px]">
+    {{-- Arka plan görseli: Varto/Anadolu manzarası (DEMO — sahibin fotoğrafıyla değişecek).
+         LCP optimizasyonu: eager + fetchpriority=high → ana içerik renderlanmadan yüklenmeye başlar. --}}
+    <img src="{{ asset('images/demo/hero/varto-anatolia.jpg') }}"
+         alt="Varto Anadolu manzarası"
+         class="absolute inset-0 w-full h-full object-cover"
+         loading="eager"
+         fetchpriority="high" />
+
+    {{-- Olive Sanctuary gradient overlay — text okunabilirliği + marka tonu --}}
+    <div class="absolute inset-0 bg-gradient-to-br from-primary-dark/90 via-primary-dark/75 to-secondary/55"></div>
+    <div class="absolute inset-0 grain opacity-20"></div>
 
     <div class="relative z-10 max-w-[1200px] mx-auto px-md py-xl md:py-[120px] grid grid-cols-1 md:grid-cols-5 gap-md items-center">
         <div class="md:col-span-3 text-surface">
@@ -216,8 +225,8 @@
                 <a href="{{ route('rooms.show', $room) }}"
                    class="group bg-surface-card rounded-card overflow-hidden shadow-soft border border-border-soft/30 lift">
                     <div class="aspect-[4/3] bg-gradient-to-br from-primary-light to-secondary-light relative overflow-hidden">
-                        @if ($room->cover_image)
-                            <img src="{{ asset('storage/'.$room->cover_image) }}" alt="{{ $room->name }}"
+                        @if ($room->cover_image_url)
+                            <img src="{{ $room->cover_image_url }}" alt="{{ $room->name }}"
                                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
                         @endif
                         <div class="absolute top-sm left-sm">

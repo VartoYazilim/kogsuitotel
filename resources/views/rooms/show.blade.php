@@ -23,7 +23,7 @@
         'name' => $f,
         'value' => true,
     ])->values()->all(),
-    'image' => $room->cover_image ? [url('storage/'.$room->cover_image)] : [url(config('seo.og.default_image'))],
+    'image' => $room->cover_image_url ? [$room->cover_image_url] : [url(config('seo.og.default_image'))],
     'containedInPlace' => ['@id' => url('/').'#hotel'],
     'offers' => [
         '@type' => 'Offer',
@@ -60,8 +60,8 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
             <div class="lg:col-span-2">
                 <div class="aspect-[16/9] rounded-card overflow-hidden bg-gradient-to-br from-primary to-secondary mb-md">
-                    @if ($room->cover_image)
-                        <img src="{{ asset('storage/'.$room->cover_image) }}" alt="{{ $room->name }}"
+                    @if ($room->cover_image_url)
+                        <img src="{{ $room->cover_image_url }}" alt="{{ $room->name }}"
                              class="w-full h-full object-cover" />
                     @endif
                 </div>
@@ -148,8 +148,8 @@
                         <a href="{{ route('rooms.show', $other) }}"
                            class="group bg-surface-card rounded-card overflow-hidden shadow-soft hover:shadow-lift transition-all">
                             <div class="aspect-[4/3] bg-gradient-to-br from-primary-light to-secondary-light">
-                                @if ($other->cover_image)
-                                    <img src="{{ asset('storage/'.$other->cover_image) }}" alt="{{ $other->name }}" class="w-full h-full object-cover" loading="lazy" />
+                                @if ($other->cover_image_url)
+                                    <img src="{{ $other->cover_image_url }}" alt="{{ $other->name }}" class="w-full h-full object-cover" loading="lazy" />
                                 @endif
                             </div>
                             <div class="p-md">

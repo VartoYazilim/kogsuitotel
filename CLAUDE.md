@@ -365,8 +365,17 @@ Bu noktalar henüz netleştirilmedi. İlgili faza gelindiğinde kullanıcıya so
 3. **Google Analytics**: Eklenecek mi? KVKK'lı çerez banner gerektirir.
    Alternatif: Cloudflare Web Analytics (çerezsiz, KVKK dostu, default tercih).
 
-4. **Galeri fotoğrafları**: Şu an Stitch'in AI üretimleri (placeholder).
-   Sahibinden gerçek otel fotoğrafları alınacak — ne zaman?
+4. **Galeri + oda fotoğrafları**: 2026-05-23'te demo amaçlı **Unsplash
+   kaynaklı 14 görsel** eklendi (`public/images/demo/` altında: hero,
+   rooms/, gallery/, og/). RoomSeeder + GalleryImageSeeder bu path'leri
+   set ediyor. Model accessor (`cover_image_url`, `path_url`) hem demo
+   (`images/demo/...`) hem Filament admin upload (`storage/...`)
+   pattern'ini handle eder.
+
+   Sahibin gerçek foto'ları geldiğinde Filament admin'den FileUpload ile
+   tek tek değiştirilir; demo dosyaları `public/images/demo/` altında kalır
+   (ek bir referans/snapshot için), CLAUDE.md notu güncellenir. **Sahibinden
+   ne zaman talep edilir?** — Faz 2k canlı demo'dan sonra.
 
 5. **Oda fiyatları**: Sahibinden alınacak. Şimdilik seeder'da placeholder
    (1500 TL, 2000 TL, 2400 TL, 3500 TL, 5000 TL gibi).
