@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Rooms\Tables;
 
+use App\Models\Room;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -21,7 +22,7 @@ class RoomsTable
             ->columns([
                 ImageColumn::make('cover_image')
                     ->label('Kapak')
-                    ->disk('public')
+                    ->getStateUsing(fn (Room $record): ?string => $record->cover_image_url)
                     ->square()
                     ->width(64)
                     ->height(64),

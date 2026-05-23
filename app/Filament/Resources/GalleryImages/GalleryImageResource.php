@@ -98,7 +98,7 @@ class GalleryImageResource extends Resource
             ->columns([
                 ImageColumn::make('path')
                     ->label('Görsel')
-                    ->disk('public')
+                    ->getStateUsing(fn (GalleryImage $record): ?string => $record->path_url)
                     ->square()
                     ->width(80)
                     ->height(80),
