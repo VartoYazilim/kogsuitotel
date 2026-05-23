@@ -15,7 +15,10 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('type');
             $table->morphs('notifiable');
-            $table->text('data');
+            // PostgreSQL prod'da Filament `data->>'format'` JSON arrow sorgu kullanır;
+            // `text` kolun üzerinde bu operatör yok (SQLITE-only çalışır). `json` ile
+            // hem Postgres native JSONB hem MySQL/SQLite fallback çalışır.
+            $table->json('data');
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
