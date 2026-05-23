@@ -290,6 +290,8 @@
     </div>
 </footer>
 
+@include('partials.lightbox')
+
 @stack('scripts')
 </body>
 </html>

@@ -204,9 +204,106 @@ function initHeroForm() {
     if (roomSelect.value) applyDates(roomSelect.value);
 }
 
+/**
+ * Olive Sanctuary lightbox — vanilla. Tüm `[data-lightbox-trigger]` butonları
+ * gruplandırılır (data-lightbox-group), modal'da prev/next + Esc + Arrow keys.
+ * Body scroll lock + focus trap minimal (Esc/close button focusable).
+ */
+function initLightbox() {
+    const modal = document.getElementById('kog-lightbox');
+    if (!modal) return;
+
+    const img = modal.querySelector('[data-lightbox-image]');
+    const caption = modal.querySelector('[data-lightbox-caption]');
+    const counter = modal.querySelector('[data-lightbox-counter]');
+    const prevBtn = modal.querySelector('[data-lightbox-prev]');
+    const nextBtn = modal.querySelector('[data-lightbox-next]');
+    const closeBtn = modal.querySelector('[data-lightbox-close]');
+
+    let currentGroup = [];
+    let currentIndex = 0;
+    let triggerEl = null; // Modal kapanınca focus'u geri vermek için
+
+    function render() {
+        const item = currentGroup[currentIndex];
+        if (!item) return;
+        img.src = item.src;
+        img.alt = item.alt;
+        caption.textContent = item.alt;
+        counter.textContent = currentGroup.length > 1
+            ? `${currentIndex + 1} / ${currentGroup.length}`
+            : '';
+
+        const multi = currentGroup.length > 1;
+        prevBtn.classList.toggle('hidden', !multi);
+        nextBtn.classList.toggle('hidden', !multi);
+    }
+
+    function open(triggers, startIndex, fromEl) {
+        currentGroup = triggers.map((el) => ({
+            src: el.dataset.lightboxSrc,
+            alt: el.dataset.lightboxAlt || '',
+        }));
+        currentIndex = startIndex;
+        triggerEl = fromEl;
+        render();
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+    }
+
+    function close() {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        img.src = '';
+        triggerEl?.focus();
+    }
+
+    function step(delta) {
+        if (currentGroup.length < 2) return;
+        currentIndex = (currentIndex + delta + currentGroup.length) % currentGroup.length;
+        render();
+    }
+
+    document.querySelectorAll('[data-lightbox-trigger]').forEach((el) => {
+        el.addEventListener('click', (e) => {
+            e.preventDefault();
+            const group = el.dataset.lightboxGroup;
+            const triggers = Array.from(
+                document.querySelectorAll(`[data-lightbox-trigger][data-lightbox-group="${group}"]`)
+            ).sort((a, b) =>
+                parseInt(a.dataset.lightboxIndex ?? '0', 10) - parseInt(b.dataset.lightboxIndex ?? '0', 10)
+            );
+            const startIndex = triggers.indexOf(el);
+            open(triggers, startIndex >= 0 ? startIndex : 0, el);
+        });
+    });
+
+    closeBtn.addEventListener('click', close);
+    prevBtn.addEventListener('click', () => step(-1));
+    nextBtn.addEventListener('click', () => step(1));
+
+    // Modal'a (image dışı backdrop) tıklayınca kapat
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (modal.classList.contains('hidden')) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowLeft') step(-1);
+        if (e.key === 'ArrowRight') step(1);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initReservationDatePickers();
     initSimpleDatePickers();
     initHeroForm();
     initReservationSummary();
+    initLightbox();
 });

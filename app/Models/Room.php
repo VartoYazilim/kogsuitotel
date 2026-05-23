@@ -80,8 +80,28 @@ class Room extends Model
      */
     public function getCoverImageUrlAttribute(): ?string
     {
-        $path = $this->cover_image;
+        return self::resolvePublicUrl($this->cover_image);
+    }
 
+    /**
+     * Gallery item'larının her birini polymorphic URL'e çevirir.
+     * Blade'lerde: `@foreach ($room->gallery_urls as $url)`.
+     */
+    public function getGalleryUrlsAttribute(): array
+    {
+        return collect($this->gallery ?? [])
+            ->map(fn (?string $path) => self::resolvePublicUrl($path))
+            ->filter()
+            ->values()
+            ->all();
+    }
+
+    /**
+     * Polymorphic public URL resolver — demo, Filament upload, absolute, external.
+     * cover_image_url + gallery_urls + GalleryImage::path_url ortak mantığı.
+     */
+    public static function resolvePublicUrl(?string $path): ?string
+    {
         if (! $path) {
             return null;
         }
@@ -98,7 +118,6 @@ class Room extends Model
             return asset($path);
         }
 
-        // Default: Filament FileUpload (storage/app/public altına yazar)
         return asset('storage/'.$path);
     }
 

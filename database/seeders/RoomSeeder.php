@@ -9,11 +9,12 @@ class RoomSeeder extends Seeder
 {
     public function run(): void
     {
-        // Demo cover_image path'leri `public/images/demo/rooms/*.webp` —
+        // Demo cover + gallery path'leri `public/images/demo/{rooms,gallery}/*.webp` —
         // Unsplash kaynaklı geçici görseller. Sahibin gerçek otel foto'ları
         // geldiğinde Filament admin'den FileUpload ile değiştirilir (yeni
-        // path `storage/app/public/rooms/covers/*` formatında olur).
-        // Model accessor `cover_image_url` her iki pattern'i de handle eder.
+        // path `storage/app/public/rooms/{covers,gallery}/*` formatında olur).
+        // Model accessor `cover_image_url` ve `gallery_urls` her iki pattern'i
+        // de handle eder.
         $rooms = [
             [
                 'name' => 'Standart Oda',
@@ -23,6 +24,11 @@ class RoomSeeder extends Seeder
                 'base_price' => 1500.00,
                 'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Sıcak Su', 'Çalışma Masası'],
                 'cover_image' => 'images/demo/rooms/standart.webp',
+                'gallery' => [
+                    'images/demo/gallery/rooms-1.webp',
+                    'images/demo/gallery/lobby-1.webp',
+                    'images/demo/gallery/exterior-1.webp',
+                ],
                 'sort_order' => 10,
             ],
             [
@@ -33,6 +39,11 @@ class RoomSeeder extends Seeder
                 'base_price' => 2000.00,
                 'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Mini Bar', 'Oturma Köşesi'],
                 'cover_image' => 'images/demo/rooms/suit.webp',
+                'gallery' => [
+                    'images/demo/gallery/rooms-1.webp',
+                    'images/demo/gallery/exterior-2.webp',
+                    'images/demo/gallery/view-1.webp',
+                ],
                 'sort_order' => 20,
             ],
             [
@@ -43,6 +54,11 @@ class RoomSeeder extends Seeder
                 'base_price' => 2400.00,
                 'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Mini Bar', 'Çocuk Yatağı', 'Geniş Banyo'],
                 'cover_image' => 'images/demo/rooms/aile.webp',
+                'gallery' => [
+                    'images/demo/gallery/rooms-1.webp',
+                    'images/demo/gallery/view-2.webp',
+                    'images/demo/gallery/lobby-1.webp',
+                ],
                 'sort_order' => 30,
             ],
             [
@@ -53,6 +69,12 @@ class RoomSeeder extends Seeder
                 'base_price' => 3500.00,
                 'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Mini Bar', 'Jakuzi', 'Panoramik Manzara', 'Yastık Menüsü'],
                 'cover_image' => 'images/demo/rooms/deluxe.webp',
+                'gallery' => [
+                    'images/demo/gallery/view-1.webp',
+                    'images/demo/gallery/exterior-1.webp',
+                    'images/demo/gallery/lobby-1.webp',
+                    'images/demo/gallery/rooms-1.webp',
+                ],
                 'sort_order' => 40,
             ],
             [
@@ -63,6 +85,13 @@ class RoomSeeder extends Seeder
                 'base_price' => 5000.00,
                 'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Mini Bar', 'Jakuzi', 'Şömine', 'Özel Teras', 'Butler Hizmeti', 'Karşılama İkramı'],
                 'cover_image' => 'images/demo/rooms/premium.webp',
+                'gallery' => [
+                    'images/demo/gallery/view-2.webp',
+                    'images/demo/gallery/exterior-2.webp',
+                    'images/demo/gallery/view-1.webp',
+                    'images/demo/gallery/lobby-1.webp',
+                    'images/demo/gallery/rooms-1.webp',
+                ],
                 'sort_order' => 50,
             ],
         ];

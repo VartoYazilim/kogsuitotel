@@ -59,19 +59,45 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
             <div class="lg:col-span-2">
-                <div class="aspect-[16/9] rounded-card overflow-hidden bg-gradient-to-br from-primary to-secondary mb-md">
+                @php
+                    $galleryUrls = $room->gallery_urls;
+                    $allImages = collect()
+                        ->push($room->cover_image_url)
+                        ->concat($galleryUrls)
+                        ->filter()
+                        ->values();
+                @endphp
+
+                <button type="button"
+                        @if ($room->cover_image_url)
+                            data-lightbox-trigger
+                            data-lightbox-group="room-{{ $room->slug }}"
+                            data-lightbox-index="0"
+                            data-lightbox-src="{{ $room->cover_image_url }}"
+                            data-lightbox-alt="{{ $room->name }}"
+                        @endif
+                        class="block w-full aspect-[16/9] rounded-card overflow-hidden bg-gradient-to-br from-primary to-secondary mb-md @if ($room->cover_image_url) cursor-zoom-in group @endif">
                     @if ($room->cover_image_url)
                         <img src="{{ $room->cover_image_url }}" alt="{{ $room->name }}"
-                             class="w-full h-full object-cover" />
+                             class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700 ease-out" />
                     @endif
-                </div>
+                </button>
 
-                @if (! empty($room->gallery))
-                    <div class="grid grid-cols-4 gap-xs">
-                        @foreach (array_slice($room->gallery, 0, 4) as $img)
-                            <div class="aspect-square rounded-btn overflow-hidden bg-surface-alt">
-                                <img src="{{ asset('storage/'.$img) }}" alt="{{ $room->name }}" class="w-full h-full object-cover" loading="lazy" />
-                            </div>
+                @if ($galleryUrls)
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-xs">
+                        @foreach ($galleryUrls as $index => $imgUrl)
+                            <button type="button"
+                                    data-lightbox-trigger
+                                    data-lightbox-group="room-{{ $room->slug }}"
+                                    data-lightbox-index="{{ $index + 1 }}"
+                                    data-lightbox-src="{{ $imgUrl }}"
+                                    data-lightbox-alt="{{ $room->name }} — Görsel {{ $index + 2 }}"
+                                    class="aspect-square rounded-btn overflow-hidden bg-surface-alt cursor-zoom-in group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+                                <img src="{{ $imgUrl }}"
+                                     alt="{{ $room->name }} — Görsel {{ $index + 2 }}"
+                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
+                                     loading="lazy" />
+                            </button>
                         @endforeach
                     </div>
                 @endif
