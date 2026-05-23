@@ -7,13 +7,27 @@ use App\Models\Reservation;
 use App\Models\Room;
 use BackedEnum;
 use Carbon\Carbon;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
+use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\HtmlString;
 use UnitEnum;
 
-class Availability extends Page
+/**
+ * InteractsWithForms trait `$form` property'sini magic `__get` ile expose eder.
+ * Larastan static analiz bunu görmez — PHPDoc ile tip beyan ediyoruz.
+ *
+ * @property-read \Filament\Schemas\Schema $form
+ */
+class Availability extends Page implements HasForms
 {
+    use InteractsWithForms;
+
     protected string $view = 'filament.pages.availability';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendarDays;
@@ -22,9 +36,12 @@ class Availability extends Page
 
     protected static ?int $navigationSort = 20;
 
-    public string $checkIn = '';
-
-    public string $checkOut = '';
+    /**
+     * Filament HasForms statePath — DatePicker'lar `data.checkIn` / `data.checkOut`
+     * altında bind olur. Public site Flatpickr ile UX tutarli (Filament DatePicker
+     * Flatpickr tabanli, TR locale + Olive Sanctuary palette + mobile-responsive).
+     */
+    public ?array $data = [];
 
     public function getTitle(): string
     {
@@ -43,8 +60,76 @@ class Availability extends Page
 
     public function mount(): void
     {
-        $this->checkIn = today()->format('Y-m-d');
-        $this->checkOut = today()->addDays(7)->format('Y-m-d');
+        $this->form->fill([
+            'checkIn' => today()->format('Y-m-d'),
+            'checkOut' => today()->addDays(7)->format('Y-m-d'),
+        ]);
+    }
+
+    public function form(Schema $schema): Schema
+    {
+        return $schema
+            ->columns(3)
+            ->components([
+                DatePicker::make('checkIn')
+                    ->label('Giriş Tarihi')
+                    ->native(false)
+                    ->displayFormat('d.m.Y')
+                    ->locale('tr')
+                    ->prefixIcon(Heroicon::OutlinedArrowRightOnRectangle)
+                    ->minDate(today()->subYear())
+                    ->required()
+                    ->live(),
+
+                DatePicker::make('checkOut')
+                    ->label('Çıkış Tarihi')
+                    ->native(false)
+                    ->displayFormat('d.m.Y')
+                    ->locale('tr')
+                    ->prefixIcon(Heroicon::OutlinedArrowLeftOnRectangle)
+                    ->after('checkIn')
+                    ->required()
+                    ->live(),
+
+                Placeholder::make('nights_display')
+                    ->label('Konaklama')
+                    ->content(fn (): HtmlString => new HtmlString(
+                        '<span class="text-2xl font-bold text-primary-700 dark:text-primary-300">'
+                        .$this->getNightsCount()
+                        .'</span> <span class="text-sm text-gray-500 dark:text-gray-400">gece</span>'
+                    )),
+            ])
+            ->statePath('data');
+    }
+
+    /**
+     * Form'dan checkIn alır, Y-m-d string veya Carbon olabilir (Filament DatePicker
+     * Y-m-d döner) — Carbon::parse() ikisini de handle eder.
+     */
+    protected function getCheckInDate(): ?Carbon
+    {
+        $value = $this->data['checkIn'] ?? null;
+
+        return $value ? Carbon::parse($value)->startOfDay() : null;
+    }
+
+    protected function getCheckOutDate(): ?Carbon
+    {
+        $value = $this->data['checkOut'] ?? null;
+
+        return $value ? Carbon::parse($value)->startOfDay() : null;
+    }
+
+    public function getNightsCount(): int
+    {
+        $checkIn = $this->getCheckInDate();
+        $checkOut = $this->getCheckOutDate();
+
+        if (! $checkIn || ! $checkOut || $checkOut->lte($checkIn)) {
+            return 0;
+        }
+
+        return (int) $checkIn->diffInDays($checkOut);
     }
 
     /**
@@ -52,13 +137,13 @@ class Availability extends Page
      */
     public function getRoomsStatus(): Collection
     {
-        if (! $this->checkIn || ! $this->checkOut || $this->checkOut <= $this->checkIn) {
+        $checkInDate = $this->getCheckInDate();
+        $checkOutDate = $this->getCheckOutDate();
+        $nights = $this->getNightsCount();
+
+        if (! $checkInDate || ! $checkOutDate || $nights === 0) {
             return collect();
         }
-
-        $checkInDate = Carbon::parse($this->checkIn)->startOfDay();
-        $checkOutDate = Carbon::parse($this->checkOut)->startOfDay();
-        $nights = (int) $checkInDate->diffInDays($checkOutDate);
 
         return Room::query()
             ->orderBy('sort_order')
@@ -95,14 +180,5 @@ class Availability extends Page
                     'nights' => $nights,
                 ];
             });
-    }
-
-    public function getNightsCount(): int
-    {
-        if (! $this->checkIn || ! $this->checkOut || $this->checkOut <= $this->checkIn) {
-            return 0;
-        }
-
-        return (int) Carbon::parse($this->checkIn)->diffInDays(Carbon::parse($this->checkOut));
     }
 }

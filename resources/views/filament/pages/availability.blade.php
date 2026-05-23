@@ -1,30 +1,13 @@
 <x-filament-panels::page>
 
-    {{-- Tarih aralığı seçici --}}
+    {{-- Tarih aralığı seçici — Filament native form (DatePicker + Placeholder).
+         Olive Sanctuary palette + TR locale + Flatpickr-tabanlı UI + mobile responsive
+         (3 kolon md+, 1 kolon mobile) Filament default'larıyla otomatik gelir. --}}
     <x-filament::section>
         <x-slot name="heading">Tarih Aralığı</x-slot>
         <x-slot name="description">Sorgulamak istediğiniz tarih aralığını seçin. Sonuçlar anında güncellenir.</x-slot>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-            <div>
-                <label for="checkIn" class="block text-sm font-medium text-gray-950 dark:text-white mb-1">Giriş Tarihi</label>
-                <input type="date" id="checkIn" wire:model.live="checkIn"
-                       min="{{ now()->subYear()->format('Y-m-d') }}"
-                       class="fi-input block w-full rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-sm text-gray-950 dark:text-white shadow-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500/30 outline-none" />
-            </div>
-            <div>
-                <label for="checkOut" class="block text-sm font-medium text-gray-950 dark:text-white mb-1">Çıkış Tarihi</label>
-                <input type="date" id="checkOut" wire:model.live="checkOut"
-                       min="{{ now()->format('Y-m-d') }}"
-                       class="fi-input block w-full rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-sm text-gray-950 dark:text-white shadow-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500/30 outline-none" />
-            </div>
-            <div class="rounded-lg p-3 text-center bg-primary-50 border border-primary-200 dark:bg-primary-500/10 dark:border-primary-500/30">
-                <p class="text-[11px] uppercase tracking-wider text-gray-600 dark:text-gray-400">Konaklama</p>
-                <p class="mt-1 text-2xl font-bold leading-tight text-primary-700 dark:text-primary-300">
-                    {{ $this->getNightsCount() }} gece
-                </p>
-            </div>
-        </div>
+        {{ $this->form }}
     </x-filament::section>
 
     {{-- Sonuçlar --}}
@@ -44,27 +27,27 @@
                 $pendingCount = $statuses->where('has_pending_warning', true)->count();
             @endphp
 
-            {{-- Özet stat 3 kart --}}
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="rounded-lg p-4 bg-success-50 border border-success-200 dark:bg-success-500/10 dark:border-success-500/30">
+            {{-- Özet stat 3 kart — mobile-first: 1 kolon, sm+: 3 kolon yan yana --}}
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                <div class="rounded-lg p-3 sm:p-4 bg-success-50 border border-success-200 dark:bg-success-500/10 dark:border-success-500/30">
                     <p class="text-[11px] uppercase tracking-wider text-gray-600 dark:text-gray-400">Müsait</p>
-                    <p class="mt-1 text-3xl font-bold leading-tight text-success-700 dark:text-success-300">
+                    <p class="mt-1 text-2xl sm:text-3xl font-bold leading-tight text-success-700 dark:text-success-300">
                         {{ $availableCount }}
                         <span class="text-sm font-normal text-gray-500 dark:text-gray-400">/ {{ $statuses->count() }} oda</span>
                     </p>
                 </div>
 
-                <div class="rounded-lg p-4 bg-danger-50 border border-danger-200 dark:bg-danger-500/10 dark:border-danger-500/30">
+                <div class="rounded-lg p-3 sm:p-4 bg-danger-50 border border-danger-200 dark:bg-danger-500/10 dark:border-danger-500/30">
                     <p class="text-[11px] uppercase tracking-wider text-gray-600 dark:text-gray-400">Dolu</p>
-                    <p class="mt-1 text-3xl font-bold leading-tight text-danger-700 dark:text-danger-300">
+                    <p class="mt-1 text-2xl sm:text-3xl font-bold leading-tight text-danger-700 dark:text-danger-300">
                         {{ $bookedCount }}
                         <span class="text-sm font-normal text-gray-500 dark:text-gray-400">/ {{ $statuses->count() }} oda</span>
                     </p>
                 </div>
 
-                <div class="rounded-lg p-4 bg-warning-50 border border-warning-200 dark:bg-warning-500/10 dark:border-warning-500/30">
+                <div class="rounded-lg p-3 sm:p-4 bg-warning-50 border border-warning-200 dark:bg-warning-500/10 dark:border-warning-500/30">
                     <p class="text-[11px] uppercase tracking-wider text-gray-600 dark:text-gray-400">Onay Bekleyen Çakışma</p>
-                    <p class="mt-1 text-3xl font-bold leading-tight text-warning-700 dark:text-warning-300">
+                    <p class="mt-1 text-2xl sm:text-3xl font-bold leading-tight text-warning-700 dark:text-warning-300">
                         {{ $pendingCount }}
                         <span class="text-sm font-normal text-gray-500 dark:text-gray-400">oda</span>
                     </p>
@@ -74,21 +57,21 @@
             {{-- Oda kartları --}}
             @foreach ($statuses as $row)
                 <x-filament::section>
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                        <div class="flex items-center gap-3 flex-wrap">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+                        <div class="flex items-start sm:items-center gap-3 flex-wrap">
                             @if ($row['is_available'])
-                                <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold bg-success-100 text-success-700 dark:bg-success-500/20 dark:text-success-300">
+                                <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold bg-success-100 text-success-700 dark:bg-success-500/20 dark:text-success-300 shrink-0">
                                     <span class="size-1.5 rounded-full bg-success-500"></span>
                                     Müsait
                                 </span>
                             @else
-                                <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold bg-danger-100 text-danger-700 dark:bg-danger-500/20 dark:text-danger-300">
+                                <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold bg-danger-100 text-danger-700 dark:bg-danger-500/20 dark:text-danger-300 shrink-0">
                                     <span class="size-1.5 rounded-full bg-danger-500"></span>
                                     Dolu
                                 </span>
                             @endif
 
-                            <div>
+                            <div class="min-w-0">
                                 <h3 class="font-semibold text-base text-gray-950 dark:text-white">{{ $row['room']->name }}</h3>
                                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                                     {{ $row['room']->capacity }} kişilik
@@ -102,7 +85,7 @@
 
                         @if ($row['is_available'])
                             <a href="{{ \App\Filament\Resources\Reservations\ReservationResource::getUrl('create') }}"
-                               class="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-semibold bg-primary-600 hover:bg-primary-700 text-white transition-colors">
+                               class="inline-flex items-center justify-center gap-1 rounded-lg px-3 py-2 text-xs font-semibold bg-primary-600 hover:bg-primary-700 text-white transition-colors w-full sm:w-auto">
                                 Bu Odaya Rezervasyon
                             </a>
                         @endif
