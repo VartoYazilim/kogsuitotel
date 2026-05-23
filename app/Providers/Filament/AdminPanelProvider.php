@@ -74,10 +74,16 @@ class AdminPanelProvider extends PanelProvider
                     ->collapsed(),
             ])
 
-            // ── Dark mode kapalı — Olive Sanctuary palette light mode için
-            //    tasarlandı; custom Blade'lerdeki inline style'lar dark mode'a
-            //    göre koordineli değil. Sistem dark tercihi panel'i ele geçirmesin.
-            ->darkMode(false)
+            // ── Custom panel theme — Filament panel Tailwind build'i bu CSS
+            //    dosyasinı işler; @source directive'leri ile resources/views/filament
+            //    ve app/Filament dosyalarındaki Tailwind class'ları scan eder.
+            //    Olive Sanctuary tokens light + dark variant burada tanımlı.
+            ->viteTheme('resources/css/filament/kog/theme.css')
+
+            // ── Dark mode AÇIK — kullanıcı tarayıcı/sistem tercihini takip eder
+            //    veya panel header'daki toggle ile manuel değişir. Olive Sanctuary
+            //    light + dark variant theme.css'te koordineli tasarlandı.
+            ->darkMode(true)
 
             // ── Sidebar — masaüstünde daraltılabilir ──
             ->sidebarCollapsibleOnDesktop()

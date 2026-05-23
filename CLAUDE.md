@@ -432,8 +432,29 @@ Bu noktalar henüz netleştirilmedi. İlgili faza gelindiğinde kullanıcıya so
 ### Bu oturumda öğrenilen dersler (memory'de kalıcı)
 
 - `feedback-domain-thinking-discipline.md` — 6 lens checklist (invariant/state/persona/defense/end-to-end/edge)
-- `feedback-test-coverage-discipline.md` — Filament/notification değişikliği sonrası runtime test ekle
-- `reference-filament4-namespaces.md` — Filament 3→4 namespace farkları cheatsheet
+- `feedback-test-coverage-discipline.md` — Filament/notification değişikliği sonrası runtime test ekle + Postgres CI matrix
+- `reference-filament4-namespaces.md` — Filament 3→4 namespace farkları cheatsheet + custom panel theme kurulumu
+- `feedback-prod-grade-discipline.md` — Hızlı fix yok; her commit prod-grade kalitede
+
+### Laravel Cloud demo deploy sonrası prod-grade düzeltmeler (2026-05-23 sonu)
+
+Laravel Cloud free tier (cloud.laravel.com) ile sahibe demo deploy yapıldı.
+Postgres-spesifik 2 hata + Filament UI dark mode + admin login disiplini için
+**hızlı hotfix pattern'ı reddedildi** (sahip "her şey prod seviyesinde olmalı"
+talimatı). Hotfix'ler doğru çözümle değiştirildi:
+
+| Alan | Hotfix (kabul edilmedi) | Prod-grade çözüm (uygulanan) |
+|---|---|---|
+| **Notifications JSONB** | (yok, hotfix-1 doğruydu) | `notifications.data` TEXT→JSONB migration (driver-aware ALTER), yeni install için de doğru |
+| **SettingResource groups** | Group::make tamamen silindi | `Group::make()->orderQueryUsing(closure)` ile Postgres-uyumlu raw `CASE WHEN` ORDER BY; collapsible accordion korundu |
+| **Filament UI dark mode** | `darkMode(false)` | Custom panel theme (`make:filament-theme kog`) + Olive Sanctuary light + dark variant tasarlandı, `darkMode(true)` sistem tercihi destekli |
+| **availability.blade.php inline CSS** | Tamamen inline `style="..."` hack | Custom panel theme sayesinde Tailwind class'lar custom Blade'lerde çalışır → Tailwind class'lara geri dönüldü, sürdürülebilir kod |
+| **Admin login** | `.env` placeholder + seeder `'changeme123'` fallback | `.env.example` placeholder yok, seeder `ADMIN_PASSWORD` env zorunlu (boş veya placeholder ise Exception); `.env.example`'da `openssl rand -base64 32` talimatı |
+| **CI test gap (driver)** | Sadece SQLite → Cloud Postgres sürprizleri | GitHub Actions `services: postgres:16` + her PHPUnit step 2 kez (SQLite + Postgres matrix) |
+
+**Sonuç:** 51 test/128 assertion hâlâ yeşil, Pint temiz, Larastan 0 hata.
+Filament panel artık dark mode destekli, custom Blade'ler Tailwind-temiz,
+admin password disiplini prod-grade, CI Cloud-eşdeğer driver'la test ediyor.
 
 ### Faz 1 — Lokal Altyapı + Public Site (TAMAMLANDI ✓)
 

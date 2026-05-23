@@ -1,0 +1,60 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+/*
+ |--------------------------------------------------------------------------
+ | Filament Custom Panel Theme — Koğ Suit Yönetim (kog)
+ |--------------------------------------------------------------------------
+ |
+ | Bu dosya Filament panel Tailwind v4 build'inin entry'sidir. AdminPanelProvider
+ | içinde `->viteTheme('resources/css/filament/kog/theme.css')` ile bağlanır.
+ |
+ | @source directive'leri ile custom Blade dosyalarımız (admin pages + widgets)
+ | Filament panel Tailwind build'ine dahil olur — utility class'lar (grid, flex,
+ | font, padding, gap vs.) bu Blade'lerde de çalışır. Inline style hack ihtiyacı
+ | yoktur.
+ |
+ | Olive Sanctuary palette token'ları AdminPanelProvider::colors([])'da tanımlı
+ | (primary, success, warning, danger, info, gray) — Filament theme bunları
+ | otomatik kullanır. Burada yalnızca ek custom CSS variables (yüzey, ink, accent)
+ | tanımlanır; bunlar custom Blade'lerin tutarlı görünmesi içindir.
+ |
+ | Dark mode: Filament built-in dark mode toggle ile değişir. Aşağıdaki tokens
+ | hem light hem dark variant için tanımlı (CSS variable + media query yerine
+ | Filament'in `.fi-theme-dark` selector mantığını takip eder).
+ */
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+@theme {
+    /* Olive Sanctuary — surface (light arka plan) */
+    --color-surface: #f7f4ed;
+    --color-surface-alt: #efeae0;
+    --color-surface-card: #ffffff;
+
+    /* Olive Sanctuary — ink (light text) */
+    --color-ink: #2a2d24;
+    --color-ink-soft: #5a5d52;
+    --color-ink-mute: #6d6f65;
+
+    /* Olive Sanctuary — accent (antika altın, light üzerinde uyumlu) */
+    --color-accent: #b89b6e;
+    --color-accent-dark: #735f3d;
+}
+
+/* Dark mode variants — Olive Sanctuary'nin koyu yorumu.
+   Filament panel `.fi-theme-dark` body class'ı ekler ya da
+   data-attribute kullanır; bu CSS variable'lar dark theme'de override edilir.
+   Karanlık zemin sıcak antrasit (yeşil tonlu), altın aksanlar parlak kalır. */
+.fi-theme-dark {
+    --color-surface: #1f2218;
+    --color-surface-alt: #2a2d24;
+    --color-surface-card: #292c23;
+
+    --color-ink: #e8e4d7;
+    --color-ink-soft: #b9b5a8;
+    --color-ink-mute: #8a8c82;
+
+    --color-accent: #d4b988;
+    --color-accent-dark: #b89b6e;
+}

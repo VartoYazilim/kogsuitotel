@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
@@ -151,13 +152,27 @@ class SettingResource extends Resource
                     ->sortable()
                     ->toggleable(),
             ])
-            // NOT: `->groups([Group::make('category')])` + `defaultGroup('category')`
-            // Filament'i `ORDER BY category` SQL'i üretmeye zorluyor. SQLite/MySQL
-            // virtual alias tolere eder, PostgreSQL strict — "column does not exist"
-            // hatası verir. Visual grouping zaten Category badge ile sağlanıyor +
-            // getEloquentQuery() CASE WHEN ile kategori-sıralı geliyor, accordion
-            // kaybedildi ama 13 setting küçük — scroll sorun değil. Gerçek group
-            // istenirse Filament 4 `orderQueryUsing(closure)` ile geri eklenebilir.
+            ->groups([
+                // Virtual category gruplama — DB'de `category` kolunu YOK,
+                // categoryForKey() ile runtime hesaplanır. Filament 4 `orderQueryUsing`
+                // closure'ı SQL alias yerine raw CASE WHEN expression uretir
+                // → PostgreSQL "column does not exist" hatasından kacinir.
+                Group::make('category')
+                    ->label('Kategori')
+                    ->getTitleFromRecordUsing(fn ($record) => self::categoryForKey($record->key))
+                    ->getKeyFromRecordUsing(fn ($record) => self::categoryForKey($record->key))
+                    ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderByRaw(
+                        "CASE
+                            WHEN key IN ('iban', 'iban_holder', 'bank_name') THEN 1
+                            WHEN key IN ('phone', 'whatsapp', 'email', 'address') THEN 2
+                            WHEN key IN ('checkin_time', 'checkout_time') THEN 3
+                            WHEN key LIKE '%_url' THEN 4
+                            ELSE 5
+                        END {$direction}"
+                    ))
+                    ->collapsible(),
+            ])
+            ->defaultGroup('category')
             ->recordActions([
                 EditAction::make(),
             ]);

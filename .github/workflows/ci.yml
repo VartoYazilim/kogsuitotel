@@ -12,9 +12,27 @@ concurrency:
 
 jobs:
   test:
-    name: PHP 8.3 + Node 20 (Pint, Larastan, PHPUnit, Audit)
+    name: PHP 8.3 + Node 20 (Pint, Larastan, PHPUnit ×2 driver, Audit)
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
+
+    # PostgreSQL 16 service — testleri hem SQLite hem Postgres'te koşturmak için.
+    # Cloud prod Postgres kullandığı için bu matrix Postgres-spesifik sürprizleri
+    # (JSON arrow, alias, type cast) push öncesi yakalar.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testing
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout
@@ -24,7 +42,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-          extensions: mbstring, xml, sqlite, curl, zip, gd, intl, bcmath
+          extensions: mbstring, xml, sqlite, pgsql, pdo_pgsql, curl, zip, gd, intl, bcmath
           coverage: none
           tools: composer:v2
 
@@ -66,7 +84,22 @@ jobs:
       - name: Static analysis (Larastan)
         run: vendor/bin/phpstan analyse --no-interaction --no-progress --memory-limit=2G
 
-      - name: PHPUnit tests
+      # ── PHPUnit ×2 driver: SQLite (default in phpunit.xml) + PostgreSQL ──
+      # SQLite hızlı, in-memory; Postgres prod-eşdeğer (JSONB, strict alias).
+      # Cloud Postgres'te yakalanan sürprizler (notifications.data, settings.category)
+      # bu matrix sayesinde push'tan ÖNCE yakalanır.
+
+      - name: PHPUnit tests (SQLite — phpunit.xml default)
+        run: php artisan test
+
+      - name: PHPUnit tests (PostgreSQL 16 service)
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 5432
+          DB_DATABASE: testing
+          DB_USERNAME: postgres
+          DB_PASSWORD: postgres
         run: php artisan test
 
       - name: Security audit (Composer)
