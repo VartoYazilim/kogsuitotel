@@ -411,4 +411,138 @@ class ReservationFlowTest extends TestCase
         $response->assertJsonCount(1);
         $response->assertJsonStructure([['from', 'to']]);
     }
+
+    /* ─────────── State transition (cancelled/completed) ─────────── */
+
+    public function test_iptal_edilmis_rezervasyon_tarihleri_yeniden_rezerve_edilebilir(): void
+    {
+        $oda = Room::factory()->create(['is_active' => true]);
+
+        // 5-8 Haziran rez var ama iptal edilmiş → tarihler tekrar serbest
+        Reservation::factory()->create([
+            'room_id' => $oda->id,
+            'check_in' => '2026-06-05',
+            'check_out' => '2026-06-08',
+            'status' => ReservationStatus::Cancelled,
+        ]);
+
+        $response = $this->post('/rezervasyon', [
+            'guest_first_name' => 'Yeni',
+            'guest_last_name' => 'Misafir',
+            'guest_phone' => '+90 555 123 45 67',
+            'guest_email' => 'iptal-sonrasi@example.com',
+            'room_id' => $oda->id,
+            'check_in' => '2026-06-05',
+            'check_out' => '2026-06-08',
+            'adults' => 2,
+        ]);
+
+        $this->assertDatabaseHas('reservations', ['guest_email' => 'iptal-sonrasi@example.com']);
+    }
+
+    public function test_completed_rezervasyon_tarihleri_bloklanir(): void
+    {
+        // Domain kararı: completed statu de scopeOverlapping'e dahil — yani
+        // tamamlanmış rezervasyonun tarihleri yeniden rezerve edilemez.
+        // (Geçmiş tarihler için pratikte zaten yeni rez olmaz; ama edit
+        // ekranından admin'in yanlış oda değiştirmesini engeller.)
+        $oda = Room::factory()->create(['is_active' => true]);
+
+        Reservation::factory()->completed()->create([
+            'room_id' => $oda->id,
+            'check_in' => '2026-06-05',
+            'check_out' => '2026-06-08',
+        ]);
+
+        $response = $this->post('/rezervasyon', [
+            'guest_first_name' => 'Test',
+            'guest_last_name' => 'Cakisma',
+            'guest_phone' => '+90 555 123 45 67',
+            'guest_email' => 'completed-cakisma@example.com',
+            'room_id' => $oda->id,
+            'check_in' => '2026-06-06',
+            'check_out' => '2026-06-07',
+            'adults' => 2,
+        ]);
+
+        $response->assertSessionHasErrors(['check_in']);
+        $this->assertDatabaseMissing('reservations', ['guest_email' => 'completed-cakisma@example.com']);
+    }
+
+    /* ─────────── Edge case validation ─────────── */
+
+    public function test_adults_sifir_validation_hatasi_doner(): void
+    {
+        $oda = Room::factory()->create(['is_active' => true]);
+
+        $response = $this->post('/rezervasyon', [
+            'guest_first_name' => 'Ali',
+            'guest_last_name' => 'Veli',
+            'guest_phone' => '+90 555 123 45 67',
+            'guest_email' => 'ali@example.com',
+            'room_id' => $oda->id,
+            'check_in' => now()->addDays(7)->format('Y-m-d'),
+            'check_out' => now()->addDays(10)->format('Y-m-d'),
+            'adults' => 0,
+        ]);
+
+        $response->assertSessionHasErrors(['adults']);
+    }
+
+    public function test_check_in_ve_check_out_ayni_gun_engellenir(): void
+    {
+        // 0 gece rezervasyon olmaz; controller 'after:check_in' kuralı
+        // bunu engellemeli (sadece after_or_equal değil — strictly after).
+        $oda = Room::factory()->create(['is_active' => true]);
+
+        $date = now()->addDays(7)->format('Y-m-d');
+
+        $response = $this->post('/rezervasyon', [
+            'guest_first_name' => 'Ali',
+            'guest_last_name' => 'Veli',
+            'guest_phone' => '+90 555 123 45 67',
+            'guest_email' => 'ali@example.com',
+            'room_id' => $oda->id,
+            'check_in' => $date,
+            'check_out' => $date,
+            'adults' => 2,
+        ]);
+
+        $response->assertSessionHasErrors(['check_out']);
+    }
+
+    /* ─────────── TR karakter encoding ─────────── */
+
+    public function test_turkce_karakter_isim_kabul_edilir_ve_full_name_dogru_uretilir(): void
+    {
+        // Varto/Muş yerel kitlesi için TR karakterler kritik — DB collation
+        // ve accessor'lar UTF-8 doğru çalışmalı.
+        $oda = Room::factory()->create(['is_active' => true]);
+
+        $this->post('/rezervasyon', [
+            'guest_first_name' => 'Ümit',
+            'guest_last_name' => 'Şişek-Öztürk',
+            'guest_phone' => '+90 555 123 45 67',
+            'guest_email' => 'umit@example.com',
+            'room_id' => $oda->id,
+            'check_in' => now()->addDays(7)->format('Y-m-d'),
+            'check_out' => now()->addDays(10)->format('Y-m-d'),
+            'adults' => 2,
+        ]);
+
+        $rez = Reservation::where('guest_email', 'umit@example.com')->firstOrFail();
+
+        $this->assertSame('Ümit', $rez->guest_first_name);
+        $this->assertSame('Şişek-Öztürk', $rez->guest_last_name);
+        $this->assertSame('Ümit Şişek-Öztürk', $rez->guest_full_name);
+    }
+
+    /* ─────────── Success page error path ─────────── */
+
+    public function test_var_olmayan_kod_ile_success_sayfasi_404_doner(): void
+    {
+        $response = $this->get('/rezervasyon/basarili/KSO-2026-9999');
+
+        $response->assertNotFound();
+    }
 }

@@ -52,4 +52,27 @@ class ReservationNightsTest extends TestCase
         $this->assertStringStartsWith('https://wa.me/9', $reservation->whatsapp_link);
         $this->assertStringContainsString('905551234567', $reservation->whatsapp_link);
     }
+
+    public function test_whatsapp_link_90_prefix_zaten_varsa_korunur(): void
+    {
+        // E.164 formatında zaten +90'lı telefon — 909... gibi mükerrer
+        // prefix eklenmemeli.
+        $reservation = Reservation::factory()->create([
+            'guest_phone' => '+90 555 123 45 67',
+        ]);
+
+        $this->assertStringContainsString('905551234567', $reservation->whatsapp_link);
+        $this->assertStringNotContainsString('9905551234567', $reservation->whatsapp_link);
+    }
+
+    public function test_whatsapp_link_prefix_yoksa_90_eklenir(): void
+    {
+        // Bazen kullanıcı sadece 10 hane yazar (555 XXX XX XX) — 90 ön ek
+        // controller/accessor seviyesinde otomatik eklenmeli.
+        $reservation = Reservation::factory()->create([
+            'guest_phone' => '555 123 45 67',
+        ]);
+
+        $this->assertStringContainsString('905551234567', $reservation->whatsapp_link);
+    }
 }
