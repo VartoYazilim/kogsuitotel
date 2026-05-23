@@ -10,10 +10,29 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Reservation extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
+
+    /**
+     * KVKK m.12/3 denetim altyapısı — admin status değişimi, oda/tarih güncellemesi,
+     * yönetici notu eklemesi loglanır. Properties JSON'da `old` + `attributes`
+     * (eski + yeni değer) saklanır. log_name = 'reservation'.
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'status', 'check_in', 'check_out', 'room_id',
+                'adults', 'children', 'total_price', 'admin_notes',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->useLogName('reservation');
+    }
 
     protected $fillable = [
         'reservation_code',

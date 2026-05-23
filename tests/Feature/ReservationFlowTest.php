@@ -11,6 +11,7 @@ use App\Notifications\ReservationCreated;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
+use Spatie\Activitylog\Models\Activity;
 use Tests\TestCase;
 
 class ReservationFlowTest extends TestCase
@@ -593,5 +594,48 @@ class ReservationFlowTest extends TestCase
         $response = $this->get('/rezervasyon/basarili/KSO-2026-NOPE0000');
 
         $response->assertNotFound();
+    }
+
+    /* ─────────── Activity log (audit trail — KVKK m.12/3) ─────────── */
+
+    public function test_reservation_status_degisimi_activity_log_a_yazilir(): void
+    {
+        // spatie/laravel-activitylog Reservation modeline LogsActivity trait;
+        // status değişimi properties.old/attributes ile loglanır.
+        $rez = Reservation::factory()->pending()->create();
+
+        $rez->update(['status' => ReservationStatus::Paid]);
+
+        $this->assertDatabaseHas('activity_log', [
+            'log_name' => 'reservation',
+            'subject_type' => Reservation::class,
+            'subject_id' => $rez->id,
+            'event' => 'updated',
+        ]);
+
+        $activity = Activity::query()
+            ->where('subject_id', $rez->id)
+            ->where('event', 'updated')
+            ->latest('id')
+            ->first();
+
+        $this->assertNotNull($activity);
+        $this->assertSame('pending', $activity->properties['old']['status'] ?? null);
+        $this->assertSame('paid', $activity->properties['attributes']['status'] ?? null);
+    }
+
+    public function test_setting_value_degisimi_activity_log_a_yazilir(): void
+    {
+        // Sahip IBAN/telefon güncellerse audit trail; setting key+value loglanır.
+        $setting = Setting::create(['key' => 'iban_test', 'value' => 'TR00 0000 0000 0000 0000 0000 00']);
+
+        $setting->update(['value' => 'TR99 9999 9999 9999 9999 9999 99']);
+
+        $this->assertDatabaseHas('activity_log', [
+            'log_name' => 'setting',
+            'subject_type' => Setting::class,
+            'subject_id' => $setting->id,
+            'event' => 'updated',
+        ]);
     }
 }

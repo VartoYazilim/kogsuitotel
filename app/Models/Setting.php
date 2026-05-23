@@ -4,10 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Setting extends Model
 {
+    use LogsActivity;
+
     protected $fillable = ['key', 'value'];
+
+    /**
+     * IBAN, telefon, e-posta vb. setting değişiklikleri loglanır.
+     * Sahip yanlış IBAN girerse veya değiştirirse trail görünür.
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['key', 'value'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->useLogName('setting');
+    }
 
     /** Tüm settings 5dk cache'li tek dict olarak okunur (config()->set gibi). */
     public static function get(string $key, ?string $default = null): ?string
