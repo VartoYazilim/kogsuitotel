@@ -180,9 +180,17 @@
                             <p class="font-display text-[10px] tracking-[0.2em] uppercase text-ink-mute mt-0.5">Opsiyonel — varsa belirtebilirsiniz</p>
                         </div>
                     </div>
-                    <textarea id="special_requests" name="special_requests" rows="4" maxlength="1000"
-                              placeholder="Erken giriş, ek yatak, vejetaryen kahvaltı, allerjiler, özel bir gün kutlaması gibi taleplerinizi belirtin."
+                    <textarea id="special_requests" name="special_requests" rows="4" maxlength="500"
+                              placeholder="Erken giriş, ek yatak, vejetaryen kahvaltı gibi taleplerinizi belirtin."
                               class="w-full bg-surface border border-border-soft focus:bg-surface-card focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none rounded-btn px-sm py-sm transition resize-none">{{ old('special_requests') }}</textarea>
+                    <p class="text-[10px] text-ink-mute mt-xs leading-relaxed flex items-start gap-xs">
+                        <svg class="w-3 h-3 shrink-0 mt-0.5 text-accent-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z"/></svg>
+                        <span>
+                            Lütfen sağlık, inanç veya diğer özel nitelikli kişisel
+                            bilgilerinizi bu alana yazmayın. Bu tür bilgiler için bizi
+                            telefon veya WhatsApp ile arayın.
+                        </span>
+                    </p>
                 </div>
             </div>
 
@@ -232,6 +240,18 @@
                                 </p>
                             </div>
                         </div>
+
+                        {{-- KVKK aydınlatma onayı (zorunlu — backend `accepted` rule) --}}
+                        <label class="flex items-start gap-xs mb-sm text-xs text-ink-soft leading-relaxed cursor-pointer">
+                            <input type="checkbox" name="kvkk_consent" value="1" required
+                                   {{ old('kvkk_consent') ? 'checked' : '' }}
+                                   class="mt-0.5 accent-primary focus:ring-2 focus:ring-primary/20 cursor-pointer shrink-0" />
+                            <span>
+                                <a href="{{ route('kvkk') }}" target="_blank" rel="noopener" class="text-primary underline-grow hover:text-primary-dark font-medium">KVKK Aydınlatma Metnini</a>
+                                okudum, kişisel verilerimin rezervasyon işlemleri için
+                                işlenmesini kabul ediyorum.
+                            </span>
+                        </label>
 
                         <button type="submit"
                                 class="w-full bg-accent hover:bg-accent-dark text-surface font-display font-semibold tracking-wide py-sm rounded-btn transition-colors inline-flex items-center justify-center gap-xs shadow-soft hover:shadow-lift active:scale-[0.98]">

@@ -39,6 +39,10 @@ server {
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
     add_header Permissions-Policy "geolocation=(), microphone=(), camera=()" always;
 
+    # CSP — Filament inline script/style kullandığı için 'unsafe-inline' geçici;
+    # ileride nonce/strict-dynamic'e geçilmeli. img-src data: schema.org JSON-LD için.
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'" always;
+
     # ── Gzip / Brotli sıkıştırma ──
     gzip on;
     gzip_vary on;

@@ -50,7 +50,13 @@ class ReservationController extends Controller
             'check_out' => ['required', 'date', 'after:check_in'],
             'adults' => ['required', 'integer', 'min:1', 'max:10'],
             'children' => ['nullable', 'integer', 'min:0', 'max:10'],
-            'special_requests' => ['nullable', 'string', 'max:1000'],
+            // 500 char yeterli; uzun talepler için telefon yönlendirme.
+            // Özel nitelikli PII (sağlık/inanç) sızıntı yüzeyini sınırlar.
+            'special_requests' => ['nullable', 'string', 'max:500'],
+            // KVKK Madde 10 aydınlatma kabul kanıtı (form üzerinde checkbox).
+            'kvkk_consent' => ['accepted'],
+        ], [
+            'kvkk_consent.accepted' => 'Rezervasyon için KVKK aydınlatma metnini onaylamanız gerekir.',
         ]);
 
         $room = Room::findOrFail($data['room_id']);

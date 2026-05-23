@@ -47,9 +47,3 @@ parameters:
 			identifier: method.nonObject
 			count: 1
 			path: app/Models/Reservation.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Notifications/ReservationCreated.php

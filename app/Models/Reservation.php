@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class Reservation extends Model
@@ -151,21 +152,29 @@ class Reservation extends Model
         }
     }
 
-    /** KSO-2026-0001 formatında benzersiz rezervasyon kodu üretir. */
+    /**
+     * KSO-YYYY-AAAAAAAA formatında benzersiz rezervasyon kodu üretir.
+     *
+     * Format: 4 haneli yıl + 8 karakter base32 rastgele (≈40 bit entropy).
+     * Sıralı NNNN formatından geçildi (IDOR/PII enumeration koruması) —
+     * saldırgan başka misafirin success sayfasını tahmin edemez.
+     *
+     * Eski sıralı kodları okuma backward compatibility'si yok; üretime
+     * çıkmadan değişti.
+     */
     protected static function generateCode(): string
     {
         $year = now()->year;
         $prefix = "KSO-{$year}-";
 
-        $lastCode = self::where('reservation_code', 'like', $prefix.'%')
-            ->orderByDesc('reservation_code')
-            ->value('reservation_code');
+        do {
+            // Str::random varsayılan olarak [A-Za-z0-9] üretir; uppercase'e
+            // çevirip okunabilir kıl (telefonda yazılırken case karışmasın).
+            // O/0, I/1 ayrımı için ileride Crockford base32 düşünülebilir.
+            $code = $prefix.strtoupper(Str::random(8));
+        } while (self::where('reservation_code', $code)->exists());
 
-        $nextNumber = $lastCode
-            ? ((int) substr($lastCode, -4)) + 1
-            : 1;
-
-        return $prefix.str_pad((string) $nextNumber, 4, '0', STR_PAD_LEFT);
+        return $code;
     }
 
     /* ───────────── Scope'lar ───────────── */

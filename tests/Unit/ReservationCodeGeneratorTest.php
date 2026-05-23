@@ -10,37 +10,42 @@ class ReservationCodeGeneratorTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_kod_kso_yyyy_nnnn_formatinda_olusur(): void
+    public function test_kod_kso_yyyy_random_formatinda_olusur(): void
     {
+        // 2026-05 — IDOR/PII enumeration koruması: sıralı NNNN format yerine
+        // 8 char rastgele [A-Z0-9] (≈40 bit entropy). Saldırgan başkasının
+        // success URL'ini tahmin edemez.
         $reservation = Reservation::factory()->create();
 
-        $this->assertMatchesRegularExpression('/^KSO-\d{4}-\d{4}$/', $reservation->reservation_code);
+        $this->assertMatchesRegularExpression(
+            '/^KSO-\d{4}-[A-Z0-9]{8}$/',
+            $reservation->reservation_code,
+            'Format: KSO-YYYY-AAAAAAAA (8 char base32)'
+        );
         $this->assertStringContainsString((string) now()->year, $reservation->reservation_code);
     }
 
-    public function test_ardisik_kodlar_artar(): void
+    public function test_ardisik_kodlar_unique_ama_tahmin_edilemez(): void
     {
-        $first = Reservation::factory()->create();
-        $second = Reservation::factory()->create();
-        $third = Reservation::factory()->create();
+        // Sıralı (NNNN → NNNN+1) DEĞİL artık — unique olmaları yeterli,
+        // ardışıklık özelliği KALDIRILDI (IDOR koruması).
+        $codes = collect(range(1, 10))->map(
+            fn () => Reservation::factory()->create()->reservation_code
+        );
 
-        $firstNum = (int) substr($first->reservation_code, -4);
-        $secondNum = (int) substr($second->reservation_code, -4);
-        $thirdNum = (int) substr($third->reservation_code, -4);
-
-        $this->assertEquals(1, $firstNum);
-        $this->assertEquals(2, $secondNum);
-        $this->assertEquals(3, $thirdNum);
+        $this->assertSame(10, $codes->unique()->count(), '10 kodun hepsi farklı olmalı');
     }
 
     public function test_acikca_verilen_kod_overwrite_edilmez(): void
     {
-        $customCode = 'KSO-2026-9999';
+        // Eski formatlı kod manuel verilirse korunur (admin manuel ekleme,
+        // backward import vs. için).
+        $customCode = 'KSO-2026-LEGACY01';
 
         $reservation = Reservation::factory()->create([
             'reservation_code' => $customCode,
         ]);
 
-        $this->assertEquals($customCode, $reservation->reservation_code);
+        $this->assertSame($customCode, $reservation->reservation_code);
     }
 }

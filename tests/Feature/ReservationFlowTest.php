@@ -54,6 +54,7 @@ class ReservationFlowTest extends TestCase
             'adults' => 2,
             'children' => 0,
             'special_requests' => 'Erken giriş istiyoruz',
+            'kvkk_consent' => '1',
         ];
 
         $response = $this->post('/rezervasyon', $payload);
@@ -68,9 +69,12 @@ class ReservationFlowTest extends TestCase
             'status' => ReservationStatus::Pending->value,
         ]);
 
-        // Reservation code formatı kontrolü
+        // Rezervasyon kodu format kontrolü — random 8 char (IDOR koruması)
         $reservation = Reservation::where('guest_email', 'ali@example.com')->first();
-        $this->assertMatchesRegularExpression('/^KSO-\d{4}-\d{4}$/', $reservation->reservation_code);
+        $this->assertMatchesRegularExpression(
+            '/^KSO-\d{4}-[A-Z0-9]{8}$/',
+            $reservation->reservation_code
+        );
 
         // Success sayfasına redirect
         $response->assertRedirect("/rezervasyon/basarili/{$reservation->reservation_code}");
@@ -90,6 +94,7 @@ class ReservationFlowTest extends TestCase
             'check_in' => now()->addDays(5)->format('Y-m-d'),
             'check_out' => now()->addDays(7)->format('Y-m-d'),
             'adults' => 1,
+            'kvkk_consent' => '1',
         ]);
 
         $response->assertRedirect('/');
@@ -107,6 +112,7 @@ class ReservationFlowTest extends TestCase
             'check_in' => now()->addDays(7)->format('Y-m-d'),
             'check_out' => now()->addDays(10)->format('Y-m-d'),
             'adults' => 2,
+            'kvkk_consent' => '1',
         ]);
 
         $response->assertSessionHasErrors(['guest_last_name', 'guest_phone', 'guest_email']);
@@ -125,6 +131,7 @@ class ReservationFlowTest extends TestCase
             'check_in' => now()->subDays(1)->format('Y-m-d'), // dün
             'check_out' => now()->addDays(2)->format('Y-m-d'),
             'adults' => 2,
+            'kvkk_consent' => '1',
         ]);
 
         $response->assertSessionHasErrors(['check_in']);
@@ -143,6 +150,7 @@ class ReservationFlowTest extends TestCase
             'check_in' => now()->addDays(7)->format('Y-m-d'),
             'check_out' => now()->addDays(5)->format('Y-m-d'), // giriş'ten önce
             'adults' => 2,
+            'kvkk_consent' => '1',
         ]);
 
         $response->assertSessionHasErrors(['check_out']);
@@ -158,6 +166,30 @@ class ReservationFlowTest extends TestCase
         $response->assertOk();
         $response->assertSee($reservation->reservation_code);
         $response->assertSee('TR00 0000 0000 0000 0000 0000 00');
+    }
+
+    /* ─────────── KVKK aydınlatma kabul (Faz 2c security) ─────────── */
+
+    public function test_kvkk_consent_eksik_ise_validation_hatasi_doner(): void
+    {
+        // KVKK Madde 10 — aydınlatma metni kabulü zorunlu; eksik gönderim
+        // backend tarafında accepted rule ile yakalanır.
+        $room = Room::factory()->create(['is_active' => true]);
+
+        $response = $this->post('/rezervasyon', [
+            'guest_first_name' => 'Ali',
+            'guest_last_name' => 'Veli',
+            'guest_phone' => '+90 555 123 45 67',
+            'guest_email' => 'no-consent@example.com',
+            'room_id' => $room->id,
+            'check_in' => now()->addDays(7)->format('Y-m-d'),
+            'check_out' => now()->addDays(10)->format('Y-m-d'),
+            'adults' => 2,
+            // kvkk_consent yok — fail bekleniyor
+        ]);
+
+        $response->assertSessionHasErrors(['kvkk_consent']);
+        $this->assertDatabaseMissing('reservations', ['guest_email' => 'no-consent@example.com']);
     }
 
     /* ─────────── Tarih Çakışma Kontrolü (Faz 2n) ─────────── */
@@ -183,6 +215,7 @@ class ReservationFlowTest extends TestCase
             'check_in' => '2026-06-06',
             'check_out' => '2026-06-07',
             'adults' => 2,
+            'kvkk_consent' => '1',
         ]);
 
         $response->assertSessionHasErrors(['check_in']);
@@ -209,6 +242,7 @@ class ReservationFlowTest extends TestCase
             'check_in' => '2026-06-06',
             'check_out' => '2026-06-07',
             'adults' => 2,
+            'kvkk_consent' => '1',
         ]);
 
         $this->assertDatabaseHas('reservations', ['guest_email' => 'pending-overlap@example.com']);
@@ -235,6 +269,7 @@ class ReservationFlowTest extends TestCase
             'check_in' => '2026-06-08',
             'check_out' => '2026-06-10',
             'adults' => 2,
+            'kvkk_consent' => '1',
         ]);
 
         $this->assertDatabaseHas('reservations', ['guest_email' => 'bitisik@example.com']);
@@ -259,6 +294,7 @@ class ReservationFlowTest extends TestCase
             'check_in' => now()->addDays(5)->format('Y-m-d'),
             'check_out' => now()->addDays(8)->format('Y-m-d'),
             'adults' => 2,
+            'kvkk_consent' => '1',
         ]);
 
         // Admin'e gönderildi
@@ -277,6 +313,8 @@ class ReservationFlowTest extends TestCase
     public function test_reservation_created_notification_database_payload_calisir(): void
     {
         // Bu test wrong namespace gibi runtime hatalarını yakalar.
+        // Plus: KVKK PII minimizasyon — body sadece rezervasyon kodu içerir,
+        // misafir adı/oda notifications tablosuna duplike olmaz.
         $room = Room::factory()->create(['name' => 'Test Süit']);
         $reservation = Reservation::factory()->create([
             'room_id' => $room->id,
@@ -293,6 +331,11 @@ class ReservationFlowTest extends TestCase
         $this->assertIsArray($payload);
         $this->assertArrayHasKey('title', $payload);
         $this->assertSame('Yeni Rezervasyon Talebi', $payload['title']);
+
+        // PII duplikasyonu kontrolü — misafir adı body'de OLMAMALI
+        $bodyAsString = json_encode($payload);
+        $this->assertStringNotContainsString('Ali Veli', $bodyAsString, 'PII minimize: misafir adı notifications tablosunda olmamalı.');
+        $this->assertStringContainsString($reservation->reservation_code, $bodyAsString);
     }
 
     /* ─────────── Model invariantları (kapasite + update çakışma) ─────────── */
@@ -435,6 +478,7 @@ class ReservationFlowTest extends TestCase
             'check_in' => '2026-06-05',
             'check_out' => '2026-06-08',
             'adults' => 2,
+            'kvkk_consent' => '1',
         ]);
 
         $this->assertDatabaseHas('reservations', ['guest_email' => 'iptal-sonrasi@example.com']);
@@ -463,6 +507,7 @@ class ReservationFlowTest extends TestCase
             'check_in' => '2026-06-06',
             'check_out' => '2026-06-07',
             'adults' => 2,
+            'kvkk_consent' => '1',
         ]);
 
         $response->assertSessionHasErrors(['check_in']);
@@ -484,6 +529,7 @@ class ReservationFlowTest extends TestCase
             'check_in' => now()->addDays(7)->format('Y-m-d'),
             'check_out' => now()->addDays(10)->format('Y-m-d'),
             'adults' => 0,
+            'kvkk_consent' => '1',
         ]);
 
         $response->assertSessionHasErrors(['adults']);
@@ -506,6 +552,7 @@ class ReservationFlowTest extends TestCase
             'check_in' => $date,
             'check_out' => $date,
             'adults' => 2,
+            'kvkk_consent' => '1',
         ]);
 
         $response->assertSessionHasErrors(['check_out']);
@@ -528,6 +575,7 @@ class ReservationFlowTest extends TestCase
             'check_in' => now()->addDays(7)->format('Y-m-d'),
             'check_out' => now()->addDays(10)->format('Y-m-d'),
             'adults' => 2,
+            'kvkk_consent' => '1',
         ]);
 
         $rez = Reservation::where('guest_email', 'umit@example.com')->firstOrFail();
@@ -541,7 +589,8 @@ class ReservationFlowTest extends TestCase
 
     public function test_var_olmayan_kod_ile_success_sayfasi_404_doner(): void
     {
-        $response = $this->get('/rezervasyon/basarili/KSO-2026-9999');
+        // Random format → tahmin edilemez kod (KSO-2026-NOPE0000 DB'de yok)
+        $response = $this->get('/rezervasyon/basarili/KSO-2026-NOPE0000');
 
         $response->assertNotFound();
     }

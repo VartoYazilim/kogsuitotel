@@ -21,18 +21,21 @@ class ReservationCreated extends Notification
         return ['database'];
     }
 
-    /** Filament notification — bell ikonu açıldığında bu görünür. */
+    /**
+     * Filament notification — bell ikonu açıldığında bu görünür.
+     *
+     * PII minimizasyonu (KVKK m.4/2-d): notifications tablosunda misafir
+     * adı + oda adı duplikasyonu yapılmaz. Sadece rezervasyon kodu tutulur;
+     * detay görmek için admin Detayını Aç → Resource view sayfası.
+     * Bu tablonun silinmesi unutulursa bile PII sızıntı yüzeyi minimal.
+     */
     public function toDatabase(object $notifiable): array
     {
-        $guestFullName = trim(
-            $this->reservation->guest_first_name.' '.$this->reservation->guest_last_name
-        );
-
         return FilamentNotification::make()
             ->title('Yeni Rezervasyon Talebi')
             ->icon('heroicon-o-calendar-days')
             ->iconColor('warning')
-            ->body("**{$this->reservation->reservation_code}** · {$guestFullName} · {$this->reservation->room->name}")
+            ->body("Rezervasyon kodu: **{$this->reservation->reservation_code}**")
             ->actions([
                 Action::make('view')
                     ->label('Detayını Aç')

@@ -14,7 +14,13 @@ class User extends Authenticatable implements FilamentUser
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    protected $fillable = ['name', 'email', 'password', 'is_admin'];
+    /**
+     * `is_admin` BİLİNÇLİ olarak fillable dışında — privilege escalation
+     * koruması. Admin yapma işi seeder'da `Model::unguarded()` ile veya
+     * admin panelde explicit `$user->is_admin = true; $user->save();` ile
+     * yapılır.
+     */
+    protected $fillable = ['name', 'email', 'password'];
 
     protected $hidden = ['password', 'remember_token'];
 

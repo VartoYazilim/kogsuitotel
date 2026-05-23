@@ -30,6 +30,7 @@ Route::post('/rezervasyon', [ReservationController::class, 'store'])
     ->middleware('throttle:5,1')
     ->name('reservations.store');
 Route::get('/rezervasyon/basarili/{code}', [ReservationController::class, 'success'])
+    ->middleware('throttle:20,1') // IDOR enumeration koruması (kod tahmin saldırısı yavaşlar)
     ->name('reservations.success');
 
 /*

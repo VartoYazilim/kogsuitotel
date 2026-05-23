@@ -377,6 +377,30 @@ Bu noktalar henüz netleştirilmedi. İlgili faza gelindiğinde kullanıcıya so
 7. **Çoklu dil**: Şimdilik sadece Türkçe. İngilizce gerekirse Laravel'in
    localization sistemiyle eklenir (Faz 2+).
 
+8. **Audit log (`spatie/laravel-activitylog`)**: 2026-05-23 Block 3 güvenlik
+   denetiminde gap olarak tespit edildi. Admin "ödendi" yanlış işaretlerse
+   geri alma trail'i yok; KVKK m.12/3 denetim altyapısı zayıf. Soru: Faz 3
+   (prod deploy) ÖNCESI mi eklenecek, yoksa Faz 4'e mi bırakılacak?
+   Öneri: prod öncesi (1-2 saat iş).
+   Detay: `docs/guvenlik-denetimi-2026-05.md` Madde 10.
+
+9. **2FA (Filament 2FA plugin veya `pragmarx/google2fa-laravel`)**: Tek
+   admin tek faktör (email+password). Parola leak = tüm misafir verisi
+   açılır. CLAUDE.md Section 9 zaten "prod öncesi" diyor ama paket henüz
+   yüklü değil. Soru: hangisi tercih edilsin? Öneri: Filament resmi plugin
+   (admin UX bütün). Detay: `docs/guvenlik-denetimi-2026-05.md` Madde 9.
+
+10. **KVKK saklama süresi**: Şu an hiçbir rezervasyon otomatik silinmez —
+    KVKK m.4/2-d ihlal. Yasal pratik 2 yıl (rezervasyon kaydı için), mali
+    kayıt 5/10 yıl. Soru: sahip kararı + avukat görüşü → "X yıl sonra
+    `guest_*` alanları anonimleştirilir (null), tarih/tutar istatistik için
+    kalır" cron'u yazılacak. Detay: `docs/kvkk-veri-envanteri.md` Bölüm 4.
+
+11. **VERBİS kayıt durumu**: Otel veri sorumlusu, Kişisel Verileri Koruma
+    Kurulu 2018/87 kararına göre çalışan 50+ ve ciro 100M+ değilse muafiyet
+    olabilir. Soru: avukat netleştirmesi gerekli. Detay:
+    `docs/kvkk-veri-envanteri.md` Bölüm 4 → Sahibin yapacağı madde 1.
+
 ---
 
 ## 11. Geliştirme Sırası (Sıralı Plan)
