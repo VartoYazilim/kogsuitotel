@@ -4,7 +4,8 @@
 
 Muş Varto'da açılacak yeni butik otelin resmi web sitesi ve rezervasyon sistemi.
 
-**Domain**: [kogsuitotel.com](https://kogsuitotel.com) (Cloudflare DNS aktif, VPS satın alındığında canlıya alınır)
+**Domain**: [kogsuitotel.com](https://kogsuitotel.com) — **CANLIDA** (Contabo VPS 10, Cloudflare proxy ON, SSL Full Strict)
+**Admin paneli**: [yonetim.kogsuitotel.com](https://yonetim.kogsuitotel.com) (`/kog-yonetim`'e 301)
 **Marka**: "Refined Hospitality in Varto"
 **Geliştirici**: [Varto Yazılım](https://vartoyazilim.com)
 
@@ -14,14 +15,16 @@ Muş Varto'da açılacak yeni butik otelin resmi web sitesi ve rezervasyon siste
 
 ## Stack
 
-- **Laravel 12.60** + **Filament 4.11** (admin paneli, custom panel theme)
+- **Laravel 12.60** + **Filament 4.11** (admin paneli, custom panel theme, `->profile()` ile şifre değiştirme)
 - **PHP 8.3.30** (Laragon — prod parity Ubuntu 24.04 default ile uyumlu)
 - **Tailwind v4** (CSS-first config, `@theme` directive)
-- **SQLite** lokal · **PostgreSQL/MariaDB** prod (CI 2 driver matrix)
-- **Flatpickr** (modern tarih seçici, TR locale, public site)
-- **Spatie ActivityLog** (admin aksiyonları audit trail — KVKK m.12/3)
+- **SQLite** lokal · **MariaDB 10.11** prod · **PostgreSQL 16** CI (matrix)
+- **Flatpickr** (public site tarih seçici, TR locale) · **Filament DatePicker** (admin)
+- **Spatie ActivityLog** (admin aksiyonları audit trail — Filament UI "Geçmiş" tab + KVKK m.12/3)
 - **Spatie Laravel Sitemap** (yerel SEO için)
+- **App\Services\ImageWebpConverter** (admin upload JPG/PNG → WebP otomatik dönüşüm, q=82)
 - **Olive Sanctuary** tasarım sistemi (zeytin yeşili + antika altın + sıcak krem, light + dark variant)
+- **Vanilla JS lightbox** (oda galeri detayda, paket yok)
 
 ---
 
@@ -77,7 +80,7 @@ php artisan serve   # http://localhost:8000
 composer pint                  # Kod stili kontrolü (sadece check)
 composer pint:fix              # Kod stilini otomatik düzelt
 vendor/bin/phpstan analyse     # Larastan statik analiz (level 5)
-composer test                  # PHPUnit (53 test, 133 assertion)
+composer test                  # PHPUnit (112 test, 379 assertion)
 
 php artisan test --coverage    # Coverage raporu (Xdebug gerekli)
 ```
@@ -105,10 +108,13 @@ npm run dev    # Vite dev server, HMR aktif
 
 İçerikler:
 - **Operasyon** → Rezervasyonlar (kanban, filtre, WhatsApp aksiyonu, status workflow), Müsaitlik sorgusu
-- **İçerik** → Odalar, Galeri Görselleri
-- **Sistem** → Ayarlar (IBAN, telefon, saatler, sosyal medya)
+- **İçerik** → Odalar (çoklu galeri upload, otomatik WebP), Galeri Görselleri
+- **Sistem** → İşletme Ayarları (`/kog-yonetim/ayarlar` — kategorize tek sayfa: Banka/İletişim/Konaklama/Sosyal Medya)
+- **Sağ üst avatar menüsü** → Profil (`/kog-yonetim/profile` — ad, e-posta, şifre değiştirme)
 
-**Audit trail** — admin status/oda/setting değişimleri `activity_log` tablosuna işlenir (Spatie ActivityLog, KVKK m.12/3 denetim).
+**Audit trail** — Reservation/Room/Setting değişimleri `activity_log` tablosuna işlenir + Filament admin'de detay sayfalarında **"Geçmiş"** tab'ında kim/ne zaman/eski→yeni diff görünür (Spatie ActivityLog, KVKK m.12/3 denetim).
+
+**Görsel upload** — JPG/PNG yüklenince otomatik WebP'ye dönüşür (`App\Services\ImageWebpConverter`, q=82, PNG alpha preserve, random isim KVKK güvenlik).
 
 ---
 
@@ -121,9 +127,13 @@ npm run dev    # Vite dev server, HMR aktif
 ├── design.html                  # Olive Sanctuary tasarım sistemi preview
 ├── app/
 │   ├── Enums/ReservationStatus.php
-│   ├── Filament/Resources/      # 4 admin resource (Reservation, Room, Gallery, Setting)
-│   ├── Filament/Widgets/        # Dashboard widget'ları
-│   ├── Models/                  # 4 model + relations
+│   ├── Filament/
+│   │   ├── Pages/               # BusinessSettings + Availability (custom Filament pages)
+│   │   ├── RelationManagers/    # ActivitiesRelationManager (DRY, Reservation+Room "Geçmiş")
+│   │   ├── Resources/           # 3 admin resource (Reservation, Room, GalleryImage)
+│   │   └── Widgets/             # Dashboard widget'ları (Welcome + Stats + Trend + Latest)
+│   ├── Models/                  # 4 model + LogsActivity trait
+│   ├── Services/                # ImageWebpConverter (FileUpload otomatik WebP)
 │   └── Http/Controllers/        # Public + Admin controllers
 ├── config/seo.php               # SEO konfigürasyon (yerel — Varto/Muş)
 ├── database/
@@ -142,15 +152,21 @@ npm run dev    # Vite dev server, HMR aktif
 │   └── site.webmanifest         # PWA install
 ├── resources/
 │   ├── css/app.css              # @theme + selection + scrollbar + microinteractions
-│   ├── js/app.js                # Flatpickr + dinamik fiyat
+│   ├── css/filament/kog/        # Custom Filament panel theme (Olive Sanctuary light+dark)
+│   ├── js/app.js                # Flatpickr + dinamik fiyat + lightbox (vanilla)
 │   └── views/
 │       ├── layouts/public.blade.php
-│       ├── pages/               # home, about, contact, faq, kvkk, privacy
-│       ├── rooms/               # index, show
+│       ├── filament/pages/      # business-settings, availability (custom Page Blade'ler)
+│       ├── pages/               # home, about, contact, faq, kvkk, privacy, cookie-policy
+│       ├── rooms/               # index, show (+ lightbox triggers)
 │       ├── gallery/index.blade.php
 │       ├── reservations/        # create, success
-│       └── partials/schema-breadcrumb.blade.php
-└── tests/                       # 53 PHPUnit test (Feature + Unit), CI 2 driver matrix
+│       └── partials/            # schema-breadcrumb, lightbox (Olive Sanctuary modal)
+└── tests/                       # 112 PHPUnit test (Feature + Unit), CI 2 driver matrix
+    ├── Feature/                 # Public flow, Admin panel, Activity log, Legal pages,
+    │                            # Profile password, BusinessSettings, Webp upload
+    └── Unit/                    # ReservationCode, Nights, Status, RoomImageUrl,
+                                 # ImageWebpConverter, AppTimezone
 ```
 
 ---
@@ -169,17 +185,37 @@ CLAUDE.md Section 12'de tüm kurallar var. Özet:
 
 ---
 
-## Production Deploy
+## Production Deploy ✅ CANLIDA
 
-VPS satın alındıktan sonra (Contabo Cloud VPS 10, Ubuntu 24.04):
+**Sunucu**: Contabo VPS 10 (Ubuntu 24.04, 4 vCPU / 8 GB RAM / 75 GB NVMe, Nürnberg)
+**Stack**: nginx 1.24 + PHP 8.3.6-FPM + MariaDB 10.11 + Redis 7 + Composer 2.9 + Node 20
+**SSL**: Cloudflare Origin Certificate (15 yıl, 2041'e kadar) + Full Strict mode + HSTS 1 yıl
+**Hardening**: SSH key-only auth, non-root deploy user, UFW (22/80/443), fail2ban, unattended-upgrades
 
-1. `deploy/` klasöründeki örnek nginx config ve `deploy.sh`'i prod sunucuda kullan
-2. `.env.production` şablonundan prod env oluştur
-3. `php artisan migrate --force --seed`
-4. Cloudflare proxy ON + Origin Certificate
-5. `php artisan optimize` (config, route, view cache)
+### Yeni deploy (kod değişikliği sonrası)
 
-Detaylı adımlar **CLAUDE.md Section 8** ve **Section 11 (Faz 3)**.
+VPS'te `deploy` user olarak:
+
+```bash
+cd /var/www/kogsuitotel
+git pull origin main
+composer install --no-dev --optimize-autoloader
+php artisan migrate --force                   # yeni migration varsa
+php artisan livewire:publish --assets --force # Livewire asset publish (gerekirse)
+npm ci && npm run build
+php artisan config:clear && php artisan config:cache
+php artisan route:cache && php artisan view:cache
+```
+
+### İlk deploy adımları
+
+Detaylı tüm adımlar `deploy/README.md` ve **CLAUDE.md Section 8** ve **Section 11 (Faz 3)**.
+
+### Önemli notlar
+
+- **Cloudflare cache purge** — Livewire/Filament asset değişimi sonrası Cloudflare panel veya API ile cache purge (eski 404'ler cache'lenmiş olabilir)
+- **nginx vhost** — `/livewire/` ve `/filament/` prefix location'ları `^~` modifier ile static asset regex'inden ÖNCE eşleşir, PHP route'a yönlendirilir
+- **`config/app.php`** `'timezone' => env('APP_TIMEZONE', 'UTC')` — env'den okur, hardcoded değil
 
 ---
 

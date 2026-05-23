@@ -418,19 +418,18 @@ Bu noktalar henüz netleştirilmedi. İlgili faza gelindiğinde kullanıcıya so
 
 ## 11. Geliştirme Sırası (Sıralı Plan)
 
-### Genel Durum (2026-05-24 — Faz 2 KAPANDI, Faz 3 başladı)
+### Genel Durum (2026-05-24 sonu — Faz 3 KAPANDI, SİTE CANLIDA)
 
 - ✅ **Faz 1** tamam
-- ✅ **Faz 2** kod + içerik kapandı (sahibe-bağımlı 2e dışında — sahip foto'ları
-  yüklediğinde admin'den polymorphic path ile devreye girer)
+- ✅ **Faz 2** kod + içerik kapandı (2e sahip foto'ları için bekliyor)
+- ✅ **Faz 2h KVKK metinleri** — /kvkk + /gizlilik + /cerez-politikasi (commit `457f079`)
 - ✅ **Sahip demo onayladı** (2026-05-24)
 - ✅ **VERBİS kapalı** — zorunlu değil (otel ölçeği muafiyet)
 - ❌ **KVKK saklama süresi** geçildi — anonimleştirme cron yok (hukuki risk kabul)
-- 🔄 **KVKK metinleri (2h)** bu seans yazılıyor: /kvkk + /gizlilik + /cerez-politikasi
-- 🚀 **Faz 3 BAŞLADI** — Contabo VPS 10 alındı (IP `164.68.108.73`, Ubuntu 24.04)
-- 📝 Deploy script altyapısı hazır: `deploy/deploy.sh`, `deploy/nginx.conf.example`
-- 🧪 **93 PHPUnit test, 287 assertion** — Pint temiz, Larastan 0 hata, CI 2 driver matrix
-- 🎨 Olive Sanctuary palette + Olive Sanctuary dark mode + vectorized logo
+- 🚀 **Faz 3 TAM KAPANDI** — site **kogsuitotel.com** CANLIDA (Contabo VPS 10, Cloudflare proxy, SSL Full Strict)
+- 🌐 **Public URL'ler**: `kogsuitotel.com`, `www.kogsuitotel.com`, `yonetim.kogsuitotel.com` (→ /kog-yonetim)
+- 🧪 **112 PHPUnit test, 379 assertion** — Pint temiz, Larastan 0 hata, CI 2 driver matrix
+- 🎨 Olive Sanctuary palette + dark mode + vectorized logo + Filament custom panel theme
 
 ### Faz 2 Sonrası Ek Polish (2026-05-24 — bu seans)
 
@@ -442,7 +441,37 @@ Bu noktalar henüz netleştirilmedi. İlgili faza gelindiğinde kullanıcıya so
 | `1ef6110` | Filament 4 `->profile(isSimple: false)` + `Password::defaults(min(12)+mixedCase+numbers)` | +7 |
 | `1a23422` | SettingResource → `App\Filament\Pages\BusinessSettings` redesign (4 Section + IBAN auto-cleanup + batch save + custom slug `/ayarlar`) | +10 |
 
-**Toplam:** 53 → 93 test, 133 → 287 assertion.
+**Toplam (Faz 2 polish):** 53 → 93 test, 133 → 287 assertion.
+
+### Faz 3 VPS Deploy + Sonrası (2026-05-24 sonu — aynı seans devam)
+
+| Alan | Detay |
+|---|---|
+| **VPS hardening** | SSH key-only (`id_ed25519_varto`), `deploy` user sudo NOPASSWD, UFW (22/80/443 → CF IP whitelist İş 5 ile), fail2ban, unattended-upgrades, sshd `99-kog-hardening.conf` cloud-init override |
+| **Base stack** | nginx 1.24 + PHP 8.3.6-FPM + MariaDB 10.11.14 + Redis 7.0.15 + Composer 2.9.8 + Node 20.20.2 + Certbot 2.9.0 |
+| **DNS + SSL** | Cloudflare API ile Vercel A records temizliği, VPS IP A records, Origin Cert (15 yıl, RSA 2048), Full Strict SSL, HSTS 1 yıl, HTTP/2 |
+| **nginx vhost** | HTTP→HTTPS 301, real_ip CF, gzip, asset 1y cache, `^~ /livewire/` + `^~ /filament/` prefix location (static regex'ten ÖNCE) |
+| **Repo deploy** | `git clone` deploy user, `.env` prod (APP_URL + güçlü ADMIN_PASSWORD + DB pass random 24-char), `composer install --no-dev`, `npm ci && npm run build`, `migrate --seed`, optimize cache |
+| **Livewire fix** | `livewire:publish --assets --force` + nginx vhost `^~ /livewire/` block + Cloudflare cache purge (eski 404 cache) |
+| **Admin login fix** | `config:clear → db:seed AdminUserSeeder → config:cache` sırası (env() okuma için) |
+| **Vercel cleanup** | `*.kogsuitotel.com` wildcards + `_domainconnect` CNAME silindi |
+| **yonetim subdomain** | A record + nginx server block, 301 redirect `https://kogsuitotel.com/kog-yonetim$request_uri` (path preserve) |
+| **İş 9: Activity log Filament UI** | `ActivitiesRelationManager` DRY class, Reservation+Room detayında "Geçmiş" tab + diff render helper (eski → yeni) |
+| **İş 10: Timezone fix** | `config/app.php` `'timezone' => env('APP_TIMEZONE', 'UTC')` (hardcoded UTC kaldırıldı) |
+| **İş 11: README + ONBOARDING** | README VPS canlı + 112 test güncel, yeni ONBOARDING.md (5dk-onboarding rehberi) |
+| **İş 5: Origin firewall** | UFW 80/443 sadece Cloudflare IPv4 + IPv6 aralıklarına açık, SSH (22) anywhere key-only |
+
+**Toplam (Faz 3 sonrası):** 93 → 112 test, 287 → 379 assertion (+19: 8 activity + 3 timezone + 8 KVKK).
+
+**Çözülen 8 deploy gotcha** (memory `reference-vps-deploy-gotchas.md`):
+1. Livewire asset 404 (publish + nginx prefix block)
+2. Cloudflare cache'lenmiş 404 (purge)
+3. nginx 1.24 `http2 on;` desteklemez (`listen ... ssl http2;`)
+4. sshd_config.d cloud-init override (99-kog-hardening.conf)
+5. config:cache + env() çakışması (clear → seed → cache sırası)
+6. `$realpath_root` boş (SFTP ile vhost upload, `$document_root` kullan)
+7. Git "dubious ownership" (`safe.directory '*'` + deploy user heredoc)
+8. Vercel DNS kalıntıları (API ile DELETE)
 
 ### Bu Oturumun (2026-05-22 → 23) Önemli Eklemeleri
 
@@ -810,14 +839,27 @@ Bir fazı kapatmadan önce şu sorulara `evet` cevabı verilmeli:
 - [x] Filament admin paneli tüm CRUD ile çalışıyor
 - [x] Türkçe lokalizasyon tüm public + admin ekranlarında
 
-**Faz 2 → 3:**
-- [x] Sahibin onayı alınmış (Cloud demo görüntülendi 2026-05-24)
+**Faz 2 → 3:** ✅ TAMAMLANDI
+- [x] Sahibin onayı alınmış (Cloud demo + canlı demo görüntülendi 2026-05-24)
 - [ ] Gerçek içerik (foto + IBAN + fiyat + iletişim) — sahip yüklediğinde
       admin'den (polymorphic path hazır, scope dışı sayıldı)
-- [x] Test coverage ≥ %60 (93 test / 287 assertion)
+- [x] Test coverage ≥ %60 (112 test / 379 assertion)
 - [x] Logo yeniden tasarımı bitti (Olive Sanctuary vectorized SVG)
 - [x] Lighthouse Performance ≥ 90 (100/100/100/95-96)
 - [x] KVKK metinleri tamamlandı (/kvkk + /gizlilik + /cerez-politikasi)
+
+**Faz 3 → 4 (post-launch operasyonel kalıntılar):**
+- [x] VPS canlıda, kogsuitotel.com aktif, SSL Full Strict
+- [x] Admin login + Profil + Settings + Activity log canlı
+- [x] yonetim.kogsuitotel.com subdomain
+- [x] Vercel temizliği
+- [x] Origin IP firewall (UFW CF whitelist)
+- [ ] **Backup** (Spatie Laravel Backup + Backblaze B2, günlük cron) — kalan iş
+- [ ] **Monitoring** (UptimeRobot 5dk HTTP 200 check) — kalan iş
+- [ ] **GSC sitemap submit** — sahibin GSC erişimi sonrası
+- [ ] **CI/CD otomatik deploy** (GitHub Actions webhook) — opsiyonel polish
+- [ ] **Site canlıda 30 gün stabil** — geçiş eşiği
+- [ ] **İlk 5+ gerçek rezervasyon** — geçiş eşiği
 
 **Faz 3 → 4:**
 - [ ] Site canlıda en az 30 gün stabil çalışıyor
