@@ -39,6 +39,12 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('2.5rem')
             ->favicon(asset('favicon.svg'))
             ->login()
+            // ── Profile page — kullanıcı menüsünden "Profil" linki açar.
+            //    Default EditProfile page ad / e-posta / şifre değiştirmeyi kapsar.
+            //    Filament TR çeviri paketi label'ları otomatik Türkçe verir.
+            //    Şifre kuralı global Password::defaults() (AppServiceProvider).
+            //    Şifre değişimi sonrası mevcut session aktif kalır (Filament default).
+            ->profile(isSimple: false)
             ->colors([
                 'primary' => [
                     50 => '#f5f6f1',
