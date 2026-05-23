@@ -78,7 +78,7 @@ class AdminPanelAccessTest extends TestCase
     {
         $admin = User::factory()->create(['is_admin' => true]);
 
-        $response = $this->actingAs($admin)->get('/kog-yonetim/settings');
+        $response = $this->actingAs($admin)->get('/kog-yonetim/ayarlar');
 
         $response->assertOk();
     }
