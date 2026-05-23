@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Rooms\Schemas;
 
+use App\Services\ImageWebpConverter;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
@@ -84,6 +85,8 @@ class RoomForm
                             ->directory('rooms/covers')
                             ->imageEditor()
                             ->maxSize(5120)
+                            ->helperText('Yüklenen JPG/PNG dosyaları otomatik WebP\'ye çevrilir.')
+                            ->saveUploadedFileUsing(fn ($file) => app(ImageWebpConverter::class)->convert($file, 'rooms/covers'))
                             ->columnSpanFull(),
                         FileUpload::make('gallery')
                             ->label('Galeri Görselleri')
@@ -94,6 +97,8 @@ class RoomForm
                             ->reorderable()
                             ->maxSize(5120)
                             ->maxFiles(20)
+                            ->helperText('Sürükle-bırak ile sırala. Yüklenen görseller otomatik WebP\'ye çevrilir.')
+                            ->saveUploadedFileUsing(fn ($file) => app(ImageWebpConverter::class)->convert($file, 'rooms/gallery'))
                             ->columnSpanFull(),
                     ]),
 

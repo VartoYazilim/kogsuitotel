@@ -4,6 +4,7 @@ namespace App\Filament\Resources\GalleryImages;
 
 use App\Filament\Resources\GalleryImages\Pages\ManageGalleryImages;
 use App\Models\GalleryImage;
+use App\Services\ImageWebpConverter;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -75,7 +76,9 @@ class GalleryImageResource extends Resource
                     ->disk('public')
                     ->directory('gallery')
                     ->imageEditor()
-                    ->maxSize(5120),
+                    ->maxSize(5120)
+                    ->helperText('Yüklenen JPG/PNG dosyaları otomatik WebP\'ye çevrilir.')
+                    ->saveUploadedFileUsing(fn ($file) => app(ImageWebpConverter::class)->convert($file, 'gallery')),
                 TextInput::make('alt_text')
                     ->label('Alternatif Metin (alt)')
                     ->required()
