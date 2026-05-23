@@ -12,7 +12,6 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
@@ -152,13 +151,13 @@ class SettingResource extends Resource
                     ->sortable()
                     ->toggleable(),
             ])
-            ->groups([
-                Group::make('category')
-                    ->label('Kategori')
-                    ->getTitleFromRecordUsing(fn ($record) => self::categoryForKey($record->key))
-                    ->collapsible(),
-            ])
-            ->defaultGroup('category')
+            // NOT: `->groups([Group::make('category')])` + `defaultGroup('category')`
+            // Filament'i `ORDER BY category` SQL'i üretmeye zorluyor. SQLite/MySQL
+            // virtual alias tolere eder, PostgreSQL strict — "column does not exist"
+            // hatası verir. Visual grouping zaten Category badge ile sağlanıyor +
+            // getEloquentQuery() CASE WHEN ile kategori-sıralı geliyor, accordion
+            // kaybedildi ama 13 setting küçük — scroll sorun değil. Gerçek group
+            // istenirse Filament 4 `orderQueryUsing(closure)` ile geri eklenebilir.
             ->recordActions([
                 EditAction::make(),
             ]);
