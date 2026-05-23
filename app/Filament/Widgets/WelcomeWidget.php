@@ -21,7 +21,7 @@ class WelcomeWidget extends Widget
         $now = now();
 
         return [
-            'userName' => $user?->name ?? 'Misafir',
+            'userName' => $user->name ?? 'Misafir',
             'greeting' => $this->greetingByHour($now->hour),
             'todayDate' => $now->translatedFormat('d F Y, l'),
             'pendingCount' => Reservation::where('status', ReservationStatus::Pending)->count(),
