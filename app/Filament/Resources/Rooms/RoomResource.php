@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Rooms;
 
+use App\Filament\RelationManagers\ActivitiesRelationManager;
 use App\Filament\Resources\Rooms\Pages\CreateRoom;
 use App\Filament\Resources\Rooms\Pages\EditRoom;
 use App\Filament\Resources\Rooms\Pages\ListRooms;
@@ -54,7 +55,9 @@ class RoomResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            ActivitiesRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

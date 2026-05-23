@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Reservations;
 
 use App\Enums\ReservationStatus;
+use App\Filament\RelationManagers\ActivitiesRelationManager;
 use App\Filament\Resources\Reservations\Pages\CreateReservation;
 use App\Filament\Resources\Reservations\Pages\EditReservation;
 use App\Filament\Resources\Reservations\Pages\ListReservations;
@@ -82,7 +83,9 @@ class ReservationResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            ActivitiesRelationManager::class,
+        ];
     }
 
     public static function getPages(): array
