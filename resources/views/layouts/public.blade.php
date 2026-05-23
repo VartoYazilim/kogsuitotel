@@ -252,7 +252,8 @@
             <p class="font-display font-semibold text-sm uppercase tracking-wider text-accent mb-sm">Yasal</p>
             <ul class="space-y-xs text-sm text-surface/70">
                 <li><a href="{{ route('kvkk') }}" class="hover:text-accent transition-colors">KVKK Aydınlatma</a></li>
-                <li><a href="{{ route('privacy') }}" class="hover:text-accent transition-colors">Gizlilik Sözleşmesi</a></li>
+                <li><a href="{{ route('privacy') }}" class="hover:text-accent transition-colors">Gizlilik Politikası</a></li>
+                <li><a href="{{ route('cookie-policy') }}" class="hover:text-accent transition-colors">Çerez Politikası</a></li>
             </ul>
         </div>
         <div>

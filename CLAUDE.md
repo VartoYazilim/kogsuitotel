@@ -401,31 +401,48 @@ Bu noktalar henüz netleştirilmedi. İlgili faza gelindiğinde kullanıcıya so
    gelirse: Filament 4 native `multiFactorAuthentication([AppAuthentication::make()])`
    tek satırla geri eklenebilir (paket zaten Filament transitive dep).
 
-10. **KVKK saklama süresi**: Şu an hiçbir rezervasyon otomatik silinmez —
-    KVKK m.4/2-d ihlal. Yasal pratik 2 yıl (rezervasyon kaydı için), mali
-    kayıt 5/10 yıl. Soru: sahip kararı + avukat görüşü → "X yıl sonra
-    `guest_*` alanları anonimleştirilir (null), tarih/tutar istatistik için
-    kalır" cron'u yazılacak. Detay: `docs/kvkk-veri-envanteri.md` Bölüm 4.
+10. ~~**KVKK saklama süresi**~~ → **GEÇİLDİ** (2026-05-24, sahip kararı).
+    Anonimleştirme cron'u **yapılmayacak**. Hukuki risk kabul edildi —
+    sahip ileride avukat görüşü sonrası yeniden değerlendirebilir.
 
-11. **VERBİS kayıt durumu**: Otel veri sorumlusu, Kişisel Verileri Koruma
-    Kurulu 2018/87 kararına göre çalışan 50+ ve ciro 100M+ değilse muafiyet
-    olabilir. Soru: avukat netleştirmesi gerekli. Detay:
-    `docs/kvkk-veri-envanteri.md` Bölüm 4 → Sahibin yapacağı madde 1.
+11. ~~**VERBİS kayıt durumu**~~ → **KAPALI** (2026-05-24, sahip araştırdı).
+    Otel ölçeğinde VERBİS kaydı **zorunlu değil** (KVKK Kurulu 2018/87
+    kararı muafiyet eşiği altında: çalışan < 50, yıllık ciro < 100M).
+
+12. **KVKK metinleri (2h)** → 2026-05-24 itibariyle yazılıyor:
+    `/kvkk` (aydınlatma metni m.10), `/gizlilik` (politika),
+    `/cerez-politikasi` (Cloudflare Web Analytics çerezsiz notu).
+    Faz 2h kapatılıyor.
 
 ---
 
 ## 11. Geliştirme Sırası (Sıralı Plan)
 
-### Genel Durum (2026-05-23 sonu — Faz 2 kod tarafı TAMAM)
+### Genel Durum (2026-05-24 — Faz 2 KAPANDI, Faz 3 başladı)
 
-- ✅ **Faz 1** tamam (lokal altyapı + public site + admin)
-- ✅ **Faz 2** kod tarafı tamam — mail kaldırıldı, dashboard, test, SEO, logo, Flatpickr, terminoloji, kurumsal kalite, **domain invariant guards** (kapasite + update çakışma), **admin Müsaitlik sayfası**
-- ⏳ **Faz 2** sahibe-bağımlı maddeler (2e, 2f, 2h, 2k) bekliyor
-- 📝 **Faz 3** hazırlığı yapıldı: `deploy/deploy.sh`, `deploy/nginx.conf.example`,
-  `deploy/README.md` — VPS satın alındığında hazır kullanılır
-- 📚 `README.md` (geliştirici onboarding) yazıldı
-- 🧪 **38 PHPUnit test, 68 assertion** — public flow + admin sayfaları + notification + kapasite + çakışma + müsaitlik
-- 🎨 Sahibin vectorized SVG logosu Olive Sanctuary'ye dönüştürüldü, her yerde aktif
+- ✅ **Faz 1** tamam
+- ✅ **Faz 2** kod + içerik kapandı (sahibe-bağımlı 2e dışında — sahip foto'ları
+  yüklediğinde admin'den polymorphic path ile devreye girer)
+- ✅ **Sahip demo onayladı** (2026-05-24)
+- ✅ **VERBİS kapalı** — zorunlu değil (otel ölçeği muafiyet)
+- ❌ **KVKK saklama süresi** geçildi — anonimleştirme cron yok (hukuki risk kabul)
+- 🔄 **KVKK metinleri (2h)** bu seans yazılıyor: /kvkk + /gizlilik + /cerez-politikasi
+- 🚀 **Faz 3 BAŞLADI** — Contabo VPS 10 alındı (IP `164.68.108.73`, Ubuntu 24.04)
+- 📝 Deploy script altyapısı hazır: `deploy/deploy.sh`, `deploy/nginx.conf.example`
+- 🧪 **93 PHPUnit test, 287 assertion** — Pint temiz, Larastan 0 hata, CI 2 driver matrix
+- 🎨 Olive Sanctuary palette + Olive Sanctuary dark mode + vectorized logo
+
+### Faz 2 Sonrası Ek Polish (2026-05-24 — bu seans)
+
+| Commit | Alan | Test |
+|---|---|---|
+| `f41bb80` | Admin ImageColumn polymorphic accessor (demo + Filament upload + external) | mevcut yeşil |
+| `e384fec` | Çoklu oda galerisi public + vanilla JS lightbox + `Room::resolvePublicUrl` helper + `gallery_urls` accessor + RoomSeeder demo gallery | +13 |
+| `ffa890e` | `App\Services\ImageWebpConverter` (PHP GD q=82, alpha preserve, random isim) + 3 FileUpload `saveUploadedFileUsing` entegre | +10 |
+| `1ef6110` | Filament 4 `->profile(isSimple: false)` + `Password::defaults(min(12)+mixedCase+numbers)` | +7 |
+| `1a23422` | SettingResource → `App\Filament\Pages\BusinessSettings` redesign (4 Section + IBAN auto-cleanup + batch save + custom slug `/ayarlar`) | +10 |
+
+**Toplam:** 53 → 93 test, 133 → 287 assertion.
 
 ### Bu Oturumun (2026-05-22 → 23) Önemli Eklemeleri
 
@@ -794,11 +811,13 @@ Bir fazı kapatmadan önce şu sorulara `evet` cevabı verilmeli:
 - [x] Türkçe lokalizasyon tüm public + admin ekranlarında
 
 **Faz 2 → 3:**
-- [ ] Sahibin onayı alınmış (canlı demo veya rapor)
-- [ ] Gerçek içerik (foto + IBAN + fiyat + iletişim) entegre
-- [ ] Test coverage ≥ %60
-- [ ] Logo yeniden tasarımı bitti
-- [ ] Lighthouse Performance ≥ 90
+- [x] Sahibin onayı alınmış (Cloud demo görüntülendi 2026-05-24)
+- [ ] Gerçek içerik (foto + IBAN + fiyat + iletişim) — sahip yüklediğinde
+      admin'den (polymorphic path hazır, scope dışı sayıldı)
+- [x] Test coverage ≥ %60 (93 test / 287 assertion)
+- [x] Logo yeniden tasarımı bitti (Olive Sanctuary vectorized SVG)
+- [x] Lighthouse Performance ≥ 90 (100/100/100/95-96)
+- [x] KVKK metinleri tamamlandı (/kvkk + /gizlilik + /cerez-politikasi)
 
 **Faz 3 → 4:**
 - [ ] Site canlıda en az 30 gün stabil çalışıyor

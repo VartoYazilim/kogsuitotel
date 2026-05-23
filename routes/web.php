@@ -19,6 +19,7 @@ Route::get('/iletisim', [PageController::class, 'contact'])->name('contact');
 Route::get('/sss', [PageController::class, 'faq'])->name('faq');
 Route::get('/kvkk', [PageController::class, 'kvkk'])->name('kvkk');
 Route::get('/gizlilik', [PageController::class, 'privacy'])->name('privacy');
+Route::get('/cerez-politikasi', [PageController::class, 'cookiePolicy'])->name('cookie-policy');
 
 Route::get('/odalar', [RoomController::class, 'index'])->name('rooms.index');
 Route::get('/odalar/{room:slug}', [RoomController::class, 'show'])->name('rooms.show');

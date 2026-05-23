@@ -83,6 +83,11 @@ class SitemapController extends Controller
                 ->setPriority(0.2)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY)
         );
+        $sitemap->add(
+            Url::create(route('cookie-policy'))
+                ->setPriority(0.2)
+                ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY)
+        );
 
         return response($sitemap->render(), 200, [
             'Content-Type' => 'application/xml; charset=UTF-8',
