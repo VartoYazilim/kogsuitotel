@@ -21,6 +21,11 @@ class ActivitiesRelationManager extends RelationManager
 
     protected static ?string $title = 'Geçmiş';
 
+    // Lazy load — sayfa açılırken tablo render edilmez, "Yükle" butonu görünür.
+    // Tıklayınca tablo açılır (gizle/göster davranışı). Plus performans:
+    // her detay sayfasında activity_log sorgusu otomatik koşmaz.
+    protected static bool $isLazy = true;
+
     public function form(Schema $schema): Schema
     {
         // Activity log salt okunur — form yok

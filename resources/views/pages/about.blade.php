@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
 @section('title', 'Hakkımızda — Varto\'nun Butik Konağı')
-@section('description', 'Koğ Suit Otel: Muş Varto\'da modern minimalizm ve geleneksel Anadolu sıcaklığını bir araya getiren beş özenli süitlik butik otel. Vizyonumuz ve hikayemiz.')
+@section('description', 'Koğ Suit Otel: Muş Varto\'da 5 odalı butik otel. Sade tasarım, sıcak karşılama, rahat konaklama. Hikayemiz ve Varto hakkında bilgi.')
 
 @push('head')
 @include('partials.schema-breadcrumb', ['items' => [
@@ -20,19 +20,18 @@
             <span class="text-primary">samimi bir kaçış.</span>
         </h1>
         <p class="text-lg text-ink-soft leading-relaxed mb-md">
-            Koğ Suit Otel, Muş Varto'nun doğayla iç içe bir köşesinde, beş özenle tasarlanmış süitle
-            misafirlerine ev konforu ve butik bir konaklama deneyimi sunmak amacıyla kuruldu.
+            Koğ Suit Otel, Muş Varto'da 5 odalı küçük bir butik otel.
+            Misafirlerimize evlerindeymiş gibi hissedecekleri rahat bir konaklama sunmak için kuruldu.
         </p>
         <p class="text-ink-soft leading-relaxed mb-md">
-            Modern minimalizmi Anadolu'nun sıcaklığıyla harmanlayan tasarımımız; doğal tonlar, kaliteli
-            tekstiller ve ferah alanlarla her detayda kendini gösterir. Misafirlerimize sade ama özenli
-            bir konaklama deneyimi yaşatmak en büyük önceliğimizdir.
+            Odalarımız sade ve konforlu; doğal tonlar, kaliteli yatak ve ferah alanlarla
+            dinlenmenize odaklandık. Karmaşık değil, samimi bir otel deneyimi.
         </p>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-md mt-lg">
             <div class="bg-surface-card rounded-card p-md shadow-soft">
                 <p class="font-display font-bold text-3xl text-primary mb-xs">5</p>
-                <p class="text-sm text-ink-soft">Özenli Süit</p>
+                <p class="text-sm text-ink-soft">Konforlu Oda</p>
             </div>
             <div class="bg-surface-card rounded-card p-md shadow-soft">
                 <p class="font-display font-bold text-3xl text-primary mb-xs">24/7</p>
@@ -47,9 +46,9 @@
         <div class="mt-xl pt-lg border-t border-border-soft">
             <h2 class="font-display font-bold text-2xl md:text-3xl tracking-tight text-ink mb-md">Vizyonumuz</h2>
             <p class="text-ink-soft leading-relaxed">
-                Muş Varto'yu ziyaret eden her misafirimize, bölgenin doğal güzelliklerini deneyimleyebileceği
-                konforlu ve huzurlu bir konak hizmeti sunmak. Sıcak bir yatak ve güzel bir manzaranın ötesinde —
-                bir dostun evine gelmiş hissini yaşatmak.
+                Varto'ya gelen her misafirin rahat etmesi. Karmaşık servis değil, küçük dokunuşlar —
+                temiz bir oda, sıcak bir karşılama ve sorularınızı yanıtlayan bir ekip. Bir dostun evine
+                gelmiş gibi hissedebilmeniz için elimizden geleni yapıyoruz.
             </p>
         </div>
 
@@ -75,10 +74,10 @@
         </div>
 
         <div class="mt-xl pt-lg border-t border-border-soft text-center">
-            <p class="font-display text-xs tracking-[0.2em] uppercase text-accent-dark mb-sm">Şimdi Rezervasyon</p>
-            <p class="text-ink-soft mb-md max-w-xl mx-auto">
-                Varto'da huzurlu bir konaklama için Koğ Suit Otel'i tercih edin. Hızlı talep formuyla bir kaç
-                dakikada rezervasyonunuzu oluşturun.
+            <p class="font-display text-xs tracking-[0.2em] uppercase text-accent-dark mb-sm">Rezervasyon</p>
+            <p class="text-ink-soft mb-md max-w-2xl mx-auto">
+                Varto'da konaklama için doğru adres. Online talep bırakın, biz size birkaç dakika
+                içinde dönelim. WhatsApp ile de iletişime geçebilirsiniz.
             </p>
             <a href="{{ route('reservations.create') }}"
                class="inline-flex items-center gap-xs bg-primary hover:bg-primary-dark text-white font-display font-semibold tracking-wide px-md py-sm rounded-btn transition-colors">

@@ -104,7 +104,7 @@
 
                 <div class="mt-lg">
                     <p class="font-display text-xs tracking-[0.2em] uppercase text-accent-dark mb-sm">
-                        Süit · {{ $room->capacity }} Kişilik
+                        {{ $room->capacity }} Kişilik
                     </p>
                     <h1 class="font-display font-bold text-4xl md:text-6xl tracking-tight text-ink mb-md leading-tight">
                         {{ $room->name }}

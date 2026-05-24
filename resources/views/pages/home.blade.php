@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
-@section('title', 'Varto Butik Otel')
-@section('description', 'Koğ Suit Otel — Muş Varto\'da 5 özenli süitle butik konaklama. Modern konfor, geleneksel sıcaklık, panoramik manzara. Varto otel rezervasyon için ücretsiz talep.')
+@section('title', 'Varto Otel')
+@section('description', 'Koğ Suit Otel — Muş Varto\'da 5 odalı butik otel. Rahat odalar, sıcak karşılama, kolay rezervasyon. Online talep bırakabilir, WhatsApp\'tan hemen iletişime geçebilirsiniz.')
 
 @push('head')
 {{-- Ana sayfa: Hotel + LocalBusiness (yerel SEO için en kritik schema) --}}
@@ -12,7 +12,7 @@
     '@id' => url('/').'#hotel',
     'name' => 'Koğ Suit Otel',
     'alternateName' => 'Koğ Suit',
-    'description' => 'Muş Varto\'da beş özenli süitle modern konfor ve geleneksel sıcaklığı bir araya getiren butik otel. Refined Hospitality in Varto.',
+    'description' => 'Muş Varto\'da 5 odalı butik otel. Rahat konaklama, sıcak karşılama, kolay rezervasyon.',
     'url' => url('/'),
     'telephone' => \App\Models\Setting::get('phone'),
     'email' => \App\Models\Setting::get('email'),
@@ -80,15 +80,15 @@
     <div class="relative z-10 max-w-[1200px] mx-auto px-md py-xl md:py-[120px] grid grid-cols-1 md:grid-cols-5 gap-md items-center">
         <div class="md:col-span-3 text-surface">
             <p class="font-display text-xs tracking-[0.2em] uppercase text-accent mb-sm">
-                Refined Hospitality in Varto
+                Varto · Muş
             </p>
             <h1 class="font-display font-bold text-5xl md:text-7xl leading-[1.02] tracking-[-0.03em] mb-md">
-                Anadolu'nun<br />
-                <span class="text-accent italic font-serif" style="font-family: Georgia, 'Times New Roman', serif;">sakin konağı</span>
+                Varto'da<br />
+                <span class="text-accent italic font-serif" style="font-family: Georgia, 'Times New Roman', serif;">rahat bir konaklama.</span>
             </h1>
             <p class="text-lg md:text-xl leading-relaxed opacity-90 mb-lg max-w-2xl">
-                Varto'nun yeşil tepelerinde, beş özenli süitle huzurlu bir kaçışa davetlisiniz.
-                Modern konfor, geleneksel sıcaklık.
+                5 odamız, sıcak bir karşılama ve kolay rezervasyon.
+                Tatil, iş ya da kısa bir mola — sizi bekliyoruz.
             </p>
             <div class="flex flex-wrap gap-sm">
                 <a href="{{ route('reservations.create') }}"
@@ -207,10 +207,10 @@
             <div class="max-w-2xl">
                 <p class="font-display text-xs tracking-[0.2em] uppercase text-accent-dark mb-sm">Odalarımız</p>
                 <h2 class="font-display font-bold text-3xl md:text-5xl tracking-tight text-ink mb-sm">
-                    Her zevke özel
+                    Odalarımız
                 </h2>
                 <p class="text-ink-soft leading-relaxed">
-                    Çift kişilik standarttan, panoramik manzaralı premium süite — her oda kendi karakteriyle tasarlandı.
+                    Standart, suit, aile odası ve geniş süitler — ihtiyacınıza uygun seçenek bulabilirsiniz.
                 </p>
             </div>
             <a href="{{ route('rooms.index') }}"

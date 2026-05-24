@@ -11,8 +11,8 @@ return [
     */
 
     'site_name' => env('APP_NAME', 'Koğ Suit Otel'),
-    'tagline' => 'Refined Hospitality in Varto',
-    'description_default' => 'Koğ Suit Otel — Muş Varto\'da, beş özenli süitle modern konfor ve geleneksel sıcaklığı bir araya getiren butik bir konaklama deneyimi.',
+    'tagline' => 'Varto\'da Konaklama',
+    'description_default' => 'Koğ Suit Otel — Muş Varto\'da 5 odalı, sade ve konforlu butik otel. Rezervasyon için doğru adres.',
 
     // Doğrulama meta tag'leri (.env'den okunur)
     'google_verification' => env('SEO_GOOGLE_VERIFICATION'),

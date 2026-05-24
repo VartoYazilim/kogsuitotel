@@ -12,7 +12,7 @@
     $pageImage = str_starts_with($pageImagePath, 'http') ? $pageImagePath : url($pageImagePath);
     $pageUrl = url()->current();
     $fullTitle = $pageTitle
-        ? $pageTitle.' | '.config('seo.site_name').' — Varto Muş Butik Otel'
+        ? $pageTitle.' | '.config('seo.site_name').' — Varto, Muş'
         : config('seo.site_name').' — '.config('seo.tagline');
 @endphp
 
@@ -269,7 +269,7 @@
                 </p>
             </div>
             <p class="text-sm text-surface/70 leading-relaxed">
-                Refined Hospitality in Varto. Anadolu'nun sakin konağı, beş özenli süitle.
+                Varto'da konaklama için butik otel. 5 odamızla sizi bekliyoruz.
             </p>
         </div>
         <div>
@@ -316,7 +316,7 @@
     <div class="border-t border-surface/10">
         <div class="max-w-[1200px] mx-auto px-md py-md flex flex-col md:flex-row justify-between items-center gap-sm">
             <p class="text-xs text-surface/55">© {{ date('Y') }} Koğ Suit Otel. Tüm hakları saklıdır.</p>
-            <p class="font-display text-[10px] tracking-[0.25em] uppercase text-accent/70">Refined Hospitality in Varto</p>
+            <p class="font-display text-[10px] tracking-[0.25em] uppercase text-accent/70">Varto · Muş</p>
             <p class="text-xs text-surface/45">
                 <a href="https://vartoyazilim.com" target="_blank" rel="noopener" class="hover:text-accent transition-colors">
                     Varto Yazılım

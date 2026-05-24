@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
 @section('title', 'Odalarımız — Varto Suit & Standart Oda')
-@section('description', 'Varto/Muş\'ta 5 özenli oda: Standart, Suit, Aile, Deluxe ve Premium Süit. Panoramik manzara, ücretsiz Wi-Fi, açık büfe kahvaltı. Koğ Suit Otel oda fiyatları ve detayları.')
+@section('description', 'Varto Muş\'ta 5 oda: Standart, Suit, Aile, Deluxe ve Premium. Ücretsiz Wi-Fi, kahvaltı dahil. Koğ Suit Otel oda fiyatları ve detayları.')
 
 @push('head')
 @include('partials.schema-breadcrumb', ['items' => [
@@ -17,10 +17,11 @@
         <div class="max-w-2xl mb-lg">
             <p class="font-display text-xs tracking-[0.2em] uppercase text-accent-dark mb-sm">Odalarımız</p>
             <h1 class="font-display font-bold text-4xl md:text-6xl tracking-tight text-ink mb-md leading-tight">
-                Beş özenli süit
+                Odalarımız
             </h1>
             <p class="text-lg text-ink-soft leading-relaxed">
-                Çift kişilik standarttan panoramik manzaralı premium süite — her oda kendi karakteriyle tasarlandı.
+                Standart, suit, aile odası, deluxe ve premium — 5 farklı seçenek.
+                Hepsinde temiz, konforlu ve sessiz konaklama.
             </p>
         </div>
 
@@ -40,7 +41,7 @@
                         </div>
                     </div>
                     <div class="p-md">
-                        {{-- Heading hierarchy: sayfa H1 ("Beş özenli süit") + card H2 (oda adları). --}}
+                        {{-- Heading hierarchy: sayfa H1 ("Odalarımız") + card H2 (oda adları). --}}
                         <h2 class="font-display font-semibold text-xl text-ink mb-xs">{{ $room->name }}</h2>
                         <p class="text-sm text-ink-soft leading-relaxed mb-sm line-clamp-3">
                             {{ $room->description }}

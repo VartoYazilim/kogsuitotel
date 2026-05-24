@@ -171,15 +171,13 @@ class ReservationForm
                             ->label('Özel İstekler (Misafir)')
                             ->rows(4)
                             ->maxLength(1000)
-                            ->placeholder('Misafirin rezervasyon sırasında belirttiği özel talepler')
-                            ->helperText('⚠️ KVKK: Misafirin yazdığı özel nitelikli veriler (sağlık/inanç) bu alanda görünebilir. İçerik 3. taraf paylaşımında dikkatli olun.'),
+                            ->placeholder('Misafirin rezervasyon sırasında belirttiği özel talepler'),
 
                         Textarea::make('admin_notes')
                             ->label('Yönetici Notları (Sadece Admin)')
                             ->rows(4)
                             ->maxLength(1000)
-                            ->placeholder('Misafire görünmez — internal notlar')
-                            ->helperText('⚠️ KVKK: TCKN, sağlık vb. özel nitelikli veri yazmayın. Sadece operasyonel notlar (ör. erken giriş, transfer talebi).'),
+                            ->placeholder('Misafire görünmez — internal notlar'),
                     ]),
 
                 // ─────────── 4. Sistem (full-width, collapsed default) ───────────

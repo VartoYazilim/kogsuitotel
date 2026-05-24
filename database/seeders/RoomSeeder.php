@@ -19,7 +19,7 @@ class RoomSeeder extends Seeder
             [
                 'name' => 'Standart Oda',
                 'slug' => 'standart-oda',
-                'description' => 'Kompakt ve konforlu. İş seyahatleri ve kısa konaklamalar için ideal; modern minimalist tasarım, ferah çalışma alanı, premium yatak.',
+                'description' => 'Kompakt ve konforlu. İş seyahati ve kısa konaklamalar için uygun; sade tasarım, çalışma masası, rahat yatak.',
                 'capacity' => 2,
                 'base_price' => 1500.00,
                 'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Sıcak Su', 'Çalışma Masası'],
@@ -34,7 +34,7 @@ class RoomSeeder extends Seeder
             [
                 'name' => 'Suit Oda',
                 'slug' => 'suit-oda',
-                'description' => 'Standart odaya kıyasla daha geniş alan ve oturma köşesi. Hafta sonu kaçamakları için sıcak, sakin bir konaklama.',
+                'description' => 'Standart odaya göre daha geniş alan ve oturma köşesi var. Hafta sonu için rahat bir tercih.',
                 'capacity' => 2,
                 'base_price' => 2000.00,
                 'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Mini Bar', 'Oturma Köşesi'],
@@ -49,7 +49,7 @@ class RoomSeeder extends Seeder
             [
                 'name' => 'Aile Odası',
                 'slug' => 'aile-odasi',
-                'description' => 'Geniş ve ferah yaşam alanı. Çift ana yatak + ek tek yatak, çocuklu aileler için tasarlandı.',
+                'description' => 'Geniş yaşam alanı. Çift kişilik yatak + ek tek yatak; çocuklu aileler için uygun.',
                 'capacity' => 4,
                 'base_price' => 2400.00,
                 'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Mini Bar', 'Çocuk Yatağı', 'Geniş Banyo'],
@@ -64,10 +64,10 @@ class RoomSeeder extends Seeder
             [
                 'name' => 'Deluxe Süit',
                 'slug' => 'deluxe-suit',
-                'description' => 'Panoramik manzara, jakuzili banyo, oturma alanı ve özenli detaylar. Özel günler için.',
+                'description' => 'Geniş manzara, jakuzili banyo ve ayrı oturma alanı. Özel günler veya rahat bir tatil için.',
                 'capacity' => 3,
                 'base_price' => 3500.00,
-                'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Mini Bar', 'Jakuzi', 'Panoramik Manzara', 'Yastık Menüsü'],
+                'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Mini Bar', 'Jakuzi', 'Geniş Manzara'],
                 'cover_image' => 'images/demo/rooms/deluxe.webp',
                 'gallery' => [
                     'images/demo/gallery/view-1.webp',
@@ -80,10 +80,10 @@ class RoomSeeder extends Seeder
             [
                 'name' => 'Premium Süit',
                 'slug' => 'premium-suit',
-                'description' => 'Otelimizin amiral süiti. Özel teras, şömine, butler hizmeti ve eksiksiz konfor. En üst düzey lüks ve mahremiyet.',
+                'description' => 'En geniş odamız. Özel teras, şömine ve geniş yaşam alanı. Uzun konaklamalar veya özel bir tatil için.',
                 'capacity' => 4,
                 'base_price' => 5000.00,
-                'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Mini Bar', 'Jakuzi', 'Şömine', 'Özel Teras', 'Butler Hizmeti', 'Karşılama İkramı'],
+                'features' => ['Wi-Fi', 'Klima', 'Smart TV', 'Mini Bar', 'Jakuzi', 'Şömine', 'Özel Teras', 'Karşılama İkramı'],
                 'cover_image' => 'images/demo/rooms/premium.webp',
                 'gallery' => [
                     'images/demo/gallery/view-2.webp',
