@@ -11,23 +11,22 @@ use Tests\TestCase;
 
 class BackupConfigTest extends TestCase
 {
-    public function test_r2_disk_filesystem_konfigure(): void
+    public function test_local_backup_disk_filesystem_konfigure(): void
     {
-        $r2 = config('filesystems.disks.r2');
+        $disk = config('filesystems.disks.local-backup');
 
-        $this->assertNotNull($r2, 'R2 disk filesystems.php\'da tanımlı olmalı');
-        $this->assertSame('s3', $r2['driver']);
-        $this->assertSame('auto', $r2['region']);
-        $this->assertTrue($r2['use_path_style_endpoint']);
-        $this->assertSame('kogsuit-backup', $r2['bucket'] ?? 'kogsuit-backup');
+        $this->assertNotNull($disk, 'local-backup disk filesystems.php\'da tanımlı olmalı');
+        $this->assertSame('local', $disk['driver']);
+        $this->assertSame('/var/backups/kogsuitotel', $disk['root']);
     }
 
-    public function test_backup_destination_r2_disk_kullanir(): void
+    public function test_backup_destination_local_disk_kullanir(): void
     {
         $disks = config('backup.backup.destination.disks');
 
-        $this->assertContains('r2', $disks, 'Backup R2 disk\'ine yazmalı');
-        $this->assertNotContains('local', $disks, 'Local kalıcı backup yok — disk şişmesini önler');
+        $this->assertContains('local-backup', $disks, 'Backup local VPS storage kullanmalı (vendor lock-in YOK)');
+        $this->assertNotContains('r2', $disks, '3.taraf bağımlılık YOK — kart riski + CF değişikliği koruması');
+        $this->assertNotContains('s3', $disks);
     }
 
     public function test_backup_filename_prefix_kogsuit(): void
@@ -47,16 +46,16 @@ class BackupConfigTest extends TestCase
         $this->assertSame([], $notifications[UnhealthyBackupWasFoundNotification::class]);
     }
 
-    public function test_backup_monitor_r2_disk_kontrol_eder(): void
+    public function test_backup_monitor_local_disk_kontrol_eder(): void
     {
         $monitors = config('backup.monitor_backups');
         $this->assertNotEmpty($monitors);
-        $this->assertContains('r2', $monitors[0]['disks']);
+        $this->assertContains('local-backup', $monitors[0]['disks']);
     }
 
     public function test_backup_monitor_health_check_5gb_cap(): void
     {
-        // R2 free tier 10GB; 5GB cap aşılırsa unhealthy alarm
+        // VPS 75GB diskin %7'si = 5GB; cap aşılırsa unhealthy alarm
         $checks = config('backup.monitor_backups.0.health_checks');
         $this->assertSame(5000, $checks[MaximumStorageInMegabytes::class]);
     }

@@ -60,17 +60,14 @@ return [
             'report' => false,
         ],
 
-        // Cloudflare R2 — S3-uyumlu object storage. 10GB ücretsiz, egress free.
-        // Spatie Backup günlük cron'u bu disk'e yazar; local geçici backup
-        // upload sonrası silinir (disk şişmesini önler).
-        'r2' => [
-            'driver' => 's3',
-            'key' => env('R2_ACCESS_KEY_ID'),
-            'secret' => env('R2_SECRET_ACCESS_KEY'),
-            'region' => 'auto',
-            'bucket' => env('R2_BUCKET', 'kogsuit-backup'),
-            'endpoint' => env('R2_ENDPOINT'),
-            'use_path_style_endpoint' => true,
+        // Spatie Laravel Backup hedefi — VPS içinde local storage.
+        // Vendor lock-in yok (CF R2 / Backblaze / AWS gibi 3.taraf bağımlılığı yok).
+        // Retention 5GB cap (config/backup.php) ile VPS 75GB diskinin %7'sini geçmez.
+        // Geliştirici gerektiğinde SCP ile dışarı indirir:
+        //   scp deploy@164.68.108.73:/var/backups/kogsuitotel/kogsuit_*.zip ./
+        'local-backup' => [
+            'driver' => 'local',
+            'root' => '/var/backups/kogsuitotel',
             'throw' => false,
             'report' => false,
         ],

@@ -161,12 +161,13 @@ return [
             'filename_prefix' => 'kogsuit_',
 
             /*
-             * The disk names on which the backups will be stored.
-             * Cloudflare R2 — S3-uyumlu, 10GB ücretsiz, egress free. Local geçici
-             * temp_directory'de oluşturulur, upload sonrası R2'ye yazılır, local silinir.
+             * Backup hedefi — VPS içinde /var/backups/kogsuitotel/ (local-backup disk).
+             * 3.taraf storage bağımlılığı yok (vendor lock-in koruması, sahip kart vermez).
+             * Retention 5GB cap (cleanup strategy) ile VPS 75GB diskinin %7'sini geçmez.
+             * Geliştirici gerektiğinde SCP ile dışarı indirir, kişisel arşivleme yapar.
              */
             'disks' => [
-                'r2',
+                'local-backup',
             ],
 
             /*
@@ -303,11 +304,11 @@ return [
     'monitor_backups' => [
         [
             'name' => env('APP_NAME', 'laravel-backup'),
-            'disks' => ['r2'],
+            'disks' => ['local-backup'],
             'health_checks' => [
                 // Son backup 36 saat içinde olmalı (24 saat + tolerans)
                 MaximumAgeInDays::class => 1.5,
-                // R2 ücretsiz katmanı 10 GB — 5 GB altında tut
+                // 5 GB cap — VPS 75GB diskin %7'si, retention strategy ile uygulanır
                 MaximumStorageInMegabytes::class => 5000,
             ],
         ],

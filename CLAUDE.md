@@ -312,22 +312,31 @@ npm ci && npm run build
 sudo systemctl reload php8.3-fpm
 ```
 
-#### 8.5. Backup — Cloudflare R2 + Spatie Laravel Backup
+#### 8.5. Backup — Local VPS Storage + Spatie Laravel Backup
 
-**Tercih edilen**: Cloudflare R2 (S3-uyumlu) — 10 GB forever-free, egress
-(restore) tamamen ücretsiz, zone zaten kurulu. Backblaze B2 / Wasabi'den
-daha ucuz, AWS S3'ten 50× ucuz.
+**Tercih edilen**: VPS içinde local storage (`/var/backups/kogsuitotel/`).
+Cloudflare R2 / Backblaze B2 / AWS gibi 3.taraf storage'lar değerlendirildi
+ve **reddedildi** (2026-05-24 sahip kararı):
+- Sahip işletme kart bilgisi vermek istemiyor (R2 subscribe + B2 hesap)
+- Vendor lock-in riski (CF free mode kapansa? Sahip teknik takip etmiyor)
+- Sahip "Local çözüm bul" direktifi
+
+**Trade-off (kabul edilen risk)**: VPS disk crash → data kaybı. Single
+point of failure. Geliştirici (Varto Yazılım) periodik SCP ile dışarı
+indirme yapmak zorunda (manuel arşivleme). Faz 4'te NAS/Hetzner Storage
+Box gibi ek katman düşünülebilir (sahip karar verirse).
 
 **Paketler** (composer):
 - `spatie/laravel-backup ^10` — backup orchestration
-- `league/flysystem-aws-s3-v3 ^3` — R2 S3-uyumlu driver
+- `league/flysystem-aws-s3-v3 ^3` — S3 driver (transitive dep, hot-swap için)
 
 **Config** (`config/backup.php` + `config/filesystems.php`):
-- Destination disk: `r2` (sadece — local kalıcı backup yok, disk şişme önle)
+- `local-backup` disk: `local` driver, `root: /var/backups/kogsuitotel`
+- Destination disk: `['local-backup']`
 - `filename_prefix`: `kogsuit_`
 - Encryption: AES-256 (`BACKUP_ARCHIVE_PASSWORD` env zorunlu)
 - Retention: 7 + 16 günlük + 8 haftalık + 4 aylık + 2 yıllık + **5GB cap**
-  (R2 10GB free tier altında kalır)
+  (VPS 75GB diskin %7'sini geçmez)
 - Notifications: kapalı (mail YOK kararı) — backup olayları
   `storage/logs/laravel.log`'a yazılır
 
@@ -342,18 +351,45 @@ daha ucuz, AWS S3'ten 50× ucuz.
 * * * * * cd /var/www/kogsuitotel && php artisan schedule:run >> /dev/null 2>&1
 ```
 
-**R2 setup** (sahip Cloudflare panel'den):
-1. Dashboard → R2 → Subscribe (ücretsiz tier, kredi kartı sadece overage için)
-2. Create bucket: `kogsuit-backup`, location: `EEUR` (Frankfurt)
-3. R2 → Manage API Tokens → Create (Admin Read & Write, sadece bu bucket)
-4. `.env`'e: `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`, `R2_ENDPOINT`
-5. `BACKUP_ARCHIVE_PASSWORD`'u Bitwarden gibi yere kaydet (restore için lazım)
+**VPS setup** (ilk deploy sırasında):
+```bash
+# Backup dizini oluştur (root user)
+mkdir -p /var/backups/kogsuitotel
+chown deploy:deploy /var/backups/kogsuitotel
+chmod 750 /var/backups/kogsuitotel
+```
+
+**.env**: Sadece `BACKUP_ARCHIVE_PASSWORD` (R2/AWS env yok). Üretmek için:
+```bash
+php -r "echo base64_encode(random_bytes(32)) . PHP_EOL;"
+```
+Bitwarden gibi yere kaydet — restore için zorunlu.
+
+**Geliştirici manuel arşivleme** (haftalık/aylık):
+```bash
+# Local makineden SCP ile backup'ı indir (encrypted, AES-256)
+scp deploy@164.68.108.73:/var/backups/kogsuitotel/kogsuit_*.zip ~/Backups/kogsuit/
+
+# Veya rsync ile sadece yeni dosyaları al
+rsync -av --progress deploy@164.68.108.73:/var/backups/kogsuitotel/ ~/Backups/kogsuit/
+```
 
 **Restore**:
 ```bash
-# R2'den son backup'ı indir (egress ücretsiz)
-# Sonra zip aç (BACKUP_ARCHIVE_PASSWORD ile şifre çöz)
-# DB dump'ı restore et + storage/app dosyalarını yerine koy
+# 1. Backup zip'i hedef VPS'e koy
+scp ~/Backups/kogsuit/kogsuit_2026-XX-XX.zip deploy@vps:/tmp/
+
+# 2. BACKUP_ARCHIVE_PASSWORD ile zip aç (Bitwarden'dan al)
+unzip -P "$BACKUP_ARCHIVE_PASSWORD" /tmp/kogsuit_2026-XX-XX.zip -d /tmp/restore/
+
+# 3. DB dump'ı restore (MariaDB)
+mariadb -u kogsuit -p kogsuitotel < /tmp/restore/db-dumps/*.sql
+
+# 4. storage/app dosyalarını yerine koy
+rsync -av /tmp/restore/var/www/kogsuitotel/storage/app/ /var/www/kogsuitotel/storage/app/
+
+# 5. Cleanup
+rm -rf /tmp/restore /tmp/kogsuit_2026-XX-XX.zip
 ```
 
 Detay: `config/backup.php` yorumları + `tests/Feature/BackupConfigTest.php`.
