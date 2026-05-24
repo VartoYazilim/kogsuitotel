@@ -312,11 +312,51 @@ npm ci && npm run build
 sudo systemctl reload php8.3-fpm
 ```
 
-#### 8.5. Backup
-- Günlük DB dump → cron job
-- `/var/www/kogsuitotel/storage/app` klasörü (upload'lar) backup
-- Hedef: Backblaze B2 veya Wasabi (yıllık ~€5-10)
-- Contabo native backup'a şimdilik gerek yok (B2 yeterli)
+#### 8.5. Backup — Cloudflare R2 + Spatie Laravel Backup
+
+**Tercih edilen**: Cloudflare R2 (S3-uyumlu) — 10 GB forever-free, egress
+(restore) tamamen ücretsiz, zone zaten kurulu. Backblaze B2 / Wasabi'den
+daha ucuz, AWS S3'ten 50× ucuz.
+
+**Paketler** (composer):
+- `spatie/laravel-backup ^10` — backup orchestration
+- `league/flysystem-aws-s3-v3 ^3` — R2 S3-uyumlu driver
+
+**Config** (`config/backup.php` + `config/filesystems.php`):
+- Destination disk: `r2` (sadece — local kalıcı backup yok, disk şişme önle)
+- `filename_prefix`: `kogsuit_`
+- Encryption: AES-256 (`BACKUP_ARCHIVE_PASSWORD` env zorunlu)
+- Retention: 7 + 16 günlük + 8 haftalık + 4 aylık + 2 yıllık + **5GB cap**
+  (R2 10GB free tier altında kalır)
+- Notifications: kapalı (mail YOK kararı) — backup olayları
+  `storage/logs/laravel.log`'a yazılır
+
+**Scheduled tasks** (`routes/console.php`):
+- `03:00` — `backup:run` (Europe/Istanbul, onOneServer, withoutOverlapping)
+- `04:00` — `backup:clean` (retention strategy uygula)
+- `04:30` — `backup:monitor` (sağlık check)
+- `hourly` — disk usage %80 üstüne çıkarsa log warning
+
+**VPS crontab** (deploy user):
+```
+* * * * * cd /var/www/kogsuitotel && php artisan schedule:run >> /dev/null 2>&1
+```
+
+**R2 setup** (sahip Cloudflare panel'den):
+1. Dashboard → R2 → Subscribe (ücretsiz tier, kredi kartı sadece overage için)
+2. Create bucket: `kogsuit-backup`, location: `EEUR` (Frankfurt)
+3. R2 → Manage API Tokens → Create (Admin Read & Write, sadece bu bucket)
+4. `.env`'e: `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`, `R2_ENDPOINT`
+5. `BACKUP_ARCHIVE_PASSWORD`'u Bitwarden gibi yere kaydet (restore için lazım)
+
+**Restore**:
+```bash
+# R2'den son backup'ı indir (egress ücretsiz)
+# Sonra zip aç (BACKUP_ARCHIVE_PASSWORD ile şifre çöz)
+# DB dump'ı restore et + storage/app dosyalarını yerine koy
+```
+
+Detay: `config/backup.php` yorumları + `tests/Feature/BackupConfigTest.php`.
 
 ---
 
@@ -362,8 +402,11 @@ Bu noktalar henüz netleştirilmedi. İlgili faza gelindiğinde kullanıcıya so
    Faz 2'de WhatsApp Business Cloud API ile otomatik mesaj gönderimi
    düşünülebilir (Meta hesabı + iş doğrulama gerekiyor).
 
-3. **Google Analytics**: Eklenecek mi? KVKK'lı çerez banner gerektirir.
-   Alternatif: Cloudflare Web Analytics (çerezsiz, KVKK dostu, default tercih).
+3. ~~**Google Analytics**~~ → **EKLENDİ** (2026-05-24, commit `fb41111`).
+   GA4 (G-B9M3M8L95H) + Consent Mode v2 default deny + KVKK uyumlu cookie
+   consent banner + `anonymize_ip` aktif + Google LLC ABD yurt dışı aktarım
+   disclosure (`/kvkk` 4.2 + `/cerez-politikasi` 3). Pattern detay:
+   `memory/reference-kvkk-cookie-consent-pattern.md`.
 
 4. **Galeri + oda fotoğrafları**: 2026-05-23'te demo amaçlı **Unsplash
    kaynaklı 14 görsel** eklendi (`public/images/demo/` altında: hero,
@@ -428,7 +471,10 @@ Bu noktalar henüz netleştirilmedi. İlgili faza gelindiğinde kullanıcıya so
 - ❌ **KVKK saklama süresi** geçildi — anonimleştirme cron yok (hukuki risk kabul)
 - 🚀 **Faz 3 TAM KAPANDI** — site **kogsuitotel.com** CANLIDA (Contabo VPS 10, Cloudflare proxy, SSL Full Strict)
 - 🌐 **Public URL'ler**: `kogsuitotel.com`, `www.kogsuitotel.com`, `yonetim.kogsuitotel.com` (→ /kog-yonetim)
-- 🧪 **112 PHPUnit test, 379 assertion** — Pint temiz, Larastan 0 hata, CI 2 driver matrix
+- 📊 **Google Analytics 4** aktif (G-B9M3M8L95H, Consent Mode v2 default deny, KVKK m.5/m.9 uyumlu cookie banner)
+- 🔍 **Google Search Console** verified (Cloudflare-GSC otomatik DNS TXT)
+- 💾 **Spatie Backup + Cloudflare R2** hazır (10GB ücretsiz, encrypted AES-256, retention 5GB cap, scheduled task'lar daily 03:00) — VPS aktivasyon R2 token sonrası
+- 🧪 **127 PHPUnit test, 433 assertion** — Pint temiz, Larastan 0 hata, CI 2 driver matrix
 - 🎨 Olive Sanctuary palette + dark mode + vectorized logo + Filament custom panel theme
 
 ### Faz 2 Sonrası Ek Polish (2026-05-24 — bu seans)
@@ -854,10 +900,14 @@ Bir fazı kapatmadan önce şu sorulara `evet` cevabı verilmeli:
 - [x] yonetim.kogsuitotel.com subdomain
 - [x] Vercel temizliği
 - [x] Origin IP firewall (UFW CF whitelist)
-- [ ] **Backup** (Spatie Laravel Backup + Backblaze B2, günlük cron) — kalan iş
+- [x] **GA4 + KVKK uyumlu cookie consent** (Consent Mode v2 + banner + m.9 disclosure)
+- [x] **GSC verified** (Cloudflare-GSC otomatik DNS TXT)
+- [x] **Backup config** — Spatie Backup + Cloudflare R2 (10GB ücretsiz, encrypted, 5GB retention cap)
+- [ ] **Backup VPS aktivasyon** — R2 token sahibinden gelince .env + crontab register
+- [ ] **GSC sitemap submit** — kullanıcı GSC dashboard'undan `sitemap.xml` Submit
 - [ ] **Monitoring** (UptimeRobot 5dk HTTP 200 check) — kalan iş
-- [ ] **GSC sitemap submit** — sahibin GSC erişimi sonrası
 - [ ] **CI/CD otomatik deploy** (GitHub Actions webhook) — opsiyonel polish
+- [ ] **Google Business Profile** — sahibin postcard verification (1-2 hafta)
 - [ ] **Site canlıda 30 gün stabil** — geçiş eşiği
 - [ ] **İlk 5+ gerçek rezervasyon** — geçiş eşiği
 
