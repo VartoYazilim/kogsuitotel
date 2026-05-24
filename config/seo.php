@@ -19,6 +19,11 @@ return [
     'bing_verification' => env('SEO_BING_VERIFICATION'),
     'yandex_verification' => env('SEO_YANDEX_VERIFICATION'),
 
+    // Google Analytics 4 (G-XXXXXXXXXX). Boş bırakılırsa GA4 tag render edilmez,
+    // cookie consent banner da gizlenir. KVKK m.5 açık rıza: Consent Mode v2
+    // default deny — kullanıcı banner'dan kabul edene kadar GA4 çerez yazmaz.
+    'google_analytics_id' => env('SEO_GA4_ID'),
+
     // Yerel (geo) bilgiler — Varto merkezi
     'geo' => [
         'latitude' => env('SEO_GEO_LAT', '38.9211'),

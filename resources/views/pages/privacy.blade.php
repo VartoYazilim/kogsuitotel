@@ -83,11 +83,21 @@
 
             <h2 class="font-display font-semibold text-2xl text-ink mt-lg">6. Çerezler</h2>
             <p>
-                Sitemiz yalnızca zorunlu teknik çerezler kullanır (oturum yönetimi, form
-                güvenliği). Reklam, izleyici, profil çıkartma çerezi <strong>yoktur</strong>.
-                Detay için
-                <a href="{{ route('cookie-policy') }}" class="text-primary underline-grow">Çerez Politikamızı</a>
-                inceleyebilirsiniz.
+                Sitemiz iki kategoride çerez kullanır:
+            </p>
+            <ul class="list-disc pl-md space-y-xs">
+                <li><strong>Zorunlu teknik çerezler</strong> — her zaman aktif (oturum,
+                    form güvenliği, Cloudflare bot koruması). Reklam veya profil çıkartma
+                    çerezi yoktur.</li>
+                <li><strong>İsteğe bağlı analitik çerezler</strong> — yalnızca açık rızanız
+                    sonrası aktif. Sayfa altındaki çerez tercih banner'ından
+                    <em>"Tümünü Kabul Et"</em> tıklarsanız Google Analytics 4 anonim
+                    istatistik çerezi yerleşir. Reddederseniz hiçbir analitik çerez
+                    yerleşmez.</li>
+            </ul>
+            <p>
+                Detay (çerez listesi, süreleri, sağlayıcılar, tercih sıfırlama):
+                <a href="{{ route('cookie-policy') }}" class="text-primary underline-grow">Çerez Politikası</a>.
             </p>
 
             <h2 class="font-display font-semibold text-2xl text-ink mt-lg">7. Haklarınız</h2>

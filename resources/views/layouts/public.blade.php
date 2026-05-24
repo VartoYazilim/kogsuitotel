@@ -58,6 +58,41 @@
     <meta name="yandex-verification" content="{{ config('seo.yandex_verification') }}" />
 @endif
 
+{{-- Google Analytics 4 — KVKK m.5 uyumlu Consent Mode v2.
+     Default tüm depolama deny — kullanıcı cookie banner'dan "Kabul Et" tıklayana
+     kadar GA4 çerez yerleştirmez, sadece anonim sayfa görüntüleme sayar.
+     Banner kabulü → resources/js/app.js initCookieConsent() → gtag('consent', 'update', ...) --}}
+@if (config('seo.google_analytics_id'))
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('seo.google_analytics_id') }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        // KVKK + GDPR Consent Mode v2 — default deny, kullanıcı banner kabulüyle aktif
+        gtag('consent', 'default', {
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'analytics_storage': 'denied',
+            'wait_for_update': 500,
+        });
+
+        // Önceki kabul varsa localStorage'dan geri yükle
+        try {
+            if (localStorage.getItem('cookie_consent') === 'accepted') {
+                gtag('consent', 'update', {
+                    'analytics_storage': 'granted',
+                });
+            }
+        } catch (e) {}
+
+        gtag('js', new Date());
+        gtag('config', '{{ config('seo.google_analytics_id') }}', {
+            'anonymize_ip': true,
+        });
+    </script>
+@endif
+
 {{-- Mobile / tarayıcı ipuçları --}}
 <meta name="theme-color" content="#6b7553" />
 <meta name="format-detection" content="telephone=yes" />
@@ -292,6 +327,7 @@
 </footer>
 
 @include('partials.lightbox')
+@include('partials.cookie-banner')
 
 @stack('scripts')
 </body>

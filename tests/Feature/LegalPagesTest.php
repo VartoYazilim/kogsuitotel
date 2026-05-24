@@ -99,12 +99,18 @@ class LegalPagesTest extends TestCase
         $response->assertSeeText('Tercihlerini Nasıl Yönetirim');
 
         // Belirli çerez isimleri (transparent disclosure)
-        $response->assertSeeText('kogsuitotel_session');
+        $response->assertSeeText('kog-suit-otel-session');
         $response->assertSeeText('XSRF-TOKEN');
         $response->assertSeeText('cf_bm');
 
-        // Reklam/izleyici çerezi olmadığı vurgusu
-        $response->assertSeeText('Google Analytics');
+        // GA4 disclosure (KVKK m.5 açık rıza + m.9 yurt dışı aktarım — Google LLC ABD)
+        $response->assertSeeText('Google Analytics 4');
+        $response->assertSeeText('Consent Mode v2');
+        $response->assertSeeText('Google LLC');
+        $response->assertSeeText('anonymize_ip');
+
+        // Reklam/profil çıkartma çerezi olmadığı vurgusu (Facebook Pixel vb.)
+        $response->assertSeeText('Facebook Pixel');
         $response->assertSeeText('kullanılmamaktadır');
 
         // İlgili belgelere link

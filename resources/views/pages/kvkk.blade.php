@@ -49,6 +49,10 @@
                     sitemizde ödeme alınmaz)</li>
                 <li><strong>İşlem güvenliği bilgileri:</strong> Form gönderim sırasında IP adresi
                     (rate-limit ve bot koruması amacıyla geçici log'lanır, kalıcı saklanmaz)</li>
+                <li><strong>Analitik veriler (yalnızca açık rıza ile):</strong> Sayfa görüntüleme,
+                    yaklaşık ziyaret süresi, ziyaret saati, cihaz/tarayıcı tipi gibi anonim
+                    istatistik verileri (Google Analytics 4). IP adresi anonimleştirilerek toplanır,
+                    sizi tanımlayan profil çıkarılmaz. Detay: Çerez Politikası Bölüm 3.</li>
                 <li><strong>Konaklama bildirim bilgileri:</strong> 1774 sayılı Kimlik Bildirme
                     Kanunu uyarınca girişte kimlik fotokopisi alınır ve kolluk kuvvetlerine
                     elektronik bildirim yapılır</li>
@@ -70,6 +74,8 @@
             </ul>
 
             <h2 class="font-display font-semibold text-2xl text-ink mt-lg">4. Kişisel Verilerin Aktarılması</h2>
+
+            <h3 class="font-display font-semibold text-lg text-ink mt-md">4.1. Yurt İçi Aktarım</h3>
             <p>Kişisel verileriniz aşağıdaki kişi ve kurumlara aktarılabilir:</p>
             <ul class="list-disc pl-md space-y-xs">
                 <li><strong>Yetkili kamu kurum ve kuruluşları</strong> (Emniyet Genel Müdürlüğü,
@@ -80,11 +86,29 @@
                 <li><strong>Yetkili mahkemeler ve icra müdürlükleri:</strong> Hukuki uyuşmazlık
                     halinde yargı kararı veya talebi üzerine</li>
             </ul>
+
+            <h3 class="font-display font-semibold text-lg text-ink mt-md">4.2. Yurt Dışı Aktarım (KVKK m.9)</h3>
             <p>
-                <strong>Yurt dışına veri aktarımı yapılmamaktadır.</strong> Sitemiz Cloudflare
-                CDN üzerinden sunulur; Cloudflare yalnızca trafik yönlendirme ve güvenlik amaçlı
-                IP adresi gibi teknik verileri kısa süreli işler (KVKK m.9/6 kapsamında
-                hizmet sunucu sözleşmesi).
+                Sitemizin teknik altyapısı için aşağıdaki yurt dışı sağlayıcıları kullanırız.
+                Bu aktarımlar yalnızca teknik kısa süreli işleme amacıyla yapılır; rezervasyon
+                içeriği gibi temel verileriniz yurt dışına aktarılmaz.
+            </p>
+            <ul class="list-disc pl-md space-y-xs">
+                <li><strong>Cloudflare, Inc. (ABD):</strong> CDN ve güvenlik hizmeti.
+                    Trafik yönlendirme, bot koruması ve DDoS engelleme amacıyla IP adresi
+                    gibi teknik verileri işler. KVKK m.9/6 kapsamında hizmet sözleşmesi
+                    ile teminat altındadır.</li>
+                <li><strong>Google LLC (ABD) — Google Analytics 4 (yalnızca açık rızanızla):</strong>
+                    Sayfa altındaki çerez tercih banner'ından <em>"Tümünü Kabul Et"</em>
+                    seçeneğini tıklarsanız anonim sayfa görüntüleme istatistiği (sayfa adı,
+                    yaklaşık ziyaret süresi, anonim ID) Google'a aktarılır. IP adresiniz
+                    Google'a aktarılmadan önce anonimleştirilir (`anonymize_ip` aktif).
+                    Detay: <a href="{{ route('cookie-policy') }}" class="text-primary underline-grow">Çerez Politikası</a>
+                    Bölüm 3. Reddederseniz veya tercih yapmazsanız bu aktarım yapılmaz.</li>
+            </ul>
+            <p>
+                Yukarıdaki yurt dışı aktarımlar KVKK m.9/1 ve m.5/1 (açık rıza) ve
+                m.9/6 (hizmet sağlayıcı sözleşmesi) kapsamında gerçekleştirilir.
             </p>
             <p>
                 <strong>Verileriniz hiçbir koşulda pazarlama, reklam veya ticari amaçla üçüncü

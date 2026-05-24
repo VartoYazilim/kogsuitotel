@@ -300,10 +300,49 @@ function initLightbox() {
     });
 }
 
+/**
+ * KVKK m.5 + GDPR cookie consent — GA4 Consent Mode v2 ile entegre.
+ * Default deny (layout head'de gtag('consent','default',{...denied})), banner
+ * "Kabul Et" tıklayınca update granted. Tercih localStorage'da kalıcı saklan;
+ * banner sadece tercih yapılmamışsa görünür.
+ */
+function initCookieConsent() {
+    const banner = document.getElementById('kog-cookie-banner');
+    if (!banner) return; // GA4 ID set değilse partial render edilmez
+
+    let consent = null;
+    try {
+        consent = localStorage.getItem('cookie_consent');
+    } catch (e) { /* localStorage disabled — banner her zaman gösterilir */ }
+
+    // Henüz tercih yoksa banner'ı göster
+    if (consent !== 'accepted' && consent !== 'rejected') {
+        banner.classList.remove('hidden');
+        banner.classList.add('flex');
+    }
+
+    function setConsent(decision) {
+        try { localStorage.setItem('cookie_consent', decision); } catch (e) {}
+        banner.classList.add('hidden');
+        banner.classList.remove('flex');
+
+        // GA4'e bildir — gtag global'i layout head'de tanımlı
+        if (typeof gtag === 'function') {
+            gtag('consent', 'update', {
+                'analytics_storage': decision === 'accepted' ? 'granted' : 'denied',
+            });
+        }
+    }
+
+    banner.querySelector('[data-cookie-action="accept"]')?.addEventListener('click', () => setConsent('accepted'));
+    banner.querySelector('[data-cookie-action="reject"]')?.addEventListener('click', () => setConsent('rejected'));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initReservationDatePickers();
     initSimpleDatePickers();
     initHeroForm();
     initReservationSummary();
     initLightbox();
+    initCookieConsent();
 });
