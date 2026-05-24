@@ -76,7 +76,7 @@ class GalleryImageResource extends Resource
                     ->disk('public')
                     ->directory('gallery')
                     ->imageEditor()
-                    ->maxSize(5120)
+                    ->maxSize(20480)
                     ->helperText('Yüklenen JPG/PNG dosyaları otomatik WebP\'ye çevrilir.')
                     ->saveUploadedFileUsing(fn ($file) => app(ImageWebpConverter::class)->convert($file, 'gallery')),
                 TextInput::make('alt_text')

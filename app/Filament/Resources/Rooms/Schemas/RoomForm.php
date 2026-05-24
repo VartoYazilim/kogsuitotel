@@ -84,7 +84,7 @@ class RoomForm
                             ->disk('public')
                             ->directory('rooms/covers')
                             ->imageEditor()
-                            ->maxSize(5120)
+                            ->maxSize(20480)
                             ->helperText('Yüklenen JPG/PNG dosyaları otomatik WebP\'ye çevrilir.')
                             ->saveUploadedFileUsing(fn ($file) => app(ImageWebpConverter::class)->convert($file, 'rooms/covers'))
                             ->columnSpanFull(),
@@ -95,7 +95,7 @@ class RoomForm
                             ->disk('public')
                             ->directory('rooms/gallery')
                             ->reorderable()
-                            ->maxSize(5120)
+                            ->maxSize(20480)
                             ->maxFiles(20)
                             ->helperText('Sürükle-bırak ile sırala. Yüklenen görseller otomatik WebP\'ye çevrilir.')
                             ->saveUploadedFileUsing(fn ($file) => app(ImageWebpConverter::class)->convert($file, 'rooms/gallery'))
