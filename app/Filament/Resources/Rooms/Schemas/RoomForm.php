@@ -77,6 +77,7 @@ class RoomForm
                     ]),
 
                 Section::make('Görseller')
+                    ->description('Kapak görseli oda listesinde ve detay sayfasında ana görsel olarak gösterilir. Galeri görselleri detay sayfasının altında listelenir.')
                     ->components([
                         FileUpload::make('cover_image')
                             ->label('Kapak Görseli')
@@ -85,7 +86,7 @@ class RoomForm
                             ->directory('rooms/covers')
                             ->imageEditor()
                             ->maxSize(20480)
-                            ->helperText('Yüklenen JPG/PNG dosyaları otomatik WebP\'ye çevrilir.')
+                            ->helperText('Tek bir görsel. Odanın site genelinde ana görseli. JPG/PNG yüklenirse otomatik WebP\'ye çevrilir (boyutu küçülür).')
                             ->saveUploadedFileUsing(fn ($file) => app(ImageWebpConverter::class)->convert($file, 'rooms/covers'))
                             ->columnSpanFull(),
                         FileUpload::make('gallery')
@@ -95,9 +96,10 @@ class RoomForm
                             ->disk('public')
                             ->directory('rooms/gallery')
                             ->reorderable()
+                            ->appendFiles()
                             ->maxSize(20480)
                             ->maxFiles(20)
-                            ->helperText('Sürükle-bırak ile sırala. Yüklenen görseller otomatik WebP\'ye çevrilir.')
+                            ->helperText('Birden çok görsel yükleyebilirsin. Sürükle-bırak ile sıralarsın. "X" ile silersin. Maksimum 20 görsel. Otomatik WebP dönüşüm aktif.')
                             ->saveUploadedFileUsing(fn ($file) => app(ImageWebpConverter::class)->convert($file, 'rooms/gallery'))
                             ->columnSpanFull(),
                     ]),
