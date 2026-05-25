@@ -509,8 +509,11 @@ Bu noktalar henüz netleştirilmedi. İlgili faza gelindiğinde kullanıcıya so
 - 🌐 **Public URL'ler**: `kogsuitotel.com`, `www.kogsuitotel.com`, `yonetim.kogsuitotel.com` (→ /kog-yonetim)
 - 📊 **Google Analytics 4** aktif (G-B9M3M8L95H, Consent Mode v2 default deny, KVKK m.5/m.9 uyumlu cookie banner)
 - 🔍 **Google Search Console** verified (Cloudflare-GSC otomatik DNS TXT)
-- 💾 **Spatie Backup + Cloudflare R2** hazır (10GB ücretsiz, encrypted AES-256, retention 5GB cap, scheduled task'lar daily 03:00) — VPS aktivasyon R2 token sonrası
-- 🧪 **127 PHPUnit test, 433 assertion** — Pint temiz, Larastan 0 hata, CI 2 driver matrix
+- 💾 **Spatie Backup + Local VPS storage** CANLI — `/var/backups/kogsuitotel/`, AES-256 encrypted, retention 5GB cap, daily 03:00 cron aktif. İlk backup 28.26 MB başarılı (vendor lock-in koruma — sahip kart vermez)
+- 🌍 **Dil yumuşatma** uygulandı — "Refined Hospitality" / "amiral süiti" / "panoramik manzara" → sade Türkçe ("Varto'da konaklama", "5 odalı butik otel", "geniş manzara")
+- 🎛️ **Admin UI cleanup** — RoomForm 3-col kompakt, `panelLayout('grid')` görsel grid, Aktif toggle Temel Bilgiler'e gömüldü, Durum section kaldırıldı
+- 🔧 **Storage permission + Upload limit fix** — Livewire tmp 422 bug + PHP upload_max 30M + nginx client_max_body 30M + Filament maxSize 20MB
+- 🧪 **127 PHPUnit test, 432 assertion** — Pint temiz, Larastan 0 hata, CI 2 driver matrix
 - 🎨 Olive Sanctuary palette + dark mode + vectorized logo + Filament custom panel theme
 
 ### Faz 2 Sonrası Ek Polish (2026-05-24 — bu seans)
@@ -932,20 +935,23 @@ Bir fazı kapatmadan önce şu sorulara `evet` cevabı verilmeli:
 
 **Faz 3 → 4 (post-launch operasyonel kalıntılar):**
 - [x] VPS canlıda, kogsuitotel.com aktif, SSL Full Strict
-- [x] Admin login + Profil + Settings + Activity log canlı
+- [x] Admin login + Profil + Settings + Activity log canlı (`$isLazy` tıkla-aç)
 - [x] yonetim.kogsuitotel.com subdomain
 - [x] Vercel temizliği
-- [x] Origin IP firewall (UFW CF whitelist)
+- [x] Origin IP firewall (UFW CF whitelist + haftalık cron CF IP update)
 - [x] **GA4 + KVKK uyumlu cookie consent** (Consent Mode v2 + banner + m.9 disclosure)
 - [x] **GSC verified** (Cloudflare-GSC otomatik DNS TXT)
-- [x] **Backup config** — Spatie Backup + Cloudflare R2 (10GB ücretsiz, encrypted, 5GB retention cap)
-- [ ] **Backup VPS aktivasyon** — R2 token sahibinden gelince .env + crontab register
+- [x] **Backup AKTİF** — Spatie Backup + local `/var/backups/kogsuitotel/`, daily 03:00 cron, AES-256 + retention 5GB cap. İlk backup 28.26 MB ✓
+- [x] **Storage permission + PHP-FPM upload limit fix** — Livewire tmp 422 + PHP 30M + nginx 30M + Filament 20MB
+- [x] **Dil yumuşatma** — ağdalı ifadeler sade Türkçeye
+- [x] **Admin UI cleanup** — RoomForm kompakt + görseller grid layout
 - [ ] **GSC sitemap submit** — kullanıcı GSC dashboard'undan `sitemap.xml` Submit
 - [ ] **Monitoring** (UptimeRobot 5dk HTTP 200 check) — kalan iş
 - [ ] **CI/CD otomatik deploy** (GitHub Actions webhook) — opsiyonel polish
 - [ ] **Google Business Profile** — sahibin postcard verification (1-2 hafta)
 - [ ] **Site canlıda 30 gün stabil** — geçiş eşiği
 - [ ] **İlk 5+ gerçek rezervasyon** — geçiş eşiği
+- [ ] **Sahip gerçek içerik** (foto + IBAN + fiyat + iletişim + Hakkımızda) — admin'den
 
 **Faz 3 → 4:**
 - [ ] Site canlıda en az 30 gün stabil çalışıyor
