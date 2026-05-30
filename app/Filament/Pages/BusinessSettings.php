@@ -54,6 +54,16 @@ class BusinessSettings extends Page implements HasForms
         'facebook_url',
         'google_maps_url',
         'tripadvisor_url',
+        // Hakkımızda sayfası içerikleri (/hakkimizda) — admin'den editlenebilir
+        'about_intro',
+        'about_vision',
+        'about_varto_region',
+        'about_stat_1_value',
+        'about_stat_1_label',
+        'about_stat_2_value',
+        'about_stat_2_label',
+        'about_stat_3_value',
+        'about_stat_3_label',
     ];
 
     public ?array $data = [];
@@ -164,6 +174,65 @@ class BusinessSettings extends Page implements HasForms
                             ->seconds(false)
                             ->prefixIcon(Heroicon::OutlinedArrowLeftOnRectangle)
                             ->placeholder('12:00'),
+                    ]),
+
+                Section::make('Hakkımızda Sayfası')
+                    ->icon(Heroicon::OutlinedDocumentText)
+                    ->description('Public /hakkimizda sayfasının içerik blokları. Marka başlığı kod tarafında kalır, sadece metin alanları admin\'den editlenir.')
+                    ->collapsible()
+                    ->collapsed()
+                    ->components([
+                        Textarea::make('about_intro')
+                            ->label('Hero Giriş Paragrafları')
+                            ->rows(5)
+                            ->maxLength(2000)
+                            ->helperText('Hero başlığın altındaki tanıtım metni. 2-3 paragraf, boş satırla ayır.')
+                            ->columnSpanFull(),
+
+                        Textarea::make('about_vision')
+                            ->label('Vizyonumuz Bölümü')
+                            ->rows(4)
+                            ->maxLength(2000)
+                            ->helperText('"Vizyonumuz" başlığı altında görünen paragraf.')
+                            ->columnSpanFull(),
+
+                        Textarea::make('about_varto_region')
+                            ->label('Varto Hakkında Bölümü')
+                            ->rows(8)
+                            ->maxLength(3000)
+                            ->helperText('"Varto Hakkında" başlığı altındaki paragraflar. Boş satırla ayır.')
+                            ->columnSpanFull(),
+
+                        Section::make('İstatistik Kartları (3 adet)')
+                            ->icon(Heroicon::OutlinedChartBar)
+                            ->description('Hero altındaki büyük rakam + etiket çiftleri.')
+                            ->columns(3)
+                            ->components([
+                                TextInput::make('about_stat_1_value')
+                                    ->label('1. Değer')
+                                    ->maxLength(20)
+                                    ->placeholder('5'),
+                                TextInput::make('about_stat_2_value')
+                                    ->label('2. Değer')
+                                    ->maxLength(20)
+                                    ->placeholder('24/7'),
+                                TextInput::make('about_stat_3_value')
+                                    ->label('3. Değer')
+                                    ->maxLength(20)
+                                    ->placeholder('100%'),
+                                TextInput::make('about_stat_1_label')
+                                    ->label('1. Etiket')
+                                    ->maxLength(60)
+                                    ->placeholder('Konforlu Oda'),
+                                TextInput::make('about_stat_2_label')
+                                    ->label('2. Etiket')
+                                    ->maxLength(60)
+                                    ->placeholder('WhatsApp Destek'),
+                                TextInput::make('about_stat_3_label')
+                                    ->label('3. Etiket')
+                                    ->maxLength(60)
+                                    ->placeholder('Misafir Memnuniyeti Odağı'),
+                            ]),
                     ]),
 
                 Section::make('Sosyal Medya')

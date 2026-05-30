@@ -66,6 +66,12 @@
             </div>
         </div>
 
+        {{-- Sosyal Medya — admin BusinessSettings'ten doldurulduğunda görünür --}}
+        <div class="mt-lg pt-md border-t border-border-soft">
+            <p class="font-display text-xs tracking-[0.2em] uppercase text-accent-dark mb-sm">Sosyal Medya</p>
+            @include('partials.social-icons', ['variant' => 'contact'])
+        </div>
+
         <div class="mt-lg pt-md border-t border-border-soft">
             <p class="font-display text-xs tracking-[0.2em] uppercase text-accent-dark mb-md">Konaklama Saatleri</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-md">

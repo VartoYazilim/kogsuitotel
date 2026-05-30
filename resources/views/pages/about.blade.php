@@ -19,59 +19,48 @@
             Varto'nun küçük konağı,<br />
             <span class="text-primary">samimi bir kaçış.</span>
         </h1>
-        <p class="text-lg text-ink-soft leading-relaxed mb-md">
-            Koğ Suit Otel, Muş Varto'da 5 odalı küçük bir butik otel.
-            Misafirlerimize evlerindeymiş gibi hissedecekleri rahat bir konaklama sunmak için kuruldu.
-        </p>
-        <p class="text-ink-soft leading-relaxed mb-md">
-            Odalarımız sade ve konforlu; doğal tonlar, kaliteli yatak ve ferah alanlarla
-            dinlenmenize odaklandık. Karmaşık değil, samimi bir otel deneyimi.
-        </p>
+
+        @if (! empty($settings['about_intro']))
+            <div class="text-ink-soft leading-relaxed mb-md space-y-md">
+                @foreach (preg_split("/\n\s*\n/", trim($settings['about_intro'])) as $i => $p)
+                    <p class="{{ $i === 0 ? 'text-lg' : '' }}">{{ $p }}</p>
+                @endforeach
+            </div>
+        @endif
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-md mt-lg">
             <div class="bg-surface-card rounded-card p-md shadow-soft">
-                <p class="font-display font-bold text-3xl text-primary mb-xs">5</p>
-                <p class="text-sm text-ink-soft">Konforlu Oda</p>
+                <p class="font-display font-bold text-3xl text-primary mb-xs">{{ $settings['about_stat_1_value'] ?? '5' }}</p>
+                <p class="text-sm text-ink-soft">{{ $settings['about_stat_1_label'] ?? 'Konforlu Oda' }}</p>
             </div>
             <div class="bg-surface-card rounded-card p-md shadow-soft">
-                <p class="font-display font-bold text-3xl text-primary mb-xs">24/7</p>
-                <p class="text-sm text-ink-soft">WhatsApp Destek</p>
+                <p class="font-display font-bold text-3xl text-primary mb-xs">{{ $settings['about_stat_2_value'] ?? '24/7' }}</p>
+                <p class="text-sm text-ink-soft">{{ $settings['about_stat_2_label'] ?? 'WhatsApp Destek' }}</p>
             </div>
             <div class="bg-surface-card rounded-card p-md shadow-soft">
-                <p class="font-display font-bold text-3xl text-primary mb-xs">100%</p>
-                <p class="text-sm text-ink-soft">Misafir Memnuniyeti Odağı</p>
+                <p class="font-display font-bold text-3xl text-primary mb-xs">{{ $settings['about_stat_3_value'] ?? '100%' }}</p>
+                <p class="text-sm text-ink-soft">{{ $settings['about_stat_3_label'] ?? 'Misafir Memnuniyeti Odağı' }}</p>
             </div>
         </div>
 
-        <div class="mt-xl pt-lg border-t border-border-soft">
-            <h2 class="font-display font-bold text-2xl md:text-3xl tracking-tight text-ink mb-md">Vizyonumuz</h2>
-            <p class="text-ink-soft leading-relaxed">
-                Varto'ya gelen her misafirin rahat etmesi. Karmaşık servis değil, küçük dokunuşlar —
-                temiz bir oda, sıcak bir karşılama ve sorularınızı yanıtlayan bir ekip. Bir dostun evine
-                gelmiş gibi hissedebilmeniz için elimizden geleni yapıyoruz.
-            </p>
-        </div>
+        @if (! empty($settings['about_vision']))
+            <div class="mt-xl pt-lg border-t border-border-soft">
+                <h2 class="font-display font-bold text-2xl md:text-3xl tracking-tight text-ink mb-md">Vizyonumuz</h2>
+                <p class="text-ink-soft leading-relaxed whitespace-pre-line">{{ $settings['about_vision'] }}</p>
+            </div>
+        @endif
 
         {{-- Varto Bölge Bilgisi — yerel SEO için bölgesel ilgi sinyali --}}
-        <div class="mt-xl pt-lg border-t border-border-soft">
-            <h2 class="font-display font-bold text-2xl md:text-3xl tracking-tight text-ink mb-md">Varto Hakkında</h2>
-            <p class="text-ink-soft leading-relaxed mb-md">
-                Muş iline bağlı bir ilçe olan <strong class="text-ink">Varto</strong>, Doğu Anadolu'nun yüksek
-                rakımlı yaylaları ve berrak hava kalitesiyle tanınır. Akdoğan Dağları'nın eteklerinde, Şerafettin
-                Dağları'na komşu konumuyla doğa tutkunları ve sakin bir kaçış arayanlar için ideal bir varış noktasıdır.
-            </p>
-            <p class="text-ink-soft leading-relaxed mb-md">
-                Bölgenin temiz yayla havası, geleneksel Anadolu mutfağı ve sıcakkanlı insanlarıyla Varto, küçük
-                ama unutulmaz bir keşif deneyimi sunar. <strong class="text-ink">Koğ Suit Otel</strong> olarak
-                hem iş seyahatleri hem hafta sonu kaçamakları hem de yayla turları için merkezi ve sakin bir
-                konaklama noktasıyız.
-            </p>
-            <p class="text-ink-soft leading-relaxed">
-                Varto, Muş merkezine yaklaşık 60 km mesafededir. Bingöl, Erzurum ve Elazığ gibi çevre illere
-                karayolu ile ulaşım kolaydır. Otelimizden bölgenin en güzel manzaralarına ve geleneksel köy
-                yaşamına kısa bir sürede ulaşabilirsiniz.
-            </p>
-        </div>
+        @if (! empty($settings['about_varto_region']))
+            <div class="mt-xl pt-lg border-t border-border-soft">
+                <h2 class="font-display font-bold text-2xl md:text-3xl tracking-tight text-ink mb-md">Varto Hakkında</h2>
+                <div class="text-ink-soft leading-relaxed space-y-md">
+                    @foreach (preg_split("/\n\s*\n/", trim($settings['about_varto_region'])) as $p)
+                        <p>{{ $p }}</p>
+                    @endforeach
+                </div>
+            </div>
+        @endif
 
         <div class="mt-xl pt-lg border-t border-border-soft text-center">
             <p class="font-display text-xs tracking-[0.2em] uppercase text-accent-dark mb-sm">Rezervasyon</p>

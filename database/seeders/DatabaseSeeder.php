@@ -13,6 +13,8 @@ class DatabaseSeeder extends Seeder
             RoomSeeder::class,
             GalleryImageSeeder::class,
             SettingSeeder::class,
+            FaqSeeder::class,
+            LegalPageSeeder::class,
         ]);
     }
 }
