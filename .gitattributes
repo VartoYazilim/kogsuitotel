@@ -9,3 +9,14 @@
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
+
+# VPS deploy artifact'lerinden exclude — `git archive` ve gelecekteki zip-based
+# deploy için (sahip 2026-05-25 kararı: "zipler veya public repo'dan çekeriz").
+# DİKKAT: database/demo-images/ EXCLUDE EDİLMEZ — RoomSeeder bu dosyaları
+# storage/app/public altına kopyalar, prod'da gerek.
+/.claude export-ignore
+/base export-ignore
+/tests export-ignore
+phpunit.xml export-ignore
+phpstan.neon export-ignore
+pint.json export-ignore
