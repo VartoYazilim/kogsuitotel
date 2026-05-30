@@ -18,12 +18,44 @@ class ReservationsChart extends ChartWidget
     // kaçınmak için full width. Bkz: memory/reference-admin-ui-layout-disiplini.md
     protected int|string|array $columnSpan = 'full';
 
+    // maxHeight ZORUNLU — full width chart container'a göre default aspect ratio
+    // (yaklaşık 2:1) ile ölçeklenir, 1200px wide → 600px tall absurd hale gelir.
+    // 280px tipik dashboard line chart yüksekliği (sahip 2026-05-25 ikinci itirazı).
+    protected ?string $maxHeight = '280px';
+
+    /** Heading dinamik — veri yoksa kullanıcıya anlamlı bağlam verir. */
+    public function getHeading(): ?string
+    {
+        return $this->totalDataPoints() === 0
+            ? 'Son 30 Gün Rezervasyon Trendi (henüz veri yok)'
+            : 'Son 30 Gün Rezervasyon Trendi';
+    }
+
     protected function getData(): array
+    {
+        [$labels, $data] = $this->loadSeries();
+
+        return [
+            'datasets' => [
+                [
+                    'label' => 'Yeni Rezervasyon',
+                    'data' => $data,
+                    'borderColor' => '#6b7553',
+                    'backgroundColor' => 'rgba(107, 117, 83, 0.15)',
+                    'fill' => true,
+                    'tension' => 0.3,
+                ],
+            ],
+            'labels' => $labels,
+        ];
+    }
+
+    /** @return array{0: list<string>, 1: list<int>} */
+    private function loadSeries(): array
     {
         $start = now()->subDays(29)->startOfDay();
         $end = now()->endOfDay();
 
-        // Veritabanından günlük rezervasyon sayıları
         $reservations = Reservation::query()
             ->whereBetween('created_at', [$start, $end])
             ->get()
@@ -39,19 +71,14 @@ class ReservationsChart extends ChartWidget
             $data[] = $reservations[$key] ?? 0;
         }
 
-        return [
-            'datasets' => [
-                [
-                    'label' => 'Yeni Rezervasyon',
-                    'data' => $data,
-                    'borderColor' => '#6b7553',
-                    'backgroundColor' => 'rgba(107, 117, 83, 0.15)',
-                    'fill' => true,
-                    'tension' => 0.3,
-                ],
-            ],
-            'labels' => $labels,
-        ];
+        return [$labels, $data];
+    }
+
+    private function totalDataPoints(): int
+    {
+        [, $data] = $this->loadSeries();
+
+        return array_sum($data);
     }
 
     protected function getType(): string
