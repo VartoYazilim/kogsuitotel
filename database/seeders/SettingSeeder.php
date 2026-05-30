@@ -25,11 +25,10 @@ class SettingSeeder extends Seeder
             'checkin_time' => '14:00',
             'checkout_time' => '12:00',
 
-            // Sosyal medya (opsiyonel, sonra doldurulur)
-            'instagram_url' => '',
-            'facebook_url' => '',
-            'google_maps_url' => '',
-            'tripadvisor_url' => '',
+            // Sosyal medya artık ayrı SocialLink tablosunda (dinamik CRUD).
+            // Eski 4 key (instagram_url, facebook_url, google_maps_url,
+            // tripadvisor_url) SettingSeeder'dan çıkarıldı; mevcut canlı
+            // değerler 2026_05_25_150001 migration ile social_links'e taşınır.
 
             // Hakkımızda sayfası içerikleri (admin'den editlenebilir)
             'about_intro' => "Koğ Suit Otel, Muş Varto'da 5 odalı küçük bir butik otel. Misafirlerimize evlerindeymiş gibi hissedecekleri rahat bir konaklama sunmak için kuruldu.\n\nOdalarımız sade ve konforlu; doğal tonlar, kaliteli yatak ve ferah alanlarla dinlenmenize odaklandık. Karmaşık değil, samimi bir otel deneyimi.",

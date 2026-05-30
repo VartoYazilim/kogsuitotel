@@ -68,14 +68,6 @@ class LegalPageResource extends Resource
     {
         return $schema
             ->components([
-                Section::make('⚠️ Hukuki Metin Uyarısı')
-                    ->icon(Heroicon::OutlinedExclamationTriangle)
-                    ->iconColor('warning')
-                    ->description('Bu metinler KVKK ve gizlilik mevzuatı kapsamında hukuki sonuç doğurur. Değiştirmeden önce mutlaka avukatınıza danışın. Tüm değişimler "Geçmiş" sekmesinde tarihli kayıtlanır.')
-                    ->collapsed()
-                    ->collapsible()
-                    ->components([]),
-
                 Section::make('Başlık ve Tarih')
                     ->icon(Heroicon::OutlinedDocumentText)
                     ->iconColor('primary')

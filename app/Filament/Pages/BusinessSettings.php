@@ -39,7 +39,13 @@ class BusinessSettings extends Page implements HasForms
 
     protected static ?int $navigationSort = 90;
 
-    /** @var list<string> Form alanları ↔ DB key'leri eşleşmesi. */
+    /**
+     * Form alanları ↔ DB key'leri eşleşmesi.
+     * NOT: Sosyal medya URL'leri buradan KALDIRILDI (2026-05-25) —
+     * artık ayrı `SocialLink` Resource'unda dinamik CRUD yönetilir.
+     *
+     * @var list<string>
+     */
     public const KEYS = [
         'iban',
         'iban_holder',
@@ -50,10 +56,6 @@ class BusinessSettings extends Page implements HasForms
         'address',
         'checkin_time',
         'checkout_time',
-        'instagram_url',
-        'facebook_url',
-        'google_maps_url',
-        'tripadvisor_url',
         // Hakkımızda sayfası içerikleri (/hakkimizda) — admin'den editlenebilir
         'about_intro',
         'about_vision',
@@ -235,37 +237,6 @@ class BusinessSettings extends Page implements HasForms
                             ]),
                     ]),
 
-                Section::make('Sosyal Medya')
-                    ->icon(Heroicon::OutlinedGlobeAlt)
-                    ->description('Footer ve schema.org Organization linklerinde kullanılır. Boş bırakılan linkler gizlenir.')
-                    ->columns(2)
-                    ->collapsible()
-                    ->components([
-                        TextInput::make('instagram_url')
-                            ->label('Instagram')
-                            ->url()
-                            ->prefixIcon(Heroicon::OutlinedCamera)
-                            ->placeholder('https://instagram.com/kogsuitotel')
-                            ->maxLength(255),
-                        TextInput::make('facebook_url')
-                            ->label('Facebook')
-                            ->url()
-                            ->prefixIcon(Heroicon::OutlinedUsers)
-                            ->placeholder('https://facebook.com/kogsuitotel')
-                            ->maxLength(255),
-                        TextInput::make('google_maps_url')
-                            ->label('Google Maps')
-                            ->url()
-                            ->prefixIcon(Heroicon::OutlinedMapPin)
-                            ->placeholder('https://maps.google.com/?cid=…')
-                            ->maxLength(255),
-                        TextInput::make('tripadvisor_url')
-                            ->label('Tripadvisor')
-                            ->url()
-                            ->prefixIcon(Heroicon::OutlinedStar)
-                            ->placeholder('https://tripadvisor.com/Hotel_Review-…')
-                            ->maxLength(255),
-                    ]),
             ]);
     }
 

@@ -128,11 +128,9 @@
                 'caption' => 'Koğ Suit Otel logosu',
             ],
             'image' => url('/images/logo.svg'),
-            'sameAs' => array_values(array_filter([
-                \App\Models\Setting::get('instagram_url'),
-                \App\Models\Setting::get('facebook_url'),
-                \App\Models\Setting::get('tripadvisor_url'),
-            ])),
+            // sameAs — dinamik SocialLink tablosundan, aktif olanların URL'leri
+            // (2026-05-25 itibariyle 4 sabit Setting key yerine SocialLink Resource)
+            'sameAs' => \App\Models\SocialLink::active()->ordered()->pluck('url')->all(),
             'contactPoint' => [
                 '@type' => 'ContactPoint',
                 'telephone' => \App\Models\Setting::get('phone'),

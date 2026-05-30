@@ -40,7 +40,8 @@ class BusinessSettingsTest extends TestCase
         $response->assertSeeText('Banka Bilgileri');
         $response->assertSeeText('İletişim');
         $response->assertSeeText('Konaklama Saatleri');
-        $response->assertSeeText('Sosyal Medya');
+        // Sosyal Medya buradan kaldırıldı (2026-05-25): ayrı SocialLink Resource'a taşındı
+        $response->assertSeeText('Hakkımızda Sayfası');
     }
 
     public function test_mount_mevcut_setting_degerlerini_form_a_doldurur(): void
@@ -76,10 +77,6 @@ class BusinessSettingsTest extends TestCase
                 'address' => 'Test Adres, Varto, Muş',
                 'checkin_time' => '14:00',
                 'checkout_time' => '12:00',
-                'instagram_url' => 'https://instagram.com/test',
-                'facebook_url' => 'https://facebook.com/test',
-                'google_maps_url' => 'https://maps.google.com/?cid=123',
-                'tripadvisor_url' => 'https://tripadvisor.com/Hotel_Test',
             ])
             ->call('save')
             ->assertHasNoFormErrors();
@@ -89,7 +86,7 @@ class BusinessSettingsTest extends TestCase
         $this->assertSame('Ziraat Bankası', Setting::get('bank_name'));
         $this->assertSame('test@kogsuitotel.com', Setting::get('email'));
         $this->assertSame('14:00', Setting::get('checkin_time'));
-        $this->assertSame('https://instagram.com/test', Setting::get('instagram_url'));
+        // Sosyal medya artık SocialLinkResource'ta — buradan kaldırıldı
     }
 
     public function test_iban_bosluklari_temizlenir_dbye_compact_yazilir(): void
@@ -126,6 +123,8 @@ class BusinessSettingsTest extends TestCase
 
     public function test_hatali_url_validation_calisir(): void
     {
+        // URL validation artık BusinessSettings'te değil, SocialLinkResource'ta
+        // (TextInput::make('url')->url()). Burada email validation testi yeterli.
         $admin = User::factory()->create(['is_admin' => true]);
 
         Livewire::actingAs($admin)
@@ -133,10 +132,10 @@ class BusinessSettingsTest extends TestCase
             ->fillForm([
                 'iban' => 'TR12 3456 7890 1234 5678 9012 34',
                 'iban_holder' => 'Test',
-                'instagram_url' => 'bu bir url degil',
+                'email' => 'gecersiz-email',
             ])
             ->call('save')
-            ->assertHasFormErrors(['instagram_url']);
+            ->assertHasFormErrors(['email']);
     }
 
     public function test_save_sonrasi_setting_cache_invalidate_eder(): void

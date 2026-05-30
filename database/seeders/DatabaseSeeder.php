@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             SettingSeeder::class,
             FaqSeeder::class,
             LegalPageSeeder::class,
+            SocialLinkSeeder::class,
         ]);
     }
 }

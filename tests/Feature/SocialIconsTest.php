@@ -2,21 +2,28 @@
 
 namespace Tests\Feature;
 
-use App\Models\Setting;
+use App\Models\SocialLink;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * BusinessSettings'teki sosyal medya URL'leri public footer + contact'ta görünür.
- * Boş olanlar render edilmez (defensive).
+ * Dinamik SocialLink CRUD — public footer + contact'ta görünür.
+ * Boş ve pasif kayıtlar render edilmez (defensive).
  */
 class SocialIconsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_footer_instagram_url_dolu_ise_link_render_eder(): void
+    public function test_footer_aktif_social_link_render_eder(): void
     {
-        Setting::set('instagram_url', 'https://instagram.com/test-kog');
+        SocialLink::create([
+            'platform' => 'instagram',
+            'label' => 'Instagram',
+            'url' => 'https://instagram.com/test-kog',
+            'sort_order' => 10,
+            'is_active' => true,
+        ]);
 
         $response = $this->get('/');
 
@@ -25,13 +32,8 @@ class SocialIconsTest extends TestCase
         $response->assertSee('aria-label="Instagram"', false);
     }
 
-    public function test_footer_bos_url_link_render_etmez(): void
+    public function test_footer_hic_link_yoksa_section_render_etmez(): void
     {
-        Setting::set('instagram_url', '');
-        Setting::set('facebook_url', '');
-        Setting::set('tripadvisor_url', '');
-        Setting::set('google_maps_url', '');
-
         $response = $this->get('/');
 
         $response->assertStatus(200);
@@ -39,9 +41,31 @@ class SocialIconsTest extends TestCase
         $response->assertDontSee('aria-label="Facebook"', false);
     }
 
+    public function test_pasif_link_public_sayfada_gizlenir(): void
+    {
+        SocialLink::create([
+            'platform' => 'facebook',
+            'label' => 'Facebook',
+            'url' => 'https://facebook.com/pasif',
+            'sort_order' => 10,
+            'is_active' => false,
+        ]);
+
+        $response = $this->get('/');
+
+        $response->assertStatus(200);
+        $response->assertDontSee('https://facebook.com/pasif', false);
+    }
+
     public function test_contact_sayfasinda_sosyal_medya_section_gosterir(): void
     {
-        Setting::set('facebook_url', 'https://facebook.com/test-kog');
+        SocialLink::create([
+            'platform' => 'facebook',
+            'label' => 'Facebook',
+            'url' => 'https://facebook.com/test-kog',
+            'sort_order' => 10,
+            'is_active' => true,
+        ]);
 
         $response = $this->get(route('contact'));
 
@@ -50,32 +74,73 @@ class SocialIconsTest extends TestCase
         $response->assertSee('https://facebook.com/test-kog', false);
     }
 
-    public function test_birden_fazla_sosyal_medya_dolu_ise_hepsi_render_eder(): void
+    public function test_birden_fazla_platform_dolu_ise_hepsi_render_eder(): void
     {
-        Setting::set('instagram_url', 'https://instagram.com/a');
-        Setting::set('facebook_url', 'https://facebook.com/b');
-        Setting::set('tripadvisor_url', 'https://tripadvisor.com/c');
-        Setting::set('google_maps_url', 'https://maps.google.com/d');
+        SocialLink::create(['platform' => 'instagram', 'label' => 'IG', 'url' => 'https://instagram.com/a', 'sort_order' => 10, 'is_active' => true]);
+        SocialLink::create(['platform' => 'facebook', 'label' => 'FB', 'url' => 'https://facebook.com/b', 'sort_order' => 20, 'is_active' => true]);
+        SocialLink::create(['platform' => 'tripadvisor', 'label' => 'TA', 'url' => 'https://tripadvisor.com/c', 'sort_order' => 30, 'is_active' => true]);
+        SocialLink::create(['platform' => 'x', 'label' => 'X', 'url' => 'https://x.com/d', 'sort_order' => 40, 'is_active' => true]);
 
         $response = $this->get('/');
 
         $response->assertStatus(200);
-        $response->assertSee('aria-label="Instagram"', false);
-        $response->assertSee('aria-label="Facebook"', false);
-        $response->assertSee('aria-label="Tripadvisor"', false);
-        $response->assertSee('aria-label="Google Maps"', false);
+        $response->assertSee('aria-label="IG"', false);
+        $response->assertSee('aria-label="FB"', false);
+        $response->assertSee('aria-label="TA"', false);
+        $response->assertSee('aria-label="X"', false);
     }
 
-    public function test_sameas_schema_org_sosyal_medya_urllerini_ekler(): void
+    public function test_sort_order_a_gore_listeler(): void
     {
-        Setting::set('instagram_url', 'https://instagram.com/schema-test-xyz');
+        SocialLink::create(['platform' => 'facebook', 'label' => 'Facebook', 'url' => 'https://facebook.com/b', 'sort_order' => 30, 'is_active' => true]);
+        SocialLink::create(['platform' => 'instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/a', 'sort_order' => 10, 'is_active' => true]);
+        SocialLink::create(['platform' => 'x', 'label' => 'X', 'url' => 'https://x.com/c', 'sort_order' => 20, 'is_active' => true]);
+
+        $response = $this->get('/');
+        $content = $response->getContent();
+
+        $posIG = strpos($content, 'instagram.com/a');
+        $posX = strpos($content, 'x.com/c');
+        $posFB = strpos($content, 'facebook.com/b');
+
+        $this->assertNotFalse($posIG);
+        $this->assertLessThan($posX, $posIG);
+        $this->assertLessThan($posFB, $posX);
+    }
+
+    public function test_sameas_schema_org_social_link_urllerini_ekler(): void
+    {
+        SocialLink::create([
+            'platform' => 'instagram',
+            'label' => 'Instagram',
+            'url' => 'https://instagram.com/schema-test-xyz',
+            'sort_order' => 10,
+            'is_active' => true,
+        ]);
 
         $response = $this->get('/');
 
         $response->assertStatus(200);
         $content = $response->getContent();
-        // JSON-LD UNESCAPED_SLASHES flag ile encode (slashes literal kalır)
         $this->assertStringContainsString('"sameAs"', $content);
         $this->assertStringContainsString('schema-test-xyz', $content);
+    }
+
+    public function test_admin_social_links_listeleyebilir(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+
+        $this->actingAs($admin)
+            ->get('/kog-yonetim/social-links')
+            ->assertStatus(200);
+    }
+
+    public function test_non_admin_social_links_a_giremez(): void
+    {
+        $user = User::factory()->create(['is_admin' => false]);
+
+        $this->actingAs($user)
+            ->get('/kog-yonetim/social-links')
+            ->assertStatus(403);
     }
 }
