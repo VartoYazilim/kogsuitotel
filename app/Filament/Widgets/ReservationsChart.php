@@ -13,6 +13,11 @@ class ReservationsChart extends ChartWidget
 
     protected static ?int $sort = 2;
 
+    // Tüm satırı kaplar — 1/3 kolon "Son 30 Gün" chart için çok dar görünüyordu
+    // (sahip 2026-05-25 itirazı). Chart + boş sağ alan anti-pattern'ından
+    // kaçınmak için full width. Bkz: memory/reference-admin-ui-layout-disiplini.md
+    protected int|string|array $columnSpan = 'full';
+
     protected function getData(): array
     {
         $start = now()->subDays(29)->startOfDay();

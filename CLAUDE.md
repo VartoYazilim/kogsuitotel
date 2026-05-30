@@ -302,15 +302,38 @@ Basit bash script `/home/deploy/deploy.sh` (prod yolu `/var/www/kogsuitotel`):
 ```bash
 cd /var/www/kogsuitotel
 git pull origin main
+
+# Sahibin kararı (2026-05-25): VPS'te .claude/ + geliştirici-only dosyalar
+# bulunmasın. git pull bunları çekiyor (eğer commit'tlerde varsa), post-pull
+# cleanup. .gitattributes `export-ignore` yarın archive/rsync deploy için
+# hazır ama pull bunu onurlandırmaz.
+rm -rf .claude/ base/ tests/ phpunit.xml phpstan.neon pint.json
+
 composer install --no-dev --optimize-autoloader
 php artisan migrate --force
+# Demo asset'leri storage'a kopyala (idempotent; sahibin gerçek foto'larına dokunmaz)
+php artisan db:seed --class=RoomSeeder --force
+php artisan db:seed --class=GalleryImageSeeder --force
+php artisan db:seed --class=FaqSeeder --force
+php artisan db:seed --class=LegalPageSeeder --force
+php artisan config:clear  # env() okuma için (config:cache öncesi)
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
-php artisan storage:link
+php artisan storage:link  # idempotent, ilk deploy'da kurulur
 npm ci && npm run build
 sudo systemctl reload php8.3-fpm
 ```
+
+**Sahibin VPS-GitHub bağ kopma planı** (2026-05-25 sonrası): Yukarıdaki
+`git pull` yöntemi son kullanım. Sahip "kısa sürede public ederim oradan
+çekeriz ya da zipler vps yükleriz" dedi. O zaman geleceği zaman:
+- (a) Public repo + `git clone --depth 1` (VPS'te Varto Yazılım hesabı YOK)
+- (b) `git archive --format=tar.gz HEAD | ssh deploy@vps 'tar xz -C /var/www/...'`
+  → `.gitattributes export-ignore` bu yolu kullanır (sadece prod gerekli dosyalar)
+- (c) Manuel zip + scp (en basit, ama sürtünmeli)
+
+Detay memory: `reference-vps-deploy-script.md`.
 
 #### 8.5. Backup — Local VPS Storage + Spatie Laravel Backup
 
@@ -670,9 +693,10 @@ Cloud demo deploy stabil hale geldikten sonra eklenen iyileştirmeler:
     antika altın)
 - Dönüşüm tek satır `sed` ile yapıldı:
   `sed -e 's/#273136/#4a5240/g' -e 's/#B99A55/#b89b6e/g' base/<src>.svg > public/images/logo.svg`
-- `public/images/logo.svg` (17 kB transparent, viewBox 1186×1341) header
-  + footer + apple-touch-icon + schema.org Organization.logo'da kullanılıyor.
-- `public/favicon.svg` (777 byte sade versiyon) browser tab + mask-icon için.
+- `public/images/logo.svg` (17 kB transparent, viewBox 1186×1341) **tek logo
+  kaynağı** — header + footer + tab favicon + apple-touch + admin brand +
+  schema.org Organization.logo. Önceden ayrı `public/favicon.svg` (yeşil daire
+  K monogram) vardı, sahip "logo farklılığı" itirazıyla kaldırıldı (2026-05-25).
 - Yeni logo sürümleri için sahibin orijinaline bağlı kalmaya devam edilir;
   başka palette istenirse yine `sed` ile yeniden dönüştürülür.
 
@@ -963,6 +987,13 @@ Bir fazı kapatmadan önce şu sorulara `evet` cevabı verilmeli:
 ## 12. Çalışma Kuralları (Claude Code için)
 
 - **Türkçe konuş** (kod yorumları İngilizce olabilir).
+- **Her yeni session başlangıcında Claude Preview'i otomatik aç** —
+  `mcp__Claude_Preview__preview_start({ name: "laravel" })` çağır.
+  `.claude/launch.json` zaten kurulu (port 8000, `php artisan serve`).
+  `.claude/settings.json` permissions allowlist'inde Preview tool'ları
+  pre-approved, izin istenmez. Kullanıcı UI işiyle ilgili soru sorduğunda
+  `preview_screenshot` veya `preview_eval` ile direkt doğrulama yap, manuel
+  test isteme. (Sahibin 2026-05-25 kararı.)
 - Her büyük adımda **özet ver ve onay iste**, sessizce 50 dosya değiştirme.
 - Migration'lar oluşturduktan sonra `php artisan migrate` çalıştırmadan ÖNCE göster.
 - `composer require` ile yeni paket eklerken neden eklediğini söyle —

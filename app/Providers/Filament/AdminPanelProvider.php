@@ -18,7 +18,6 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
-use Filament\Widgets\AccountWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -37,7 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Koğ Suit Yönetim')
             ->brandLogo(asset('images/logo.svg'))
             ->brandLogoHeight('2.5rem')
-            ->favicon(asset('favicon.svg'))
+            ->favicon(asset('images/logo.svg'))
             ->login()
             // ── Profile page — kullanıcı menüsünden "Profil" linki açar.
             //    Default EditProfile page ad / e-posta / şifre değiştirmeyi kapsar.
@@ -116,13 +115,19 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
+            // Widget sırası dashboard'da YUKARIDAN AŞAĞIYA:
+            //   1. WelcomeWidget       (full)  — greeting + tarih + yönlendirme
+            //   2. ReservationStatsOverview    — 4 metric stat (pending/in/out/revenue)
+            //   3. TodayActivity       (full)  — bugün giriş/çıkış tablosu
+            //   4. ReservationsChart   (full)  — 30 gün trend (sahip "dar görünüyor" kararı)
+            //   5. LatestReservations  (full)  — son 5 rezervasyon tablosu
+            // AccountWidget kaldırıldı — WelcomeWidget zaten karşılama yapıyor (duplicate).
             ->widgets([
                 WelcomeWidget::class,
                 ReservationStatsOverview::class,
                 TodayActivity::class,
                 ReservationsChart::class,
                 LatestReservations::class,
-                AccountWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

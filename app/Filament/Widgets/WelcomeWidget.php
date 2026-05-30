@@ -2,10 +2,14 @@
 
 namespace App\Filament\Widgets;
 
-use App\Enums\ReservationStatus;
-use App\Models\Reservation;
 use Filament\Widgets\Widget;
 
+/**
+ * Selamlama widget — sadece greeting + tarih + welcome mesajı.
+ * Metric'ler (pending/arrivals/departures/revenue) ReservationStatsOverview'da;
+ * burada tekrar gösterirsek duplicate olur (sahip 2026-05-25 itirazı:
+ * "üstte 3 metric, altta 4 stat = dağınık"). Bkz: reference-admin-ui-layout-disiplini.
+ */
 class WelcomeWidget extends Widget
 {
     protected string $view = 'filament.widgets.welcome';
@@ -17,20 +21,12 @@ class WelcomeWidget extends Widget
     protected function getViewData(): array
     {
         $user = auth()->user();
-        $today = today();
         $now = now();
 
         return [
             'userName' => $user->name ?? 'Misafir',
             'greeting' => $this->greetingByHour($now->hour),
             'todayDate' => $now->translatedFormat('d F Y, l'),
-            'pendingCount' => Reservation::where('status', ReservationStatus::Pending)->count(),
-            'todayArrivals' => Reservation::whereDate('check_in', $today)
-                ->whereIn('status', [ReservationStatus::Confirmed, ReservationStatus::Paid])
-                ->count(),
-            'todayDepartures' => Reservation::whereDate('check_out', $today)
-                ->whereIn('status', [ReservationStatus::Paid, ReservationStatus::Completed])
-                ->count(),
         ];
     }
 

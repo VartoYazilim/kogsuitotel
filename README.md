@@ -142,12 +142,12 @@ npm run dev    # Vite dev server, HMR aktif
 ├── lang/tr/                     # Türkçe lokalizasyon (validation, auth)
 ├── public/
 │   ├── images/logo.svg          # Marka logosu (Olive Sanctuary)
-│   ├── images/demo/             # Geçici görseller (Unsplash, WebP, 14 foto)
-│   │   ├── hero/                # Ana sayfa arka plan + hikaye bölümü
-│   │   ├── rooms/               # 5 oda cover (sahibin gerçek foto'larıyla değişecek)
-│   │   ├── gallery/             # 6 galeri görseli (kategori bazlı)
-│   │   └── og/                  # Sosyal medya OG image (JPG — uyumluluk)
-│   ├── favicon.svg              # Sade favicon
+│   ├── images/
+│   │   ├── logo.svg             # TEK logo kaynağı — header + favicon + admin brand
+│   │   └── demo/                # Geçici hero + OG görseller (oda + galeri demo'ları
+│   │       │                    #   database/demo-images/ altına taşındı)
+│   │       ├── hero/            # Ana sayfa arka plan + hikaye bölümü
+│   │       └── og/              # Sosyal medya OG image (JPG — uyumluluk)
 │   ├── robots.txt               # AI crawler izinli
 │   └── site.webmanifest         # PWA install
 ├── resources/

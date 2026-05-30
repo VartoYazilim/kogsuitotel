@@ -17,12 +17,6 @@
       "type": "image/svg+xml",
       "sizes": "any",
       "purpose": "any"
-    },
-    {
-      "src": "/favicon.svg",
-      "type": "image/svg+xml",
-      "sizes": "any",
-      "purpose": "any maskable"
     }
   ]
 }

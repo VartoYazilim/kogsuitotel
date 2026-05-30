@@ -100,10 +100,9 @@
 <meta name="color-scheme" content="light" />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
 
-{{-- Favicon + PWA manifest --}}
-<link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}" />
+{{-- Favicon + PWA manifest — tek logo kaynağı (sahibin "logo farklılığı" kararı) --}}
+<link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}" />
 <link rel="apple-touch-icon" href="{{ asset('images/logo.svg') }}" />
-<link rel="mask-icon" href="{{ asset('favicon.svg') }}" color="#4a5240" />
 <link rel="manifest" href="{{ asset('site.webmanifest') }}" />
 <meta name="msapplication-TileColor" content="#4a5240" />
 <meta name="msapplication-TileImage" content="{{ asset('images/logo.svg') }}" />
@@ -306,6 +305,9 @@
                     </a>
                 </li>
             </ul>
+            <div class="mt-md">
+                @include('partials.social-icons', ['variant' => 'footer'])
+            </div>
         </div>
     </div>
     {{-- Ornament — altın ince çizgi ayraç --}}
